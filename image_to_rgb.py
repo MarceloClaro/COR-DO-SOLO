@@ -1,26 +1,22 @@
 from PIL import Image
 
 def get_color_matrix(img):
-    color_list = []
     for x in range(img.width):
-        color_list.append([])
         for y in range(img.height):
-            color_list[x].append(img.getpixel( (x, y) ))
-
-    return color_list
+            yield img.getpixel( (x, y) )
 
 if __name__ == '__main__':
     from sys import argv as args
 
     img = Image.open(args[1])
 
-    history = {}
-    color_matriz = get_color_matrix(img)
-    for x in range(img.width):
-        for y in range(img.height):
-            for rgb in color_matriz[x][y]:
-                if rgb not in history:
-                    history[rgb] = 1
-                else:
-                    history[rgb] += 1
+    colors = {}
+    for rgb in get_color_matrix(img):
+        if rgb not in colors:
+            colors[rgb] = 1
+        else:
+            colors[rgb] += 1
 
+    total = len(colors)
+    for color in colors:
+        print(f'{color} -> {(colors[color]*100)/total}%')
