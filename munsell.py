@@ -2,9 +2,9 @@
 Sistema de cores munsell para solo
 '''
 
+from image_to_rgb import color_counter
 from sys import argv as args
 from pandas import read_csv
-from image_to_rgb import *
 import cv2
 
 img_path = args[1]
@@ -45,7 +45,7 @@ while 1:
         if r >= 95 or g >= 95 or b >= 95:
             text_color = (255, 255, 255)
 
-        color_name = f'{getColorName(r,g,b)}{(r, g, b)}'
+        color_name = f'{getColorName(r,g,b)} {(r, g, b)}'
         color_percentage = f'{img_colors[(r, g, b)]*100/img_total}'
         text = f'{color_name} : {color_percentage}% of image'
 
