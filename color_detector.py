@@ -2,32 +2,24 @@
 Sistema de cores munsell para solo
 '''
 
-#Bibliotecas aplicadas
+from sys import argv as args
+from pandas import read_csv
+from image_to_rgb import *
 import cv2
-import numpy as np
-import pandas as pd
-import argparse
 
-# Criando analisador de argumentos para obter o caminho da imagem na linha de comando
-ap = argparse.ArgumentParser()
-ap.add_argument('image', required=True, help="Image Path")
-args = vars(ap.parse_args())
-img_path = args['image']
-
-#Ler a imagem com opencv
+img_path = args[1]
 img = cv2.imread(img_path)
 
-# declarar variáveis globais
-clicked = False
-r = g = b = xpos = ypos = 0
+index=["color", "color_name", "hex", "R", "G", "B"]
+csv = read_csv('cores.csv', names=index, header=None)
 
-#Lendo arquivo csv com pandas e dando nomes a cada coluna
-index=["color","color_name","hex","R","G","B"]
-csv = pd.read_csv('cores.csv', names=index, header=None)
+cc = color_counter(img_path)
+img_total = cc['total']
+img_matrix = cc['matrix']
+img_colors = cc['colors']
+del cc
 
-#função para calcular a distância mínima de todas as cores e obter a cor mais correspondente
-#acho que o problema esta aqui...
-def getColorName(R,G,B):
+def getColorName(R, G, B):
     minimum = 10000
     for i in range(len(csv)):
         d = abs(R- int(csv.loc[i,"R"])) + abs(G- int(csv.loc[i,"G"]))+ abs(B- int(csv.loc[i,"B"]))
