@@ -28,43 +28,32 @@ def getColorName(R, G, B):
             cname = csv.loc[i,"color_name"]
     return cname
 
-#função para obter as coordenadas x, y do clique duplo do mouse
-def draw_function(event, x,y,flags,param):
+clicked = r = g = b = 0
+def draw_function(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDBLCLK:
-        global b,g,r,xpos,ypos, clicked
-        clicked = True
-        xpos = x
-        ypos = y
-        b,g,r = img[y,x]
-        b = int(b)
-        g = int(g)
-        r = int(r)
+        global r,g,b, clicked, img_matrix
+        r, g, b = img_matrix[x][y]
+        clicked = 1
 
-cv2.namedWindow('COR DE SOLO-SISTEMA MUNSELL. DI/LATTES: PROJETO ANTENADO. Codigo CI: JR9F00000001 - AUTOR: MARCELO CLARO')
-cv2.setMouseCallback('COR DE SOLO-SISTEMA MUNSELL. DI/LATTES: PROJETO ANTENADO. Codigo CI: JR9F00000001 - AUTOR: MARCELO CLARO',draw_function)
+cv2.namedWindow('COR DE SOLO - SISTEMA MUNSELL')
+cv2.setMouseCallback('COR DE SOLO - SISTEMA MUNSELL', draw_function)
 
-while(1):
-
-    cv2.imshow("COR DE SOLO-SISTEMA MUNSELL. DI/LATTES: PROJETO ANTENADO. Codigo CI: JR9F00000001 - AUTOR: MARCELO CLARO",img)
+while 1:
+    cv2.imshow('COR DE SOLO - SISTEMA MUNSELL', img)
     if (clicked):
-
-        # cv2.rectangle (imagem, ponto inicial, ponto final, cor, espessura) -1 preenche o retângulo inteiro 
-        cv2.rectangle(img,(20,20), (750,60), (b,g,r), -1)
-
-        # Criando sequência de texto para exibição (nome da cor e valores RGB)
-        text = getColorName(r,g,b) + ' R='+ str(r) +  ' G='+ str(g) +  ' B='+ str(b)
-
-        # cv2.putText (imgem, texto, início, fonte (0-7), fonte Escala, cor, espessura, tipo de linha)
-        cv2.putText(img, text,(50,50),2,0.8,(255,255,255),2,cv2.LINE_AA)
-
-        #Para cores muito claras, exibiremos o texto na cor preta
+        text_color = (0, 0, 0)
         if r >= 95 or g >= 95 or b >= 95:
-            print('passou do limite!!')
-            cv2.putText(img, text,(50,50),2,0.8,(0,0,0),2,cv2.LINE_AA)
+            text_color = (255, 255, 255)
 
-        clicked=False
+        color_name = f'{getColorName(r,g,b)}{(r, g, b)}'
+        color_percentage = f'{img_colors[(r, g, b)]*100/img_total}'
+        text = f'{color_name} : {color_percentage}% of image'
 
-    # Quebre o loop quando o usuário pressionar a tecla 'esc'
+        cv2.rectangle(img, (20,20), (900,60), (r, g, b), -1)
+        cv2.putText  (img, text, (50,50), 2, 0.8, text_color, 2, cv2.LINE_AA)
+
+        clicked = 0
+
     if cv2.waitKey(20) & 0xFF == 27:
         break
 
