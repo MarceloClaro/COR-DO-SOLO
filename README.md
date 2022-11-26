@@ -16,7 +16,18 @@
 
 marcelo.laranjeira@prof.educrateus.com.br
 
-Whatsapp:(88)98158-7145
+Whatsapp:(88)98158-7145  (https://www.geomaker.org/)
+
+
+---
+
+GRUPO DE ESTUDOS DE GEOTECNOLOGIAS E IA.   — GEOGRAFIA FAÇA VOCÊ MESMO  https://chat.whatsapp.com/HxqPo7PitMJDM0cJlCfPxu   —   (https://www.geomaker.org/)
+DRIVE DE PESQUISA DO GRUPO* — https://drive.google.com/drive/folders/19IJ2KUb24-mNGFsVgJYfKEKeONy90vYH?usp=sharing  
+TELEGRAM- https://t.me/geografiaifce  
+
+---
+
+
 
 # **INTRODUÇÃO**
 
