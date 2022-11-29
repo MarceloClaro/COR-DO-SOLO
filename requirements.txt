@@ -3,7 +3,7 @@ streamlit
 plotly_express==0.4.0
 pandas
 numpy 
-pycopy-colorsys
+colorsys
 matplotlib
 KMeans
 PIL 
