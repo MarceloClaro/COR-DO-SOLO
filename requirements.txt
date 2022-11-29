@@ -1,11 +1,10 @@
 
-
-import pandas 
-import numpy 
-import cv2 
-import opencv
-import csv 
-import colorsys
-from matplotlib import pyplot
-from sklearn.cluster import KMeans 
-from PIL import Image
+plotly_express
+pandas
+numpy 
+opencv
+csv
+colorsys
+pyplot
+KMeans
+PIL 
