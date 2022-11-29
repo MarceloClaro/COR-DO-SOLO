@@ -2,7 +2,6 @@ streamlit
 plotly_express
 pandas
 numpy 
-python-csv
 colorsys
 pyplot
 KMeans
