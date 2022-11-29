@@ -1,4 +1,4 @@
---upgrade pip
+
 streamlit
 plotly_express==0.4.0
 pandas
