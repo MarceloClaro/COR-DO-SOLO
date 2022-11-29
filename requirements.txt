@@ -1,10 +1,10 @@
-
+streamlit
 plotly_express
 pandas
 numpy 
-opencv
 csv
 colorsys
 pyplot
 KMeans
 PIL 
+opencv-contrib-python)
