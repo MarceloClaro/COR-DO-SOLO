@@ -1,9 +1,11 @@
+--upgrade pip
 streamlit
-plotly_express
+plotly_express==0.4.0
 pandas
 numpy 
-colorsys
-pyplot
+pycopy-colorsys
+matplotlib
 KMeans
 PIL 
 opencv-contrib-python
+sklearn
