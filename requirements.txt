@@ -7,4 +7,4 @@ colorsys
 pyplot
 KMeans
 PIL 
-opencv-contrib-python)
+opencv-contrib-python
