@@ -83,6 +83,7 @@ st.image('https://lh6.googleusercontent.com/hiRKdv5UxSXINPZa_bYOf_s2X37WB67MAqwo
 st.title('Geomaker - Laboratório de Geografia ') # define título para a seção 
 st.subheader('Classificar a cor do solo pela carta de Munsell') # define subtítulo para a seção FONTE 12
 st.write('Prof. Marcelo Claro / marceloclaro@geomaker.org') # define texto para a seção
+st.write('https://orcid.org/0000-0001-8996-2887') # define texto para a seção
 st.write('Whatsapp - (88)98158-7145') # define texto para a seção
 st.write('https://www.geomaker.org') # define texto para a seção
 
