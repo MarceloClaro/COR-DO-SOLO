@@ -5,11 +5,12 @@
 ---
 
 
-
 **Com este roteiro de aprendizagem, você terá uma visão do universo da IA e da Pedologia.** 
 
-**Saiba no final como criar um modelo de IA que possa cdeterminar a cor do solo pela carta de Munsell em uma foto.**
+**Saiba no final como criar um modelo de IA que possa determinar a cor do solo pela carta de Munsell em uma foto.**
 
+## **[ APLICATIVO DE PARA DETERMINAR A COR DO SOLO PELA CARTA DE MUNSELL] (https://marceloclaro-cor-do-solo-solo-segmentation-m8n8f0.streamlit.app/)**
+https://marceloclaro-cor-do-solo-solo-segmentation-m8n8f0.streamlit.app/
 
 ---
 **Professor: Marcelo Claro.**
