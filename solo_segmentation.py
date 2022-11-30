@@ -74,7 +74,8 @@ def rgb_to_munsell(center,col_c): # define função para converter rgb para muns
         chroma = "8" # croma é 8
     elif s < 1.0: # se s for menor que 1.0
         chroma = "9" # croma é 9
-    col_c.title('Valores para munsell') # define título para a seção    
+    col_c.title('Valores para munsell') # define título para a seção 
+    col_c.write('(MATIZ,VALORES,CROMA)') # imprime valores de h,c,v no console   
     col_c.write('{0},{1},{2}'.format (hue,value,chroma)) # imprime valores de h,l,s no console 
     #print(hue + " " + value + " " + chroma )# retorna valor de matiz e croma 
 
@@ -139,7 +140,7 @@ if image is not None: # se imagem for diferente de nulo
     #print("Munsell") # imprime no console
     #print(rgb_to_munsell(center[0][0],center[0][1],center[0][2]))
     st.button('__________________', on_click = rgb_to_munsell(center,col_c)) # imprime no console
-    st.write('(MATIZ,VALORES,CROMA)') # define texto para a seção
+    
 
    
 
