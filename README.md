@@ -9,7 +9,7 @@
 
 **Saiba no final como criar um modelo de IA que possa determinar a cor do solo pela carta de Munsell em uma foto.**
 
-## **[ APLICATIVO DE PARA DETERMINAR A COR DO SOLO PELA CARTA DE MUNSELL] (https://marceloclaro-cor-do-solo-solo-segmentation-m8n8f0.streamlit.app/)**
+## **[APLICATIVO DE PARA DETERMINAR A COR DO SOLO PELA CARTA DE MUNSELL](https://marceloclaro-cor-do-solo-solo-segmentation-m8n8f0.streamlit.app/)**
 https://marceloclaro-cor-do-solo-solo-segmentation-m8n8f0.streamlit.app/
 
 ---
