@@ -139,7 +139,9 @@ if image is not None: # se imagem for diferente de nulo
     #print("Munsell") # imprime no console
     #print(rgb_to_munsell(center[0][0],center[0][1],center[0][2]))
     st.button('__________________', on_click = rgb_to_munsell(center,col_c)) # imprime no console
+    st.write('(MATIZ,VALORES,CROMA)') # define texto para a seção
 
-   st.write('(MATIZ,VALORES,CROMA)') # define texto para a seção
+   
 
     st.write('FONTE:  https://pteromys.melonisland.net/munsell/') # imprime no console
+    
