@@ -78,9 +78,9 @@ def rgb_to_munsell(center,col_c): # define função para converter rgb para muns
     col_c.write('{0},{1},{2}'.format (hue,value,chroma)) # imprime valores de h,l,s no console 
     #print(hue + " " + value + " " + chroma )# retorna valor de matiz e croma 
 
+st.image('https://lh6.googleusercontent.com/hiRKdv5UxSXINPZa_bYOf_s2X37WB67MAqwom1r1qzmKZsfCJF1RrLe_zlISG2vfOGeJwuBpTklRx409cgF2-Xo=w1280') # insere imagem da carta de munsell
 st.title('Geomaker - Laboratório de Geografia ') # define título para a seção 
 st.subheader('Classificar a cor do solo pela carta de Munsell') # define subtítulo para a seção FONTE 12
-st.image('https://lh6.googleusercontent.com/hiRKdv5UxSXINPZa_bYOf_s2X37WB67MAqwom1r1qzmKZsfCJF1RrLe_zlISG2vfOGeJwuBpTklRx409cgF2-Xo=w1280') # insere imagem da carta de munsell
 st.write('Prof. Marcelo Claro / marceloclaro@geomaker.org') # define texto para a seção
 st.write('Whatsapp - (88)98158-7145') # define texto para a seção
 st.write('https://www.geomaker.org') # define texto para a seção
