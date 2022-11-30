@@ -1,25 +1,25 @@
-import streamlit as st
-#import plotly_express as px
-import pandas as pd
-import numpy as np # importa numpy
-import cv2 #import opencv
-#import csv # importar csv
-import colorsys # importar colorsys
-#from matplotlib import pyplot as plt # importa pyplot
-from sklearn.cluster import KMeans # importa k-means
-#from PIL import Image
+import streamlit as st  # importar biblioteca streamlit para criar interface gráfica 
+#import plotly_express as px # importar biblioteca plotly express para criar gráficos  
+import pandas as pd # importar biblioteca pandas para manipular dados em formato de tabela 
+import numpy as np # importa numpy para manipular dados em formato de matriz  
+import cv2 #import opencv #importar biblioteca opencv para manipular imagens 
+#import csv # importar csv para manipular arquivos csv  
+import colorsys # importar colorsys para converter rgb para munsell  
+#from matplotlib import pyplot as plt # importa pyplot para criar gráficos 
+from sklearn.cluster import KMeans # importa k-means para segmentação de imagens 
+#from PIL import Image # importa biblioteca para manipular imagens  
 
 
 
-def rgb_to_munsell(center,col_c): # define função
-    r,g,b = center[0][0],center[0][1],center[0][2]
-    #print("R,G,B") # imprime no console
-    #print(center[0])
-    col_c.title('Valores para RGB')
-    col_c.write('{0},{1},{2}'.format (r,g,b))
-    print('passei dentro func')
-    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0) #converter rgb para hls
-    h = h*360 # converter h de 0-1 para 0-360
+def rgb_to_munsell(center,col_c): # define função para converter rgb para munsell
+    r,g,b = center[0][0],center[0][1],center[0][2] # define variáveis para cada canal de cor  
+    #print("R,G,B") # imprime no console  
+    #print(center[0]) # imprime no console  
+    col_c.title('Valores para RGB') # define título para a seção 
+    col_c.write('{0},{1},{2}'.format (r,g,b)) # imprime valores de r,g,b no console  
+    print('passei dentro func') # imprime no console    
+    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0) #converter rgb para hls 
+    h = h*360 # converter h de 0-1 para 0-360 
     if h < 20: # se h for menor que 20
         hue = "R" # matiz é vermelho
     elif h < 40: # se h for menor que 40
@@ -74,65 +74,67 @@ def rgb_to_munsell(center,col_c): # define função
         chroma = "8" # croma é 8
     elif s < 1.0: # se s for menor que 1.0
         chroma = "9" # croma é 9
-    col_c.title('Valores para munsell')
-    col_c.write('{0},{1},{2}'.format (hue,value,chroma))
-    #print(hue + " " + value + " " + chroma )# retorna valor de matiz e croma
+    col_c.title('Valores para munsell') # define título para a seção    
+    col_c.write('{0},{1},{2}'.format (hue,value,chroma)) # imprime valores de h,l,s no console 
+    #print(hue + " " + value + " " + chroma )# retorna valor de matiz e croma 
 
-
-
-st.title('Classificar a cor do solo pela carta de Munsell')
+st.title('Geomaker - Laboratório de Geografia ') # define título para a seção 
+st.subheader('Classificar a cor do solo pela carta de Munsell') # define subtítulo para a seção
+st.write('Prof. Marcelo Claro / marceloclaro@geomaker.org') # define texto para a seção
+st.write('Whatsapp - (88)98158-7145') # define texto para a seção
+st.write('https://www.geomaker.org') # define texto para a seção
 
 #st.sidebar.subheader('configurações de visualização')
 
 image = st.file_uploader(label = 'faça o upload da sua imagem',
-                         type = ['jpg','png','jpeg'] )
+                         type = ['jpg','png','jpeg'] )# define a seção para upload de imagem 
 
 
 # converter rgb para munsell
 
 
-col_a,col_b,col_c = st.columns(3)
+col_a,col_b,col_c = st.columns(3) # define a seção para upload de imagem  
 
 
 
-if image is not None:
+if image is not None: # se imagem for diferente de nulo 
 
-    #print(dir(image.name))
+    #print(dir(image.name)) # imprime no console
     
-    print('passei')
-    #plt.imshow(img)
-    #plt.show()
+    print('passei') # imprime no console
+    #plt.imshow(img) # mostra imagem no console
+    #plt.show() # mostra imagem no console
     
-    col_a.title('Imagem original')
-    col_a.image(image)
-    #plt.imshow(img)
-    #plt.show()
+    col_a.title('Imagem original') # define título para a seção
+    col_a.image(image) # mostra imagem no console
+    #plt.imshow(img) # mostra imagem no console
+    #plt.show() # mostra imagem no console
 
 
-    file_bytes = np.asarray(bytearray(image.read()), dtype=np.uint8)
-    opencv_image = cv2.imdecode(file_bytes, 1)
+    file_bytes = np.asarray(bytearray(image.read()), dtype=np.uint8) # converte imagem para array de bytes 
+    opencv_image = cv2.imdecode(file_bytes, 1) # converte imagem para array de bytes 
     
     #img = cv2.imread(img_array) # leia a imagem
-    img = cv2.cvtColor(opencv_image, cv2.COLOR_BGR2RGB) #converte para rgb
-    Z = img.reshape((-1,3)) # remodela para uma lista de pixels
+    img = cv2.cvtColor(opencv_image, cv2.COLOR_BGR2RGB) #converte para rgb 
+    Z = img.reshape((-1,3)) # remodela para uma lista de pixels 
     Z = np.float32(Z) # converter para np.float32
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0) # define critérios, número de clusters(K) e aplica kmeans()
     K = 1 # número de clusters
     ret,label,center=cv2.kmeans(Z,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS) # converte para valores de 8 bits
     center = np.uint8(center) # converte para uint8
-    print('calculado o center')
+    print('calculado o center') # imprime no console 
     res = center[label.flatten()] # converte de volta para a imagem de 3 canais da imagem de 1 canal
-    #col_b.image()
+    #col_b.image() # mostra imagem no console
     res2 = res.reshape((img.shape)) # mostra a imagem
-    col_b.title('Imagem processada')
-    col_b.image(res2)
+    col_b.title('Imagem processada')# define título para a seção    
+    col_b.image(res2) # mostra imagem no console 
     #plt.imshow(res2)
     #plt.show() 
 
 
     print("R,G,B") # imprime no console
-    print(center[0])
+    print(center[0]) # imprime no console 
 
     #print("Munsell") # imprime no console
     #print(rgb_to_munsell(center[0][0],center[0][1],center[0][2]))
-    st.button('__________________', on_click = rgb_to_munsell(center,col_c))
+    st.button('__________________', on_click = rgb_to_munsell(center,col_c)) # imprime no console
