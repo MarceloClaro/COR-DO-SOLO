@@ -88,7 +88,7 @@ st.write('https://www.geomaker.org') # define texto para a seção
 
 #st.sidebar.subheader('configurações de visualização')
 
-image = st.file_uploader(label = 'faça o upload da sua imagem',
+image = st.file_uploader(label = 'Faça o upload da sua imagem',
                          type = ['jpg','png','jpeg'] )# define a seção para upload de imagem 
 
 
