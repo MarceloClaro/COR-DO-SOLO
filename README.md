@@ -52,19 +52,32 @@ O objetivo desta pesquisa foi comparar os métodos usados para determinar a cor 
 
 ---
 
-## **COR DO SOLO**
+
+# **REVISÃO BIBLIOGRÁFICA**
+---
+
+## **PIGMENTOS DO SOLO**
 
 ---
 
 
-As cores do solo são usadas para adicionar beleza e simbolismo à pintura corporal, pinturas rupestres e outras formas de arte. As cores derivadas do solo variam de amarelo e laranja a vermelho e marrom. Cada cor tem seu próprio significado e significado em diferentes culturas. Eles foram usados ​​pela primeira vez pelo povo aborígine da Austrália, que usava ocre, um pigmento amarelo-avermelhado, para pintar seus corpos para cerimônias e cerimônias. Escavações em cavernas na Austrália indicam que o ocre foi amplamente usado pelos primeiros australianos entre 57.000 e 71.000 anos atrás. Os nativos americanos Chusmas da Califórnia também usaram subtons em suas obras de arte. Eles usam hematita, um pigmento vermelho, para pintar listras e manchas vermelhas em seus corpos e tocas. Além da hematita, a tribo Chusmas também utilizava a argila branca para pintura corporal e rituais de cura. As cores do solo têm sido usadas há séculos e ainda são usadas hoje. (GUIMARÃES, 2016).
+Os pigmentos do solo foram usados para criar as cores de diversas civilizações. Os aborígenes da Austrália usavam o ocre, extraído do solo, nas pinturas corporais para todas as cerimônias importantes da vida, desde o nascimento até a morte (TAÇON, 2004). Em cavernas, encontrou-se ocre usado pelos australianos 57.000-71.000 anos atrás (THORNE et al., 1999). Os Chusmas habitaram o centro e sul da Califórnia, usando hematita nas pinturas rupestres vermelhas (GRANT, 1965). A etnia Chusmas também usava argila branca para pintar o corpo e em rituais de cura (ROBINSON, 2004).
 
+A cor do solo ainda é um destaque no artesanato e os pigmentos do solo são usados como corantes. O projeto Cores da Terra, descrito por CARVALHO et al. (2007), desenvolvido pelo Departamento de Solos da Universidade Federal de Viçosa (UFV), ensina a produzir tintas com base em solo para pintar residências. Na ilha do Havaí, uma marca de vestuário é bastante famosa pelo fato de todas as suas peças serem tingidas com terra vermelha.
 
-Ainda hoje, as cores da terra são proeminentes no artesanato, onde os pigmentos da terra são usados ​​como corantes. O projeto Cores da Terra (CARVALHO et al., 2007) foi desenvolvido pelo Departamento de Solos da Universidade Federal de Viçosa (UFV) para ensinar a fazer tintas de solo para pintar casas. As marcas de roupas havaianas são conhecidas por tingir todas as suas roupas com argila vermelha. Minerais são comumente usados ​​na indústria farmacêutica como ingredientes ou como excipientes para exibir propriedades terapêuticas. Também é muito utilizado em spas e centros de beleza (CARRETERO & POZO, 2009). Além das propriedades físicas, mecânicas e térmicas dos minerais, propriedades visuais como pigmentos e opacificantes são amplamente utilizadas para melhorar as propriedades organolépticas de produtos farmacêuticos (CARRETERO & POZO, 2009).
+Minerais são usados frequentemente na indústria farmacêutica como elementos ativos, por conta das suas propriedades curativas, ou como substâncias inertes. Também é comum utilizá-los em spas e clínicas de estética, conforme CARRETERO & POZO (2009). Os autores também mencionam que os pigmentos e opacificantes são usados para melhorar as propriedades organolépticas de medicamentos.
 
-Cientistas russos começaram a prestar atenção à cor do solo no início do século XIX e começaram a descrevê-la em termos de matiz, luminosidade e saturação na década de 1920 (ZAKHAROV, 1927). Nos Estados Unidos, as propriedades de cor do solo não foram incluídas no sistema de classificação até 1914. Segundo Guimarães (2016), quando a Divisão de Solos do Departamento de Agricultura dos Estados Unidos (USDA) publicou uma lista de 22 nomes de fundos de cores de solo, não havia padrões de cores até então. O USDA, juntamente com a Munsell Company, preparou uma série de tabelas de cores para uso no Soil Survey Manual de 1951 (SOIL SURVEY STAFF, 1993). Desde então, o sistema de cores Munsell (MUNSELL SOIL COLOR COMPANY, 1950) e uma nova lista de nomes têm sido usados ​​e recomendados pelo USDA para determinar a cor do solo (SIMONSON, 1993). O sistema começa a ser adotado por pesquisadores de solo em todo o mundo.
+As argilas são ativos em cosméticos, como máscaras faciais. São aconselhadas no tratamento de derrames na pele, como inchaços e oleosidade, pelo seu poder de aspirar óleos e toxinas (CARRETERO, 2002). Há uma grande variedade de cores (branco, amarelo, cinza, verde, etc.) e cada uma das argilas usadas em procedimentos estéticos tem uma função específica que depende de suas propriedades físico-químicas, conforme LÓPEZ-GALINDO et al. (2007) apontam.
 
-Em 1949, a MUNSELL SOIL COLOR COMPANY criou o Sistema Americano de Classificação de Solos. Em 1950, a EMBRAPA começou a desenvolver um novo sistema de classificação de solos brasileiro que evoluiu desse antigo sistema de classificação. (EMBRAPA, 2013) A primeira versão do SiBCS foi lançada em 1999 e desde então foi revisada várias vezes. O diagrama de Munsell (MUNSELL SOIL COLOR COMPANY, 1950) serve como padrão para classificar as cores do solo no Sistema Brasileiro de Classificação de Solos - SiBCS.
+A cor do solo é uma característica importante na ciência do solo. Pelo seu aspecto e características facilmente identificáveis, a cor do solo é largamente utilizada para classificar e interpretar os solos, conforme SANTOS et al. (2005) relata.
+
+Os solos pretos eram tidos como férteis e os mais claros como inférteis. Columela, um escritor romano do primeiro século, discordava desta opinião ao considerar a infertilidade de solos pretos de pântanos e a alta fertilidade dos solos claros da Líbia, conforme salientam LAPIDO-LOUREIRO et al. (2009).
+
+Os habitantes indígenas Xicrin, na reserva indígena Kayapó-Xicrin, no estado do Pará, criaram o seu próprio sistema de classificação dos solos. Nesse sistema, a cor do solo é o critério para dividi-lo em quatro categorias: branco, vermelho, amarelo e preto. Além da coloração, a textura, a presença de pedras e a umidade do solo também são considerados, de acordo com COOPER et al., (2005).
+
+Os cientistas russos começaram a se concentrar na coloração dos solos no início do século XIX. Durante a década de 1920, começaram a descrever a cor do solo de acordo com a tonalidade, brilho e saturação cita ZAKHAROV, (1927). Nos Estados Unidos, a cor do solo não foi considerada até 1914, quando o Departamento de Agricultura dos Estados Unidos (USDA) publicou uma lista com vinte e dois nomes para cores de solo. A partir de 1951, o manual de levantamento de solo adota uma série de cartas de cores preparadas pela Munsell Company, como afirma o SOIL SURVEY STAFF (1993). A partir daquele momento, o sistema de cores de Munsell (MUNSELL SOIL COLOR COMPANY, 1950) e uma nova lista de nomes foram adotados e recomendados pela USDA para determinar as cores dos solos (SIMONSON, 1993). Esse sistema passou a ser aderido por pesquisadores de solos do mundo todo.
+
+O SiBCS (Sistema Brasileiro de Classificação de Solos), segundo a EMBRAPA (2013), surge como uma melhoria do sistema americano de classificação. Ele começou a ser desenvolvido no ano de 1950, sendo a sua primeira edição publicada no ano de 1999. O Sistema Brasileiro de Classificação de Solos utiliza a carta de Munsell (MUNSELL SOIL COLOR COMPANY, 1950) como referência para classificar a cor do solo.
 
 
 ---
