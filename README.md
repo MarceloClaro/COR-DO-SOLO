@@ -67,13 +67,9 @@ Minerais são usados frequentemente na indústria farmacêutica como elementos a
 
 As argilas são ativos em cosméticos, como máscaras faciais. São aconselhadas no tratamento de derrames na pele, como inchaços e oleosidade, pelo seu poder de aspirar óleos e toxinas (CARRETERO, 2002). Há uma grande variedade de cores (branco, amarelo, cinza, verde, etc.) e cada uma das argilas usadas em procedimentos estéticos tem uma função específica que depende de suas propriedades físico-químicas, conforme LÓPEZ-GALINDO et al. (2007) apontam.
 
-A cor do solo é uma característica importante na ciência do solo. Pelo seu aspecto e características facilmente identificáveis, a cor do solo é largamente utilizada para classificar e interpretar os solos, conforme SANTOS et al. (2005) relata.
+A cor do solo é uma característica importante na ciência do solo. Pelo seu aspecto e características facilmente identificáveis, a cor do solo é largamente utilizada para classificar e interpretar os solos, conforme SANTOS et al. (2005) relata. Solos escuros eram considerados férteis, enquanto os claros eram tachados de improdutivos. Columela, um escritor romano do primeiro século, discordava desta opinião ao considerar a infertilidade de solos pretos de pântanos e a alta fertilidade dos solos claros da Líbia, conforme salientam LAPIDO-LOUREIRO et al. (2009).
 
-Solos escuros eram considerados férteis, enquanto os claros eram tachados de improdutivos. Columela, um escritor romano do primeiro século, discordava desta opinião ao considerar a infertilidade de solos pretos de pântanos e a alta fertilidade dos solos claros da Líbia, conforme salientam LAPIDO-LOUREIRO et al. (2009).
-
-Os habitantes indígenas Xicrin, na reserva Kayapó-Xicrin, classificaram os solos pelas cores branco, vermelho, amarelo e preto. Além da tonalidade, a textura, a existência de pedras e a umidade do terreno também são considerados, de acordo com COOPER et al. (2005).
-
-Os cientistas russos começaram a se concentrar na coloração dos solos no início do século XIX.
+Os habitantes indígenas Xicrin, na reserva Kayapó-Xicrin, classificaram os solos pelas cores branco, vermelho, amarelo e preto. Além da tonalidade, a textura, a existência de pedras e a umidade do terreno também são considerados, de acordo com COOPER et al. (2005). Os cientistas russos começaram a se concentrar na coloração dos solos no início do século XIX.
 
 Durante a década de 1920, começaram a descrever a cor do solo de acordo com a tonalidade, brilho e saturação cita ZAKHAROV, (1927). Nos Estados Unidos, a cor do solo não foi considerada até 1914, quando o Departamento de Agricultura dos Estados Unidos  (USDA)   publicou uma lista com vinte e dois nomes para cores de solo. A partir de 1951, o manual de levantamento de solo adota uma série de cartas de cores preparadas pela Munsell Company, como afirma o SOIL SURVEY STAFF (1993).  
 
@@ -126,7 +122,13 @@ A Tabela 1 mostra os minerais do solo e suas formulações correspondentes. Alé
 
 Tabela 1. Notação de Munsell para a cor de minerais, de acordo com Marilyn & Pearson (2000).
 
+---
 
+## **UMIDADE**
+
+---
+
+Como apontado por STONER & BAUMGARDNER (1981), a umidade nas amostras interfere na cor do solo, uma vez que aumenta a radiação eletromagnética absorvida, deixando-o mais escuro quanto mais úmido. Carter (1931) percebeu que a cor das amostras variava conforme a umidade. Shields et al. (2011) observaram que o aumento da umidade causou uma diminuição significativa na cor dos solos, mas pouco alterou o tom e o croma. Stoner et al. (1991) constataram que uma umidade elevada diminui a refletividade de Latossolos.
 
 ---
 
