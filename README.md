@@ -25,9 +25,13 @@ Whatsapp:(88)98158-7145  (https://www.geomaker.org/)
 
 ---
 
-GRUPO DE ESTUDOS DE GEOTECNOLOGIAS E IA.   — GEOGRAFIA FAÇA VOCÊ MESMO  https://chat.whatsapp.com/HxqPo7PitMJDM0cJlCfPxu 
-DRIVE DE PESQUISA DO GRUPO* — https://drive.google.com/drive/folders/19IJ2KUb24-mNGFsVgJYfKEKeONy90vYH?usp=sharing  
-TELEGRAM- https://t.me/geografiaifce  
+GRUPO DE ESTUDOS DE GEOTECNOLOGIAS E IA.   — GEOGRAFIA FAÇA VOCÊ MESMO  
+
+https://chat.whatsapp.com/HxqPo7PitMJDM0cJlCfPxu 
+
+*DRIVE DE PESQUISA DO GRUPO* — https://drive.google.com/drive/folders/19IJ2KUb24-mNGFsVgJYfKEKeONy90vYH?usp=sharing  
+
+*TELEGRAM*- https://t.me/geografiaifce  
 
 ---
 
@@ -62,7 +66,7 @@ O objetivo desta pesquisa foi comparar os métodos usados para determinar a cor 
 ## **COLORAÇÃO DO SOLO**
 
 ---
-Os pigmentos do solo são usados ​​para criar as cores de muitas civilizações. Os aborígenes australianos utilizavam o ocre, extraído do solo, para a pintura corporal em todas as cerimônias importantes da vida, desde o nascimento até a morte (TAÇON, 2004). Em cavernas, descobriu-se que o ocre foi usado pelos australianos há 57.000-71.000 anos (THORNE et al., 1999). Os Chusmas, que viviam no centro e sul da Califórnia, usavam hematita em suas pinturas rupestres vermelhas (GRANT, 1965). Os Chusmas também utilizavam a argila branca para unções corporais e rituais de cura (ROBINSON, 2004).
+Os pigmentos do solo são usados para criar as cores de muitas civilizações. Os aborígenes australianos utilizavam o ocre, extraído do solo, para a pintura corporal em todas as cerimônias importantes da vida, desde o nascimento até a morte (TAÇON, 2004). Em cavernas, descobriu-se que o ocre foi usado pelos australianos há 57.000-71.000 anos (THORNE et al., 1999). Os Chusmas, que viviam no centro e sul da Califórnia, usavam hematita em suas pinturas rupestres vermelhas (GRANT, 1965). Os Chusmas também utilizavam a argila branca para unções corporais e rituais de cura (ROBINSON, 2004).
 
 A cor do solo ainda é um destaque no artesanato e os pigmentos do solo são usados como corantes. O projeto Cores da Terra, descrito por CARVALHO et al. (2007), desenvolvido pelo Departamento de Solos da Universidade Federal de Viçosa (UFV), ensina a produzir tintas com base em solo para pintar residências. Na ilha do Havaí, uma marca de vestuário é bastante famosa pelo fato de todas as suas peças serem tingidas com terra vermelha.
 
