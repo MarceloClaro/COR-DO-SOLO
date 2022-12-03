@@ -56,64 +56,75 @@ O objetivo desta pesquisa foi comparar os métodos usados para determinar a cor 
 # **REVISÃO BIBLIOGRÁFICA**
 ---
 
-## **PIGMENTOS DO SOLO**
+## **COLORAÇÃO DO SOLO**
 
 ---
+Os pigmentos do solo são usados ​​para criar as cores de muitas civilizações. Os aborígenes australianos utilizavam o ocre, extraído do solo, para a pintura corporal em todas as cerimônias importantes da vida, desde o nascimento até a morte (TAÇON, 2004). Em cavernas, descobriu-se que o ocre foi usado pelos australianos há 57.000-71.000 anos (THORNE et al., 1999). Os Chusmas, que viviam no centro e sul da Califórnia, usavam hematita em suas pinturas rupestres vermelhas (GRANT, 1965). Os Chusmas também utilizavam a argila branca para unções corporais e rituais de cura (ROBINSON, 2004).
 
+A cor do solo ainda é um destaque no artesanato e os pigmentos do solo são usados como corantes. O projeto Cores da Terra, descrito por CARVALHO et al. (2007), desenvolvido pelo Departamento de Solos da Universidade Federal de Viçosa (UFV), ensina a produzir tintas com base em solo para pintar residências. Na ilha do Havaí, uma marca de vestuário é bastante famosa pelo fato de todas as suas peças serem tingidas com terra vermelha.
 
-Os pigmentos do solo foram usados para criar as cores de diversas civilizações. Os aborígenes da Austrália usavam o ocre, extraído do solo, nas pinturas corporais para todas as cerimônias importantes da vida, desde o nascimento até a morte (TAÇON, 2004). Em cavernas, encontrou-se ocre usado pelos australianos 57.000-71.000 anos atrás (THORNE et al., 1999). Os Chusmas habitaram o centro e sul da Califórnia, usando hematita nas pinturas rupestres vermelhas (GRANT, 1965). A etnia Chusmas também usava argila branca para pintar o corpo e em rituais de cura (ROBINSON, 2004).
-
-A cor do solo ainda é um destaque no artesanato e os pigmentos do solo são usados como corantes. O projeto Cores da Terra, descrito por CARVALHO et al. (2007), desenvolvido pelo Departamento de Solos da Universidade Federal de Viçosa (UFV), ensina a produzir tintas com base em solo para pintar residências. Na ilha do Havaí, uma marca de vestuário é bastante famosa pelo fato de todas as suas peças serem tingidas com terra vermelha.
-
-Minerais são usados frequentemente na indústria farmacêutica como elementos ativos, por conta das suas propriedades curativas, ou como substâncias inertes. Também é comum utilizá-los em spas e clínicas de estética, conforme CARRETERO & POZO (2009). Os autores também mencionam que os pigmentos e opacificantes são usados para melhorar as propriedades organolépticas de medicamentos.
+Minerais são usados frequentemente na indústria farmacêutica como elementos ativos, por conta das suas propriedades curativas, ou como substâncias inertes. Também é comum utilizá-los em spas e clínicas de estética, conforme CARRETERO & POZO (2009). Os autores também mencionam que os pigmentos e opacificantes são usados para melhorar as propriedades organolépticas de medicamentos. 
 
 As argilas são ativos em cosméticos, como máscaras faciais. São aconselhadas no tratamento de derrames na pele, como inchaços e oleosidade, pelo seu poder de aspirar óleos e toxinas (CARRETERO, 2002). Há uma grande variedade de cores (branco, amarelo, cinza, verde, etc.) e cada uma das argilas usadas em procedimentos estéticos tem uma função específica que depende de suas propriedades físico-químicas, conforme LÓPEZ-GALINDO et al. (2007) apontam.
 
 A cor do solo é uma característica importante na ciência do solo. Pelo seu aspecto e características facilmente identificáveis, a cor do solo é largamente utilizada para classificar e interpretar os solos, conforme SANTOS et al. (2005) relata.
 
-Os solos pretos eram tidos como férteis e os mais claros como inférteis. Columela, um escritor romano do primeiro século, discordava desta opinião ao considerar a infertilidade de solos pretos de pântanos e a alta fertilidade dos solos claros da Líbia, conforme salientam LAPIDO-LOUREIRO et al. (2009).
+Solos escuros eram considerados férteis, enquanto os claros eram tachados de improdutivos. Columela, um escritor romano do primeiro século, discordava desta opinião ao considerar a infertilidade de solos pretos de pântanos e a alta fertilidade dos solos claros da Líbia, conforme salientam LAPIDO-LOUREIRO et al. (2009).
 
-Os habitantes indígenas Xicrin, na reserva indígena Kayapó-Xicrin, no estado do Pará, criaram o seu próprio sistema de classificação dos solos. Nesse sistema, a cor do solo é o critério para dividi-lo em quatro categorias: branco, vermelho, amarelo e preto. Além da coloração, a textura, a presença de pedras e a umidade do solo também são considerados, de acordo com COOPER et al., (2005).
+Os habitantes indígenas Xicrin, na reserva Kayapó-Xicrin, classificaram os solos pelas cores branco, vermelho, amarelo e preto. Além da tonalidade, a textura, a existência de pedras e a umidade do terreno também são considerados, de acordo com COOPER et al. (2005).
 
-Os cientistas russos começaram a se concentrar na coloração dos solos no início do século XIX. Durante a década de 1920, começaram a descrever a cor do solo de acordo com a tonalidade, brilho e saturação cita ZAKHAROV, (1927). Nos Estados Unidos, a cor do solo não foi considerada até 1914, quando o Departamento de Agricultura dos Estados Unidos (USDA) publicou uma lista com vinte e dois nomes para cores de solo. A partir de 1951, o manual de levantamento de solo adota uma série de cartas de cores preparadas pela Munsell Company, como afirma o SOIL SURVEY STAFF (1993). A partir daquele momento, o sistema de cores de Munsell (MUNSELL SOIL COLOR COMPANY, 1950) e uma nova lista de nomes foram adotados e recomendados pela USDA para determinar as cores dos solos (SIMONSON, 1993). Esse sistema passou a ser aderido por pesquisadores de solos do mundo todo.
+Os cientistas russos começaram a se concentrar na coloração dos solos no início do século XIX.
+
+Durante a década de 1920, começaram a descrever a cor do solo de acordo com a tonalidade, brilho e saturação cita ZAKHAROV, (1927). Nos Estados Unidos, a cor do solo não foi considerada até 1914, quando o Departamento de Agricultura dos Estados Unidos  (USDA)   publicou uma lista com vinte e dois nomes para cores de solo. A partir de 1951, o manual de levantamento de solo adota uma série de cartas de cores preparadas pela Munsell Company, como afirma o SOIL SURVEY STAFF (1993).  
+
+A partir daquele momento, o sistema de cores de Munsell (MUNSELL SOIL COLOR COMPANY, 1950) e uma nova lista de nomes foram adotados e recomendados pela USDA para determinar as cores dos solos (SIMONSON, 1993). Esse método de classificação foi adotado por especialistas em solo de todos os continentes.
 
 O SiBCS (Sistema Brasileiro de Classificação de Solos), segundo a EMBRAPA (2013), surge como uma melhoria do sistema americano de classificação. Ele começou a ser desenvolvido no ano de 1950, sendo a sua primeira edição publicada no ano de 1999. O Sistema Brasileiro de Classificação de Solos utiliza a carta de Munsell (MUNSELL SOIL COLOR COMPANY, 1950) como referência para classificar a cor do solo.
 
 
 ---
 
-
-## **IMPORTANCIA DA COR DO SOLO**
-
----
-
-
-Mudanças na cor do solo fornecem informações sobre as propriedades físicas do solo. Essas mudanças podem ser resultado da topografia, vegetação, ventilação, clima, minerais, profundidade e matriz. Além disso, as mudanças de cor podem indicar a concentração de matéria orgânica no solo, grau de intemperismo, material de origem ou temperatura. Além disso, essas mudanças podem indicar informações sobre a classificação do solo, diferenciação estratigráfica e propriedades ambientais (FERNANDEZ & SCHULZE, 1992; SCHAETZL & ANDERSON 2005).
-
---- 
-
-## **MINERALOGIA**
+## **RELEVÂNIA**
 
 ---
 
 
-A mineralogia está direta e intrinsecamente ligada ao material de origem e ao nível de intemperismo do solo, como referido por SCHAETZL & ANDERSON, (2005).
+A coloração é uma característica física que pode revelar muito sobre o solo, como, por exemplo, a alteração do tom pode ser uma reação a variações de relevo, vegetação, profundidade, clima, arejo, material de origem, grau de intemperismo, mineralogia e concentração de matéria orgânica. O mesmo pode revelar suas características, classificação e horizonte, além de influenciar sua temperatura, conforme as obras de FERNANDEZ & SCHULZE (1992) e SCHAETZL & ANDERSON (2005).
+
+Estudos procuram estabelecer a análise da cor como um método mais rápido e econômico para determinar algumas propriedades do solo, em relação aos métodos tradicionais. De acordo com BARRON & TORRENT (1986), CAMPOS et al. (2003) e MADEIRA NETTO et al. (1997), é possível identificar e quantificar os óxidos de ferro analisando a cor do solo. Já Braumann et al. (2016) e Schulze et al. (1993) avaliaram a correlação entre a cor do solo e a concentração e composição de matéria orgânica.
+
+A coloração é uma característica relevante para identificar e descrever o solo, comparada com os padrões da carta de Munsell, que diferencia algumas classes de solos no atual Sistema Brasileiro de Classificação de Solos (EMBRAPA, 2013). Um exemplo disso é quando determinamos o nome no segundo nível categórico de Argissolos, Latossolos e Nitossolos, sendo a cor o fator que os diferencia quando as outras características são idênticas.
+
+Como apontado por Escadafal et al. (1989), a coloração do solo também é relevante para o sensoriamento à distância. Estudaram a correlação entre a coloração do solo e as faixas do LANDSAT e obtiveram coeficientes de correlação maiores que 0,90 (90%) nas cores medidas com a carta de Munsell. 
+
+Já Mattikalli (1997) utilizou a reactância, a razão entre a intensidade da radiação total refletida e da radiação total incidente, para determinar a cor de 76 solos. Como os intervalos espectrais coincidiram com as bandas do sensor multiespectral (MSS) do LANDSAT, pode-se usá-lo para identificar e mapear solos em áreas extensas ou inacessíveis com imagens de satélite.
+
+
+---
+
+## **ORICTOGNOSIA**
+
+---
+
+A Orictognosia é o ramo da ciência que se dedica ao estudo dos minerais e à sua identificação. A mineralogia está ligada ao material de origem e ao nível de intemperismo do solo, como referido por SCHAETZL & ANDERSON, (2005).
 
 Quando se examinam os Neossolos que tiveram pouca evolução pedogenética, percebe-se que são arenosos ou franco-arenosos porque são ricos em quartzo. Esses tipos de solo geralmente são carentes de matéria orgânica e óxidos de ferro. De acordo com AZEVEDO (2006) e EMBRAPA (2013), têm pouca pigmentação, são mais claros e esbranquiçados.
 
-Já os Latossolos, terrenos com drenagem e intemperizados, têm uma cor avermelhada ou amarelada devido aos óxidos de ferro, que influenciam as propriedades dos solos, especialmente a cor. A presença desses minerais, de acordo com os autores STONER & BAUMGARDNER (1981), pode mascarar a influência de outros elementos sobre a cor do solo. Se os teores de óxidos de ferro forem superiores a 4%, eles podem ocultar o efeito da matéria orgânica, conforme os autores.
+Já os Latossolos, terrenos com drenagem e intemperizados, têm uma cor avermelhada ou amarelada devido aos óxidos de ferro, que influenciam as propriedades dos solos, especialmente a cor. A presença desses minerais, conforme os autores STONER & BAUMGARDNER (1981), pode mascarar a influência de outros elementos sobre a cor do solo. Se os teores de óxidos de ferro forem superiores a 4%, eles podem ocultar o efeito da matéria orgânica, conforme os autores.
 
 De acordo com DALMOLIN et al. (2005), os óxidos de ferro têm cores diferentes devido à absorção seletiva da luz na região do visível, provocada pela transição de elétrons na camada orbital. A goethita absorve um comprimento de onda menor, apresentando maior reflectância que a hematita, como relataram VITORELLO & GALVÃO (1996) e KOSMAS et al. (1984). Stoner et al. (1991) notaram que a predominância da hematita no solo aumenta a capacidade de absorção de luz, deixando-o mais opaco. 
 
 A goethita é o óxido de ferro hidratado mais presente nos terrenos. Ela pode ser encontrada nas regiões tropicais e temperadas e deixa o solo amarelado. Já a hematita, um óxido de ferro não-hidratado, deixa o solo com uma tonalidade forte e avermelhada. Em exemplares que são heterogêneos, a hematita, apesar de ser uma quantidade minúscula, costuma mascarar a goethita, de forma que ela pareça vermelha, de acordo com Resende (1976), Schaetzl & Anderson (2005) e Schwertmann (1988). Os solos tropicais e subtropicais geralmente têm uma coloração mais alaranjada devido aos níveis variados de hematita e goethita presentes neles.
 
-Já os terrenos de climas temperados são caracterizados pela goethita e, geralmente, não possuem hematita em sua composição, logo, são mais alaranjados ou acastanhados, conforme apontam SCHWERTMANN & TAYLOR (1989).Quando o solo está saturado de água por um longo período de tempo ou em situações anaeróbicas, o ferro presente nele sofre uma redução, deixando-o com uma coloração cinzenta. Este processo é característico dos Gleissolos e é conhecido como gleização, de acordo com SCHWERTMANN (2008).
+Já os terrenos de climas temperados são caracterizados pela goethita e, geralmente, não possuem hematita em sua composição, logo, são mais alaranjados ou acastanhados, conforme apontam SCHWERTMANN & TAYLOR (1989).
 
-A cor que cada mineral apresenta decorre da interação com a luz visível, dependendo da estrutura cristalina e do tamanho das partículas. Solos com mais goethita são mais amarelos, enquanto os com menos tendem a ser acinzentados. Partículas de hematita maiores são mais púrpuras que as menores, conforme Torrent & Schwertmann (1987). A Tabela 1 apresenta os minerais do solo e suas respectivas fórmulas. Além disso, relaciona-os à notação Munsell de cada um deles. O tamanho das partículas interfere na coloração. De acordo com Santos et al. (2005), os nomes das cores foram traduzidos para o português.
+Quando o solo está saturado de água por um longo período ou em situações anaeróbicas, o ferro presente nele sofre uma redução, deixando-o com uma coloração cinzenta. Este processo é característico dos Gleissolos sendo conhecido como gleização, de acordo com SCHWERTMANN (2008).
 
-Tabela 1.  A notação de Munsell para a cor dos minerais, suas fórmulas e dimensões, adaptado de Marilyn & Pearson, (2000)
+A cor que cada mineral apresenta decorre da interação com a luz visível, dependendo da estrutura cristalina e do tamanho das partículas. Solos com mais goethita são mais amarelos, enquanto os com menos tendem a ser acinzentados. Partículas de hematita maiores são mais púrpuras que as menores, conforme Torrent & Schwertmann (1987).
 
+A Tabela 1 mostra os minerais do solo e suas formulações correspondentes. Além disso, relaciona-os à notação de cor Munsell; o tamanho das partículas interfere na coloração, como Santos et al. (2005) traduziu os nomes das cores.
 
+Tabela 1. Notação de Munsell para a cor de minerais, de acordo com Marilyn & Pearson (2000).
 
 
 
