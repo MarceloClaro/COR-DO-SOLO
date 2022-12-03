@@ -92,6 +92,32 @@ Mudanças na cor do solo fornecem informações sobre as propriedades físicas d
 
 --- 
 
+## **Mineralogia**
+
+---
+
+
+A mineralogia está direta e intrinsecamente ligada ao material de origem e ao nível de intemperismo do solo, como referido por SCHAETZL & ANDERSON, (2005).
+
+Quando se examinam os Neossolos que tiveram pouca evolução pedogenética, percebe-se que são arenosos ou franco-arenosos porque são ricos em quartzo. Esses tipos de solo geralmente são carentes de matéria orgânica e óxidos de ferro. De acordo com AZEVEDO (2006) e EMBRAPA (2013), têm pouca pigmentação, são mais claros e esbranquiçados.
+
+Já os Latossolos, terrenos com drenagem e intemperizados, têm uma cor avermelhada ou amarelada devido aos óxidos de ferro, que influenciam as propriedades dos solos, especialmente a cor. A presença desses minerais, de acordo com os autores STONER & BAUMGARDNER (1981), pode mascarar a influência de outros elementos sobre a cor do solo. Se os teores de óxidos de ferro forem superiores a 4%, eles podem ocultar o efeito da matéria orgânica, conforme os autores.
+
+De acordo com DALMOLIN et al. (2005), os óxidos de ferro têm cores diferentes devido à absorção seletiva da luz na região do visível, provocada pela transição de elétrons na camada orbital. A goethita absorve um comprimento de onda menor, apresentando maior reflectância que a hematita, como relataram VITORELLO & GALVÃO (1996) e KOSMAS et al. (1984). Stoner et al. (1991) notaram que a predominância da hematita no solo aumenta a capacidade de absorção de luz, deixando-o mais opaco. 
+
+A goethita é o óxido de ferro hidratado mais presente nos terrenos. Ela pode ser encontrada nas regiões tropicais e temperadas e deixa o solo amarelado. Já a hematita, um óxido de ferro não-hidratado, deixa o solo com uma tonalidade forte e avermelhada. Em exemplares que são heterogêneos, a hematita, apesar de ser uma quantidade minúscula, costuma mascarar a goethita, de forma que ela pareça vermelha, de acordo com Resende (1976), Schaetzl & Anderson (2005) e Schwertmann (1988). Os solos tropicais e subtropicais geralmente têm uma coloração mais alaranjada devido aos níveis variados de hematita e goethita presentes neles.
+
+Já os terrenos de climas temperados são caracterizados pela goethita e, geralmente, não possuem hematita em sua composição, logo, são mais alaranjados ou acastanhados, conforme apontam SCHWERTMANN & TAYLOR (1989).Quando o solo está saturado de água por um longo período de tempo ou em situações anaeróbicas, o ferro presente nele sofre uma redução, deixando-o com uma coloração cinzenta. Este processo é característico dos Gleissolos e é conhecido como gleização, de acordo com SCHWERTMANN (2008).
+
+A cor que cada mineral apresenta decorre da interação com a luz visível, dependendo da estrutura cristalina e do tamanho das partículas. Solos com mais goethita são mais amarelos, enquanto os com menos tendem a ser acinzentados. Partículas de hematita maiores são mais púrpuras que as menores, conforme Torrent & Schwertmann (1987). A Tabela 1 apresenta os minerais do solo e suas respectivas fórmulas. Além disso, relaciona-os à notação Munsell de cada um deles. O tamanho das partículas interfere na coloração. De acordo com Santos et al. (2005), os nomes das cores foram traduzidos para o português.
+
+Tabela 1.  A notação de Munsell para a cor dos minerais, suas fórmulas e dimensões, adaptado de Marilyn & Pearson, (2000)
+
+
+
+
+
+---
 
 ## **PROBLEMATIZAÇÃO**
 
