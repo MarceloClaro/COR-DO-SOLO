@@ -15,6 +15,9 @@ https://marceloclaro-cor-do-solo-solo-segmentation-m8n8f0.streamlit.app/
 ---
 **Professor: Marcelo Claro.**
 
+
+https://orcid.org/0000-0001-8996-2887
+
 marcelo.laranjeira@prof.educrateus.com.br
 
 Whatsapp:(88)98158-7145  (https://www.geomaker.org/)
