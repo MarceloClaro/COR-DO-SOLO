@@ -92,7 +92,7 @@ Mudanças na cor do solo fornecem informações sobre as propriedades físicas d
 
 --- 
 
-## **Mineralogia**
+## **MINERALOGIA**
 
 ---
 
