@@ -1,4 +1,4 @@
-# **[CASO -  identificar cor do solo pela carta de Munsell usando o Python e a inteligência artificial.](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwi3uobiysv7AhVkrZUCHdWoA1MQFnoECAwQAQ&url=https%3A%2F%2Fbdm.unb.br%2Fbitstream%2F10483%2F16494%2F1%2F2016_ThalitaLuziaGuimaraes_tcc.pdf&usg=AOvVaw2pcgmk6duyN8PXmU4heZHK/)**
+# **[CASO -  Identificar cor do solo pela carta de Munsell usando o Python e a inteligência artificial.](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwi3uobiysv7AhVkrZUCHdWoA1MQFnoECAwQAQ&url=https%3A%2F%2Fbdm.unb.br%2Fbitstream%2F10483%2F16494%2F1%2F2016_ThalitaLuziaGuimaraes_tcc.pdf&usg=AOvVaw2pcgmk6duyN8PXmU4heZHK/)**
 
 
 
