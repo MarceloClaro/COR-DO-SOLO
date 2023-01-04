@@ -1,97 +1,60 @@
-import streamlit as st
-import colorsys
-from sklearn.cluster import KMeans
-import gc
-from PIL import Image
-import numpy as np
+idebar.subheader('configurações de visualização')
 
-def rgb_to_munsell(center):
-    r,g,b = center[0],center[1],center[2]
-    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
-    h = h*360
-    if h < 20:
-        hue = "R"
-    elif h < 40:
-        hue = "YR"
-    elif h < 75:
-        hue = "Y"
-    elif h < 155:
-        hue = "GY"
-    elif h < 190:
-        hue = "G"
-    elif h < 260:
-        hue = "GY"
-    elif h < 290:
-        hue = "G"
-    elif h < 335:
-        hue = "BG"
-    else:
-        hue = "B"
-    if l < 0.25:
-        value = "2.5"
-    elif l < 0.3:
-        value = "3"
-    elif l < 0.4:
-        value = "4"
-    elif l < 0.5:
-        value = "5"
-    elif l < 0.6:
-        value = "6"
-    elif l < 0.7:
-        value = "7"
-    elif l < 0.8:
-        value = "8"
-    else:
-        value = "10"
-    if s < 0.2:
-        chroma = "0.5"
-    elif s < 0.4:
-        chroma = "1"
-    elif s < 0.6:
-        chroma = "2"
-    elif s < 0.8:
-        chroma = "3"
-    else:
-        chroma = "4"
-    return f"{hue} {value}/{chroma}"
+image = st.file_uploader(label = 'Faça o upload da sua imagem',
+                         type = ['jpg','png','jpeg'] )# define a seção para upload de imagem 
 
-def classificar_cor_solo(img_path, largura, altura, k):
-    # Carregar imagem e redimensioná-la
-    img = Image.open(img_path)
-    img = img.resize((largura, altura))
-    img = np.array(img)
-    # Aplicar k-means para segmentação da imagem
-    kmeans = KMeans(n_clusters=k, random_state=0).fit(img.reshape(-1,3))
-    # Obter as cores dominantes
-    cores = kmeans.cluster_centers_.astype(int)
-    # Convertê-las para o sistema de cores Munsell
-    cores_munsell = [rgb_to_munsell(cor) for cor in cores]
-    # Contar a quantidade de pixels de cada cor
-    color_counts = {}
-    for i in range(k):
-        color_counts[cores_munsell[i]] = len(np.where(kmeans.labels_ == i)[0])
-    # Calcular as porcentagens de cada cor
-# Calcular as porcentagens de cada cor
-total_pixels = sum(color_counts.values())
-color_percentages = {color: count / total_pixels * 100 for color, count in color_counts.items()}
-# Liberar espaço na RAM
-del img, kmeans, cores, color_counts
-gc.collect()
-return color_percentages
 
-def main():
-    st.title('Classificação da Cor do Solo')
-    st.subheader('Carta de cor de solo Munsell')
-    menu = st.sidebar.selectbox('Selecione uma opção', ['O que é solo?', 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?', 'Como proceder e analisar cor de solo, segundo a Embrapa', 'Classificação da Cor do Solo'])
-    if menu == 'Classificação da Cor do Solo':
-        st.markdown('Selecione uma imagem para classificar a cor do solo.')
-        img_path = st.file_uploader('Imagem', type='jpg')
-        
-    if img_path is not None:
-    largura = st.number_input('Largura', min_value=1, max_value=1000, value=500)
-    altura = st.number_input('Altura', min_value=1, max_value=1000, value=500)
-    k = st.number_input('Número de clusters', min_value=1, max_value=20, value=5)
-    color_percentages = classificar_cor_solo(img_path, largura, altura, k)
-    st.bar_chart(color_percentages)
-    if name == 'main':
-main()
+# converter rgb para munsell
+
+
+col_a,col_b,col_c = st.columns(3) # define a seção para upload de imagem  
+
+
+
+if image is not None: # se imagem for diferente de nulo 
+
+    #print(dir(image.name)) # imprime no console
+    
+    print('passei') # imprime no console
+    #plt.imshow(img) # mostra imagem no console
+    #plt.show() # mostra imagem no console
+    
+    col_a.title('Imagem original') # define título para a seção
+    col_a.image(image) # mostra imagem no console
+    #plt.imshow(img) # mostra imagem no console
+    #plt.show() # mostra imagem no console
+
+
+    file_bytes = np.asarray(bytearray(image.read()), dtype=np.uint8) # converte imagem para array de bytes 
+    opencv_image = cv2.imdecode(file_bytes, 1) # converte imagem para array de bytes 
+    
+    #img = cv2.imread(img_array) # leia a imagem
+    img = cv2.cvtColor(opencv_image, cv2.COLOR_BGR2RGB) #converte para rgb 
+    Z = img.reshape((-1,3)) # remodela para uma lista de pixels 
+    Z = np.float32(Z) # converter para np.float32
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0) # define critérios, número de clusters(K) e aplica kmeans()
+    K = 1 # número de clusters
+    ret,label,center=cv2.kmeans(Z,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS) # converte para valores de 8 bits
+    center = np.uint8(center) # converte para uint8
+    print('calculado o center') # imprime no console 
+    res = center[label.flatten()] # converte de volta para a imagem de 3 canais da imagem de 1 canal
+    #col_b.image() # mostra imagem no console
+    res2 = res.reshape((img.shape)) # mostra a imagem
+    col_b.title('Imagem processada')# define título para a seção    
+    col_b.image(res2) # mostra imagem no console 
+    #plt.imshow(res2)
+    #plt.show() 
+
+
+    print("R,G,B") # imprime no console
+    print(center[0]) # imprime no console 
+
+    #print("Munsell") # imprime no console
+    #print(rgb_to_munsell(center[0][0],center[0][1],center[0][2]))
+    st.button('__________________', on_click = rgb_to_munsell(center,col_c)) # imprime no console
+    
+
+   
+
+    st.write('FONTE:  https://pteromys.melonisland.net/munsell/') # imprime no console
+    
