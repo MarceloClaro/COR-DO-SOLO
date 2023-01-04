@@ -73,7 +73,7 @@ def main():
     st.write("Para classificar as cores do solo, utilizamos o sistema de cores Munsell. O sistema de cores Munsell é um método padronizado para descrever cores baseado em três fatores: tonalidade (matiz), valor (brilho) e croma (saturação). Esses três fatores são combinados em uma notação que indica a cor específica, por exemplo, '5Y 7/4' significa uma cor de tonalidade amarela, valor 7 e croma 4.")
     st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar as cores dominantes na imagem. Escolha o número de clusters para o agrupamento da imagem e clique em 'Classificar cores' para ver os resultados.")
     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
-if uploaded_file is not None:
+    if uploaded_file is not None:
     if os.path.exists(uploaded_file):
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
         # rest of your code here
