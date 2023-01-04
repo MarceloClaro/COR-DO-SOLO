@@ -131,7 +131,7 @@ def main():
     if st.sidebar.button("Classificar cores"):
         munsell_labels = []
         munsell_values = []
-    for munsell, contagem in cores.items():
+        for munsell, contagem in cores.items():
             munsell_labels.append(munsell)
             munsell_values.append(contagem / total_pixels)
         st.bar_chart(munsell_values, munsell_labels)
