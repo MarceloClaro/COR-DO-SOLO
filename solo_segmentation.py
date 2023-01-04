@@ -74,7 +74,9 @@ def main():
     st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar as cores dominantes na imagem. Escolha o número de clusters para o agrupamento da imagem e clique em 'Classificar cores' para ver os resultados.")
     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
     if uploaded_file is not None:
+        # Convert the file to an opencv image.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+
         largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
         altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
         k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
@@ -102,4 +104,4 @@ if st.sidebar.button("Classificar cores"):
         munsell_values.append(count / total_pixels)
         st.bar_chart(munsell_values, munsell_labels)
 if name == "main":
-main()
+    main()
