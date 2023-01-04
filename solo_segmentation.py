@@ -66,12 +66,19 @@ def rgb_to_munsell(rgb):
     return f"{hue}{value}/{chroma}"
 
 def main():
-    st.title("Image Segmentation with k-Means Clustering")
-    st.write("Enter the file path for the image:")
-    file_path = st.text_input("Image file path:", "image.jpg")
-    image = cv2.imread(file_path)
-    st.write("Enter the value of k for k-means clustering:")
-    k = st.number_input("k:", value=3, min_value=1, max_value=10)
+    file_path = st.file_uploader("Upload an image file", type=["jpg", "png"])
+    if file_path is None:
+        st.error("No file selected")
+        return
+    try:
+        image = cv2.imread(file_path)
+    except Exception as e:
+        st.error(f"Error reading image file: {e}")
+        return
+    k = st.number_input("Enter a value for k", min_value=1, max_value=10, value=3)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    ...
+
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = image.reshape((image.shape[0] * image.shape[1], 3))
     kmeans = KMeans(n_clusters=k)
