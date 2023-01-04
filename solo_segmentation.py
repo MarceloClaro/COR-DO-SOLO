@@ -84,17 +84,16 @@ def main():
         cores = classificar_cor_solo(image, largura, altura, k)
         df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
         df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
-
-if uploaded_file is not None:
-image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
-largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
-altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
-k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
-margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
-st.write("As cores dominantes na imagem são:")
-cores = classificar_cor_solo(image, largura, altura, k)
-df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
-df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
+        if uploaded_file is not None:
+            image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+            largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
+            altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
+            k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
+            margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
+            st.write("As cores dominantes na imagem são:")
+            cores = classificar_cor_solo(image, largura, altura, k)
+            df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
+            df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
 st.bar_chart(df)
 if st.sidebar.button("Classificar cores"):
     munsell_labels = []
@@ -105,3 +104,5 @@ if st.sidebar.button("Classificar cores"):
         st.bar_chart(munsell_values, munsell_labels)
 if name == "main":
     main()
+
+
