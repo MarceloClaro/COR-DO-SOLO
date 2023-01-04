@@ -69,17 +69,17 @@ def classificar_cor_solo(img, largura, altura, k):
 
 def main():
     st.title("CLASSIFICADOR DE COR DE SOLO - MUNSEL")
-    st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características físicas e químicas, e é utilizada como uma ferramenta importante para o estudo geográfico. A cor do solo pode ser influenciada por diversos fatores, como a presença de matéria orgânica, minerais, humidade e tipo de rocha na qual foi formado. O sistema de cores Munsell é um método padronizado de especificação de cor usado em diversas áreas, incluindo o estudo do solo. Ele divide a cor em três componentes: tonalidade, valor e croma.")
-st.write("Selecione uma imagem de solo:")
-file = st.file_uploader("", type=["jpg", "png"])
-if file is not None:
-img = cv2.imread(file)
-largura = st.sidebar.number_input("Largura da imagem redimensionada:", min_value=1, max_value=1000, value=300, step=1)
-altura = st.sidebar.number_input("Altura da imagem redimensionada:", min_value=1, max_value=1000, value=300, step=1)
-k = st.sidebar.number_input("Número de clusters a serem gerados pelo algoritmo K-Means:", min_value=1, max_value=10, value=5, step=1)
-cores = classificar_cor_solo(img, largura, altura, k)
-st.write("Resultado da classificação das cores dominantes na imagem:")
-st.write(cores)
-
-if name == 'main':
-main()
+    st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características físisicas e químicas, pois reflete a presença de diferentes componentes e nutrientes. O estudo da cor do solo é importante em diversas áreas, como agricultura, geologia e meio ambiente.")
+st.write("Para classificar as cores do solo, utilizamos o sistema de cores Munsell. O sistema de cores Munsell é um método padronizado para descrever cores baseado em três fatores: tonalidade (matiz), valor (brilho) e croma (saturação). Esses três fatores são combinados em uma notação que indica a cor específica, por exemplo, '5Y 7/4' significa uma cor de tonalidade amarela, valor 7 e croma 4.")
+st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar as cores dominantes na imagem. Escolha o número de clusters para o agrupamento da imagem e clique em 'Classificar cores' para ver os resultados.")
+uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
+if uploaded_file is not None:
+    image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+    largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
+    altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
+    k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
+    st.write("As cores dominantes na imagem são:")
+    cores = classificar_cor_solo(image, largura, altura, k)
+    df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
+    df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
+    st.bar_chart(df)
