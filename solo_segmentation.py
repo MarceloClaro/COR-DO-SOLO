@@ -83,7 +83,7 @@ if uploaded_file is not None:
     df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
     df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
-     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type=["png", "jpg", "jpeg"])
+    uploaded_file = st.file_uploader("Escolha a imagem de solo:", type=["png", "jpg", "jpeg"])
     margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
 
     if st.sidebar.button("Classificar cores"):
