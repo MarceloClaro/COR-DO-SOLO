@@ -74,6 +74,7 @@ def classificar_cor_solo(img, largura, altura, k):
     img = cv2.resize(img, (largura, altura))
     
     # Converter imagem para o espaço de cor HSV
+    img = img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     
     # Aplicar agrupamento K-Means à imagem
