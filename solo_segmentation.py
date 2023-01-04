@@ -4,7 +4,7 @@ from sklearn.cluster import KMeans
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
-
+# Mapa de tonalidades do sistema de cores Munsell
 HUE_MAP = [
     ('R', (0, 20)),
     ('YR', (20, 40)),
@@ -16,7 +16,7 @@ HUE_MAP = [
     ('BG', (290, 335)),
     ('B', (335, 360)),
 ]
-
+# Mapa de valores do sistema de cores Munsell
 VALUE_MAP = [
     ('2.5', (0, 0.25)),
     ('3', (0.25, 0.3)),
@@ -27,7 +27,7 @@ VALUE_MAP = [
     ('8', (0.7, 0.8)),
     ('10', (0.8, 1)),
 ]
-
+#Mapa de cromas do sistema de cores Munsell
 CHROMA_MAP = [
     ('0.5', (0, 0.2)),
     ('1', (0.2, 0.4)),
@@ -83,15 +83,33 @@ def classificar_cor_solo(img, largura, altura, k):
     img = img.resize((largura, altura))
     img = np.array(img)
     # Aplicar k-means para segmentação da imagem
-    kmeans = KMeans(n_clusters=k, random_state=0).fit(img.reshape(-1,3))
-    # Obter as cores dominantes
-    cores, contagem = np.unique(kmeans.labels_, return_counts=True)
-    cores_dominantes = {}
-    for cor, count in zip(cores, contagem):
-        r, g, b = kmeans.cluster_centers_[cor]
-        munsell = rgb_to_munsell(int(r), int(g), int(b))
-        cores_dominantes[munsell] = count / len(kmeans.labels_)
-    return cores_dominantes
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(img.reshape((largura * altura, 3)))
+    labels = kmeans.labels_
+    # Contar número de pixels de cada cor
+    cores = {}
+    for i in range(k):
+        # Converter os valores RGB dos centroides para o sistema de cores Munsell
+        r, g, b = kmeans.cluster_centers_[i]
+        cor = rgb_to_munsell(int(r*255), int(g*255), int(b*255))
+        # Contar número de pixels de cada cor
+        cores[cor] = sum(labels == i)
+    # Calcular porcentagem de pixels de cada cor
+    pixels = largura * altura
+    for cor, quantidade in cores.items():
+        cores[cor] = quantidade / pixels * 100
+    return cores
+
+def plotar_cores(cores):
+    """Plota um gráfico de barras com a porcentagem de pixels de cada cor classificada.
+    
+    Parâmetros:
+    cores (dict): Porcentagem de pixels de cada cor classificada.
+    """
+    plt.bar(cores.keys(), cores.values())
+    plt.xlabel('Cores')
+    plt.ylabel('Porcentagem de pixels')
+    plt.title('Porcentagem de pixels por cor')
+    plt.show()
 
 def calcular_margem_erro(pixels, cores):
     """Calcula a margem de erro entre os pixels da imagem e os pixels de cada cor classificada.
@@ -105,7 +123,7 @@ def calcular_margem_erro(pixels, cores):
     """
     margem_erro = {}
     for cor, porcentagem in cores.items():
-        margem_erro[cor] = abs(pixels - porcentagem) / pixels
+        margem     erro[cor] = abs(pixels - porcentagem) / pixels
     return margem_erro
 
 def imprimir_cor_dominante(cores):
@@ -141,5 +159,43 @@ def imprimir_grafico_pizza(cores):
     plt.title('Porcentagem de pixels por cor')
     plt.show()
 
-if name == "main":
-main()
+st.title("Classificação de Cor do Solo")
+st.subheader("Sistema de Munsell")
+
+st.markdown("""
+O que é Solo?
+
+O solo é uma camada fina da crosta terrestre composta por minerais, matéria orgânica decomposta, água e ar. Ele é importante para a produção de alimentos, manutenção da biodiversidade e como um importante reservatório de nutrientes.
+
+Qual a importância da cor do solo?
+
+A cor do solo pode fornecer informações importantes sobre suas características físicas, químicas e biológicas. Por exemplo, a cor pode indicar o teor de matéria orgânica, pH, fertilidade e capacidade de retenção de água. Além disso, a cor do solo pode ser utilizada como um indicador da qualidade do solo em áreas agrícolas e florestais.
+""")
+
+# Lê imagem
+img = Image.open('solo.jpg')
+st.image(img, width=300)
+
+# Classifica as cores dominantes da imagem
+# Obtém os parâmetros de classificação da imagem
+largura = st.sidebar.slider("Largura da imagem redimensionada", 100, 1000, 500)
+altura = st.sidebar.slider("Altura da imagem redimensionada", 100, 1000, 500)
+k = st.sidebar.slider("Número de clusters (cores) a serem gerados pelo algoritmo K-Means", 2, 20, 5)
+
+cores = classificar_cor_solo(img, largura, altura, k)
+
+# Plota o gráfico de barras com a porcentagem de pixels de cada cor classificada
+plotar_cores(cores)
+
+# Calcula a margem de erro entre os pixels da imagem e os pixels de cada cor classificada
+margem_erro = calcular_margem_erro(largura * altura, cores)
+
+# Imprime a cor dominante da imagem
+imprimir_cor_dominante(cores)
+
+# Imprime o gráfico de barras com a margem de erro de cada cor classificada
+imprimir_grafico_margem_erro(margem_erro)
+
+# Imprime o gráfico de pizza com a porcentagem de pixels de cada cor classificada
+imprimir_grafico_pizza(cores)
+
