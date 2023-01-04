@@ -111,17 +111,30 @@ def main():
                 # Converta o arquivo em uma imagem opencv.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
         # Obter largura e altura da imagem redimensionada pelo usuário
-        largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
-        altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
-    # Obter número de clusters pelo usuário
-    k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
-    # Obter margem de erro para classificação de cor pelo usuário
-    margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
-    st.write("As cores dominantes na imagem são:")
+      if uploaded_file is not None:
+    image = cv2.imread(uploaded_file)
+    largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
+    altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
+    k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
+    total_pixels = largura * altura
+    
+    # Chamada da função para classificar as cores da imagem
     cores = classificar_cor_solo(image, largura, altura, k)
+    
+    # Exibir gráfico de barras com as cores dominantes na imagem
+    st.write("As cores dominantes na imagem são:")
     df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
     df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
+    
+    # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
+    if st.sidebar.button("Classificar cores"):
+        munsell_labels = []
+        munsell_values = []
+        for munsell, contagem in cores.items():
+            munsell_labels.append(munsell)
+            munsell_values.append(contagem / total_pixels)
+        st.bar_chart(munsell_values, munsell_labels)
 
 if __name__ == "__main__":
     main()
