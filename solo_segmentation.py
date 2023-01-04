@@ -76,7 +76,7 @@ def classificar_cor_solo(img, largura, altura, k):
     # Converter imagem para o espaço de cor HSV
    
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     
     # Aplicar agrupamento K-Means à imagem
     kmeans = KMeans(n_clusters=k, random_state=0).fit(img.reshape((largura * altura, 3)))
@@ -110,7 +110,7 @@ def main():
     # Se o usuário tiver carregado uma imagem
     if uploaded_file is not None:
         # Converta o arquivo em uma imagem opencv.
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+       
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
         # Obter largura e altura da imagem redimensionada pelo usuário
