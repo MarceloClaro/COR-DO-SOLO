@@ -111,7 +111,7 @@ def main():
                 # Converta o arquivo em uma imagem opencv.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
         # Obter largura e altura da imagem redimensionada pelo usuário
-      if uploaded_file is not None:
+    if uploaded_file is not None:
     image = cv2.imread(uploaded_file)
     largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
     altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
