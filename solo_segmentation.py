@@ -49,7 +49,8 @@ def rgb_to_munsell(center,col_c):
         value = "10" # value is 50
     # map s to munsell chroma notation
     if s < 0.1: # if s is less than 0
-            elif s < 0.2: # if s is less than 0.2
+
+    elif s < 0.2: # if s is less than 0.2
         chroma = "2" # chroma is 2
     elif s < 0.3: # if s is less than 0.3
         chroma = "4" # chroma is 4
@@ -75,4 +76,3 @@ center = np.array([[255, 0, 0]]) # red
 col_c = st.empty() # create Streamlit widget
 munsell_notation = rgb_to_munsell(center, col_c)
 print(munsell_notation) # prints "R 10/18"
-
