@@ -94,15 +94,15 @@ def main():
             cores = classificar_cor_solo(image, largura, altura, k)
             df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
             df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
-st.bar_chart(df)
-if st.sidebar.button("Classificar cores"):
-    munsell_labels = []
-    munsell_values = []
-    for munsell, count in cores.items():
-        munsell_labels.append(munsell)
-        munsell_values.append(count / total_pixels)
-        st.bar_chart(munsell_values, munsell_labels)
-if name == "main":
-    main()
+            st.bar_chart(df)
+        if st.sidebar.button("Classificar cores"):
+            munsell_labels = []
+            munsell_values = []
+        for munsell, count in cores.items():
+            munsell_labels.append(munsell)
+            munsell_values.append(count / total_pixels)
+            st.bar_chart(munsell_values, munsell_labels)
+         if name == "main":
+            main()
 
 
