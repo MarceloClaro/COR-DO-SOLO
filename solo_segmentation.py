@@ -72,22 +72,27 @@ def main():
         return
     try:
         image = cv2.imread(str(file_path))
+        if image is None:
+            st.error("Error reading image file")
+            return
     except Exception as e:
         st.error(f"Error reading image file: {e}")
         return
     k = st.number_input("Enter a value for k", min_value=1, max_value=10, value=3)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+image = image.reshape((image.shape[0] * image.shape[1], 3))
+clt = KMeans(n_clusters = k)
+clt.fit(image)
+centers = clt.cluster_centers_
+col_c = st.sidebar.column('Cor RGB')
+for center in centers:
+rgb_to_munsell(center,col_c)
+output_image = center_colors(image,clt)
+output_image = output_image.reshape((image.shape[0], image.shape[1], 3))
+output_image = cv2.cvtColor(output_image, cv2.COLOR_RGB2BGR)
+st.image(output_image)
 
+if name == "main":
+main()
 
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = image.reshape((image.shape[0] * image.shape[1], 3))
-    kmeans = KMeans(n_clusters=k)
-    labels = kmeans.fit_predict(image)
-    centers = kmeans.cluster_centers_.astype(int)
-    centers_rgb = [tuple(center) for center in centers]
-    centers_munsell = [rgb_to_munsell(center) for center in centers_rgb]
-    st.write(f"Munsell notation for each cluster center: {centers_munsell}")
-
-if __name__ == "__main__":
-    main()
 
