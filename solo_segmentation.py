@@ -103,62 +103,32 @@ st.write("Para classificar as cores do solo, utilizamos o sistema de cores Munse
 st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar as cores dominantes na imagem. Escolha o número de clusters para o agrupamento da imagem e clique em 'Classificar cores' para ver os resultados.")
     
 def main():
-    uploaded_file = st.file_uploader("Escolha uma imagem do solo", type="jpg")
-    if uploaded_file is not None:
-        # Convert the file to an opencv image.
-        uploaded_file = str(uploaded_file)
-        image = cv2.imread(uploaded_file)
-
-        # Se o usuário tiver carregado uma imagem
-        largura = st.sidebar.number_input("Largura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
-        altura = st.sidebar.number_input("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
-        k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
-        margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
-
-        # Mostrar a imagem na tela
-        st.image(image, width=600)
-
-        st.write("As cores dominantes na imagem são:")
-         # Permitir o upload de imagem pelo usuário
     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
-    
+
     # Se o usuário tiver carregado uma imagem
     if uploaded_file is not None:
-                # Converta o arquivo em uma imagem opencv.
+        # Converta o arquivo em uma imagem opencv.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+
         # Obter largura e altura da imagem redimensionada pelo usuário
-    if uploaded_file is not None:
-      
-        largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
-        altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
-        k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
-        total_pixels = largura * altura
-    
-    # Chamada da função para classificar as cores da imagem
-    cores = classificar_cor_solo(image, largura, altura, k)
-    
-    # Exibir gráfico de barras com as cores dominantes na imagem
-  
+        largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
+        altura = st.sidebar.number_input("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
+        k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
+        
+        margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
 
-    
-    # Mostrar a imagem na tela
+           # Mostrar a imagem na tela
     st.image(image, width=600)
-    
+
     # Chamada da função para classificar as cores da imagem
     cores = classificar_cor_solo(image, largura, altura, k)
 
-    
-    # Chamada da função para classificar as cores da imagem
-    cores = classificar_cor_solo(image, largura, altura, k)
-    
     # Exibir gráfico de barras com as cores dominantes na imagem
     st.write("As cores dominantes na imagem são:")
     df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
     df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
-        
-   
-    
+
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
     if st.sidebar.button("Classificar cores"):
         munsell_labels = []
@@ -167,6 +137,7 @@ def main():
             munsell_labels.append(munsell)
             munsell_values.append(contagem / total_pixels)
         st.bar_chart(munsell_values, munsell_labels)
+
 
 if __name__ == "__main__":
     main()
