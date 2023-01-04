@@ -79,18 +79,18 @@ gc.collect()
 return color_percentages
 
 def main():
-st.title('Classificação da Cor do Solo')
-st.subheader('Carta de cor de solo Munsell')
-menu = st.sidebar.selectbox('Selecione uma opção', ['O que é solo?', 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?', 'Como proceder e analisar cor de solo, segundo a Embrapa', 'Classificação da Cor do Solo'])
-se menu == 'Classificação da Cor do Solo':
-st.markdown('Selecione uma imagem para classificar a cor do solo.')
-img_path = st.file_uploader('Imagem', type='jpg')
-se img_path não for Nenhum:
-largura = st.number_input('Largura', min_value=1, max_value=1000, valor=500)
-altura = st.number_input('Altura', min_value=1, max_value=1000, valor=500)
-k = st.number_input('Número de clusters', min_value=1, max_value=20, value=5)
-color_percentages = classificar_cor_solo(img_path, largura, altura, k)
-st.bar_chart(color_percentages
+    st.title('Classificação da Cor do Solo')
+    st.subheader('Carta de cor de solo Munsell')
+    menu = st.sidebar.selectbox('Selecione uma opção', ['O que é solo?', 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?', 'Como proceder e analisar cor de solo, segundo a Embrapa', 'Classificação da Cor do Solo'])
+    se menu == 'Classificação da Cor do Solo':
+    st.markdown('Selecione uma imagem para classificar a cor do solo.')
+    img_path = st.file_uploader('Imagem', type='jpg')
+    se img_path não for Nenhum:
+    largura = st.number_input('Largura', min_value=1, max_value=1000, valor=500)
+    altura = st.number_input('Altura', min_value=1, max_value=1000, valor=500)
+    k = st.number_input('Número de clusters', min_value=1, max_value=20, value=5)
+    color_percentages = classificar_cor_solo(img_path, largura, altura, k)
+    st.bar_chart(color_percentages
 
 if __name
 
