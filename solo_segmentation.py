@@ -71,13 +71,13 @@ def main():
         st.error("No file selected")
         return
     try:
-        image = cv2.imread(file_path)
+        image = cv2.imread(str(file_path))
     except Exception as e:
         st.error(f"Error reading image file: {e}")
         return
     k = st.number_input("Enter a value for k", min_value=1, max_value=10, value=3)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    ...
+
 
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = image.reshape((image.shape[0] * image.shape[1], 3))
