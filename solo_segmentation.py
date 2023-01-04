@@ -3,6 +3,38 @@ import colorsys
 from sklearn.cluster import KMeans
 from PIL import Image
 import numpy as np
+import matplotlib.pyplot as plt
+
+HUE_MAP = [
+    ('R', (0, 20)),
+    ('YR', (20, 40)),
+    ('Y', (40, 75)),
+    ('GY', (75, 155)),
+    ('G', (155, 190)),
+    ('GY', (190, 260)),
+    ('G', (260, 290)),
+    ('BG', (290, 335)),
+    ('B', (335, 360)),
+]
+
+VALUE_MAP = [
+    ('2.5', (0, 0.25)),
+    ('3', (0.25, 0.3)),
+    ('4', (0.3, 0.4)),
+    ('5', (0.4, 0.5)),
+    ('6', (0.5, 0.6)),
+    ('7', (0.6, 0.7)),
+    ('8', (0.7, 0.8)),
+    ('10', (0.8, 1)),
+]
+
+CHROMA_MAP = [
+    ('0.5', (0, 0.2)),
+    ('1', (0.2, 0.4)),
+    ('2', (0.4, 0.6)),
+    ('3', (0.6, 0.8)),
+    ('4', (0.8, 1)),
+]
 
 def rgb_to_munsell(r, g, b):
     """Converte uma cor RGB para o sistema de cores Munsell.
@@ -18,45 +50,17 @@ def rgb_to_munsell(r, g, b):
     h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
     h = h*360
     
-    hue_map = {
-        (0, 20): 'R',
-        (20, 40): 'YR',
-        (40, 75): 'Y',
-        (75, 155): 'GY',
-        (155, 190): 'G',
-        (190, 260): 'GY',
-        (260, 290): 'G',
-        (290, 335): 'BG',
-        (335, 360): 'B',
-    }
-    for hue_range, hue_name in hue_map.items():
+    for hue_name, hue_range in HUE_MAP:
         if hue_range[0] <= h < hue_range[1]:
             hue = hue_name
             break
     
-    value_map = {
-        (0, 0.25): '2.5',
-        (0.25, 0.3): '3',
-        (0.3, 0.4): '4',
-        (0.4, 0.5): '5',
-        (0.5, 0.6): '6',
-        (0.6, 0.7): '7',
-        (0.7, 0.8): '8',
-        (0.8, 1): '10',
-    }
-    for value_range, value_name in value_map.items():
+    for value_name, value_range in VALUE_MAP:
         if value_range[0] <= l < value_range[1]:
             value = value_name
             break
     
-    chroma_map = {
-        (0, 0.2): '0.5',
-        (0.2, 0.4): '1',
-        (0.4, 0.6): '2',
-        (0.6, 0.8): '3',
-        (0.8, 1): '4',
-    }
-    for chroma_range, chroma_name in chroma_map.items():
+    for chroma_name, chroma_range in CHROMA_MAP:
         if chroma_range[0] <= s < chroma_range[1]:
             chroma = chroma_name
             break
@@ -81,34 +85,59 @@ def classificar_cor_solo(img, largura, altura, k):
     # Aplicar k-means para segmentação da imagem
     kmeans = KMeans(n_clusters=k, random_state=0).fit(img.reshape(-1,3))
     # Obter as cores dominantes
-    cores = kmeans.cluster_centers_.astype(int)
-    # Convertê-las para o sistema de cores Munsell
-    cores_munsell = [rgb_to_munsell(cor[0], cor[1], cor[2]) for cor in cores]
-    # Contar a quantidade de pixels de cada cor
-    color_counts = {}
-    for i in range(k):
-        color_counts[cores_munsell[i]] = len(np.where(kmeans.labels_ == i)[0])
-    # Calcular as porcentagens de cada cor
-    total_pixels = sum(color_counts.values())
-    color_percentages = {color: count / total_pixels * 100 for color, count in color_counts.items()}
-    return color_percentages
+    cores, contagem = np.unique(kmeans.labels_, return_counts=True)
+    cores_dominantes = {}
+    for cor, count in zip(cores, contagem):
+        r, g, b = kmeans.cluster_centers_[cor]
+        munsell = rgb_to_munsell(int(r), int(g), int(b))
+        cores_dominantes[munsell] = count / len(kmeans.labels_)
+    return cores_dominantes
 
-def main():
-    st.title('Classificação da Cor do Solo')
-    st.subheader('Carta de cor de solo Munsell')
+def calcular_margem_erro(pixels, cores):
+    """Calcula a margem de erro entre os pixels da imagem e os pixels de cada cor classificada.
     
-    menu = st.sidebar.selectbox('Selecione uma opção', ['O que é solo?', 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?', 'Como proceder e analisar cor de solo, segundo a Embrapa', 'Classificação da Cor do Solo'])
-    if menu == 'Classificação da Cor do Solo':
-        st.markdown('Selecione uma imagem de solo para classificar as cores dominantes:')
-        img_file = st.file_uploader('', type=['jpg', 'jpeg', 'png'])
-        if img_file is not None:
-            with Image.open(img_file) as img:
-                largura = st.sidebar.slider('Largura da imagem redimensionada', 100, 1000, 500, 100)
-                altura = st.sidebar.slider('Altura da imagem redimensionada', 100, 1000, 500, 100)
-                k = st.sidebar.slider('Número de clusters', 2, 20, 10, 1)
-                color_percentages = classificar_cor_solo(img, largura, altura, k)
-                st.markdown(f'Cores dominantes na imagem:')
-                for color, percentage in color_percentages.items():
-                    st.markdown(f'{color}: {percentage:.2f}%')
-if __name__ == '__main__':
-    main()
+    Parâmetros:
+    pixels (int): Número total de pixels da imagem.
+    cores (dict): Porcentagem de pixels de cada cor classificada.
+    
+    Retorno:
+    dict: Margem de erro de cada cor classificada.
+    """
+    margem_erro = {}
+    for cor, porcentagem in cores.items():
+        margem_erro[cor] = abs(pixels - porcentagem) / pixels
+    return margem_erro
+
+def imprimir_cor_dominante(cores):
+    """Imprime a cor dominante da imagem.
+    
+    Parâmetros:
+    cores (dict): Porcentagem de pixels de cada cor classificada.
+    """
+    cor_dominante = max(cores, key=cores.get)
+    print(f"A cor dominante da imagem é {cor_dominante}")
+
+def imprimir_grafico_margem_erro(margem_erro):
+    """Imprime um gráfico de barras com a margem de erro de cada cor classificada.
+    
+    Parâmetros:
+    margem_erro (dict): Margem de erro de cada cor classificada.
+    """
+    plt.bar(margem_erro.keys(), margem_erro.values())
+    plt.xlabel('Cores')
+    plt.ylabel('Margem de erro')
+    plt.title('Margem de erro por cor')
+    plt.show()
+
+def imprimir_grafico_pizza(cores):
+    """Imprime um gráfico de pizza com a porcentagem de pixels de cada cor classificada.
+    
+    Parâmetros:
+    cores (dict): Porcentagem de pixels de cada cor classificada.
+    """
+    labels = cores.keys()
+    sizes = cores.values()
+    plt.pie(sizes, labels=labels)
+    plt.title('Porcentagem de pixels por cor')
+    plt.show()
+
