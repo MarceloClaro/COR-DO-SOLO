@@ -113,14 +113,21 @@ def main():
         # Obter largura e altura da imagem redimensionada pelo usuário
         largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
         altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
-           # Obter número de clusters pelo usuário
-            k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
-            # Obter margem de erro para classificação de cor pelo usuário
-            margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
-
-        # Exibir as cores dominantes na imagem
-        st.write("As cores dominantes na imagem são:")
-        cores = classificar_cor_solo(image, largura, altura, k)
-        df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
-        df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
-        st.write(df)
+    # Obter número de clusters pelo usuário
+    k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
+    # Obter margem de erro para classificação de cor pelo usuário
+    margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
+    st.write("As cores dominantes na imagem são:")
+    cores = classificar_cor_solo(image, largura, altura, k)
+    df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
+    df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
+    st.bar_chart(df)
+if st.sidebar.button("Classificar cores"):
+    munsell_labels = []
+    munsell_values = []
+    for munsell, contagem in cores.items():
+        munsell_labels.append(munsell)
+        munsell_values.append(contagem / total_pixels)
+    st.bar_chart(munsell_values, munsell_labels)
+if __name__ == "__main__":
+    main()
