@@ -123,8 +123,9 @@ def calcular_margem_erro(pixels, cores):
     """
     margem_erro = {}
     for cor, porcentagem in cores.items():
-        margem     erro[cor] = abs(pixels - porcentagem) / pixels
+        margem_erro[cor] = abs(pixels - porcentagem) / pixels
     return margem_erro
+
 
 def imprimir_cor_dominante(cores):
     """Imprime a cor dominante da imagem.
