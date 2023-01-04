@@ -122,12 +122,6 @@ def main():
     df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
     df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
-if st.sidebar.button("Classificar cores"):
-    munsell_labels = []
-    munsell_values = []
-    for munsell, contagem in cores.items():
-        munsell_labels.append(munsell)
-        munsell_values.append(contagem / total_pixels)
-    st.bar_chart(munsell_values, munsell_labels)
+
 if __name__ == "__main__":
     main()
