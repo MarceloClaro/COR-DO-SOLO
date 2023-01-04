@@ -6,7 +6,7 @@ import colorsys
 from sklearn.cluster import KMeans
 
 def rgb_to_munsell(center):
-    r, g, b = center[0][0], center[0][1], center[0][2]
+    r,g,b = center[0],center[1],center[2]
     h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
     h = h*360
     if h < 20:
