@@ -69,4 +69,17 @@ def classificar_cor_solo(img, largura, altura, k):
 
 def main():
     st.title("CLASSIFICADOR DE COR DE SOLO - MUNSEL")
-    st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características fí
+    st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características físicas e químicas, e é utilizada como uma ferramenta importante para o estudo geográfico. A cor do solo pode ser influenciada por diversos fatores, como a presença de matéria orgânica, minerais, humidade e tipo de rocha na qual foi formado. O sistema de cores Munsell é um método padronizado de especificação de cor usado em diversas áreas, incluindo o estudo do solo. Ele divide a cor em três componentes: tonalidade, valor e croma.")
+st.write("Selecione uma imagem de solo:")
+file = st.file_uploader("", type=["jpg", "png"])
+if file is not None:
+img = cv2.imread(file)
+largura = st.sidebar.number_input("Largura da imagem redimensionada:", min_value=1, max_value=1000, value=300, step=1)
+altura = st.sidebar.number_input("Altura da imagem redimensionada:", min_value=1, max_value=1000, value=300, step=1)
+k = st.sidebar.number_input("Número de clusters a serem gerados pelo algoritmo K-Means:", min_value=1, max_value=10, value=5, step=1)
+cores = classificar_cor_solo(img, largura, altura, k)
+st.write("Resultado da classificação das cores dominantes na imagem:")
+st.write(cores)
+
+if name == 'main':
+main()
