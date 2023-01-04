@@ -105,12 +105,10 @@ st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar 
 def main():
     uploaded_file = st.file_uploader("Escolha uma imagem do solo", type="jpg")
     if uploaded_file is not None:
-        # Convert the file to an opencv image.
-        uploaded_file = str(uploaded_file)
-        image = cv2.imread(uploaded_file)
-
-        # Se o usuário tiver carregado uma imagem
-        largura = st.sidebar.number_input("Largura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
+        # Converta o arquivo em uma imagem opencv.
+        image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+        # Obter largura e altura da imagem redimensionada pelo usuário
+        largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
         altura = st.sidebar.number_input("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
         k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
         margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
