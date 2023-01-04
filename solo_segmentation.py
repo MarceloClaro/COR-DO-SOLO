@@ -93,9 +93,9 @@ cores = classificar_cor_solo(image, largura, altura, k)
 munsell_labels = []
 munsell_values = []
 for munsell, count in cores.items():
-munsell_labels.append(munsell)
-munsell_values.append(count / total_pixels)
-st.bar_chart(munsell_values, munsell_labels)
+    munsell_labels.append(munsell)
+    munsell_values.append(count / total_pixels)
+    st.bar_chart(munsell_values, munsell_labels)
 
 if name == "main":
 main()
