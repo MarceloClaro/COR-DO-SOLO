@@ -141,3 +141,5 @@ def imprimir_grafico_pizza(cores):
     plt.title('Porcentagem de pixels por cor')
     plt.show()
 
+if name == "main":
+main()
