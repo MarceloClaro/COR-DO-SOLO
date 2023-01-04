@@ -79,7 +79,7 @@ def main():
     if menu == 'O que é solo?':
         st.markdown('O solo é a camada superficial da Terra que é formada por minerais, matéria orgânica e organismos vivos. Ele é importante para a produção de alimentos, proteção do solo contra erosão, filtragem de água e preservação da biodiversidade.')
     elif menu == 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?':
-        st.markdown('A Carta de classificação de cor de Munsell é um sistema de cores utilizado para descrever a cor do solo de maneira precisa e uniforme. A cor do solo é importante porque pode fornecer informações so...")
+        st.markdown('A Carta de classificação de cor de Munsell é um sistema de cores utilizado para descrever a cor do solo de maneira precisa e uniforme. A cor do solo é importante porque pode fornecer informações so...')
         elif menu == 'Classificação da Cor do Solo':
         st.markdown('Selecione a imagem do solo seco ou úmido e ajuste a largura e altura desejadas para o processamento da imagem.')
         img_file = st.file_uploader('Fazer upload da imagem do solo seco ou úmido')
