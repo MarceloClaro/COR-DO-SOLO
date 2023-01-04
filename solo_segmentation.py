@@ -74,7 +74,7 @@ def classificar_cor_solo(img, largura, altura, k):
     img = cv2.resize(img, (largura, altura))
     
     # Converter imagem para o espaço de cor HSV
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+   
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     
@@ -110,6 +110,7 @@ def main():
     # Se o usuário tiver carregado uma imagem
     if uploaded_file is not None:
         # Converta o arquivo em uma imagem opencv.
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
         # Obter largura e altura da imagem redimensionada pelo usuário
