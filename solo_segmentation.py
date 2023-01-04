@@ -38,7 +38,7 @@ def rgb_to_munsell(center):
         value = "5"
     elif l < 0.6:
         value = "6"
-        elif l < 0.7:
+    elif l < 0.7:
         value = "7"
     elif l < 0.8:
         value = "8"
