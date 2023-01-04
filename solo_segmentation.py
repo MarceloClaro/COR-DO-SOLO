@@ -109,9 +109,11 @@ def main():
 
     # Se o usuário tiver carregado uma imagem
     if uploaded_file is not None:
-        # Converta o arquivo em uma imagem opencv.
-       
+        # Converta o arquivo em uma imagem OpenCV.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+    else:
+        st.write("Selecione um arquivo.")
+
 
         # Obter largura e altura da imagem redimensionada pelo usuário
         margem_erro = st.sidebar.number_input("Margem de erro para classificação de cor (em %):", 0, 50, 10)
