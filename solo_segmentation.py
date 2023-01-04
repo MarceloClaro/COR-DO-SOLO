@@ -142,4 +142,4 @@ def imprimir_grafico_pizza(cores):
     plt.show()
 
 if name == "main":
-main()
+    main()
