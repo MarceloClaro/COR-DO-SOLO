@@ -86,12 +86,12 @@ def main():
     if menu == 'Classificação da Cor do Solo':
         st.markdown('Selecione uma imagem para classificar a cor do solo.')
         img_path = st.file_uploader('Imagem', type='jpg')
-   if img_path is not None:
+        
+    if img_path is not None:
     largura = st.number_input('Largura', min_value=1, max_value=1000, value=500)
     altura = st.number_input('Altura', min_value=1, max_value=1000, value=500)
     k = st.number_input('Número de clusters', min_value=1, max_value=20, value=5)
     color_percentages = classificar_cor_solo(img_path, largura, altura, k)
     st.bar_chart(color_percentages)
-    
-if name == 'main':
+    if name == 'main':
 main()
