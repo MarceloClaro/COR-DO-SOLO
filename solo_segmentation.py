@@ -138,6 +138,7 @@ def main():
         munsell_values = []
         for munsell, contagem in cores.items():
             munsell_labels.append(munsell)
+            contagem = 0
             munsell_values.append(contagem / total_pixels)
         st.bar_chart(munsell_values, munsell_labels)
 
