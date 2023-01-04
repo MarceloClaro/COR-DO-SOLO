@@ -102,7 +102,7 @@ def main():
             munsell_labels.append(munsell)
             munsell_values.append(count / total_pixels)
             st.bar_chart(munsell_values, munsell_labels)
-         if name == "main":
-            main()
+if name == "main":
+    main()
 
 
