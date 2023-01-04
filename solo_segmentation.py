@@ -73,7 +73,7 @@ def main():
     st.write("Enter the value of k for k-means clustering:")
     k = st.number_input("k:", value=3, min_value=1, max_value=10)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = image.reshape((image.shape[0] * image.shape[1], 3))
+    image = image.reshape((image.shape[0] * image.shape[1], 3))
     kmeans = KMeans(n_clusters=k)
     labels = kmeans.fit_predict(image)
     centers = kmeans.cluster_centers_.astype(int)
