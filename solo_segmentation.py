@@ -1,10 +1,9 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-from PIL import Image
 import colorsys
 from sklearn.cluster import KMeans
 import gc
+from PIL import Image
+import numpy as np
 
 def rgb_to_munsell(center):
     r,g,b = center[0],center[1],center[2]
@@ -67,30 +66,32 @@ def classificar_cor_solo(img_path, largura, altura, k):
     cores = kmeans.cluster_centers_.astype(int)
     # Convertê-las para o sistema de cores Munsell
     cores_munsell = [rgb_to_munsell(cor) for cor in cores]
-    # Liberar espaço na RAM
-    del img, kmeans, cores
-    gc.collect()
-    return cores_munsell
+    # Contar a quantidade de pixels de cada cor
+    color_counts = {}
+    for i in range(k):
+        color_counts[cores_munsell[i]] = len(np.where(kmeans.labels_ == i)[0])
+    # Calcular as porcentagens de cada cor
+total_pixels = sum(color_counts.values())
+color_percentages = {color: count / total_pixels * 100 for color, count in color_counts.items()}
+# Liberar espaço na RAM
+del img, kmeans, cores, color_counts
+gc.collect()
+return color_percentages
 
 def main():
-    st.title('Classificação da Cor do Solo')
-    st.subheader('Carta de cor de solo Munsell')
-    menu = st.sidebar.selectbox('Selecione uma opção', ['O que é solo?', 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?', 'Como proceder e analisar cor de solo, segundo a Embrapa', 'Classificação da Cor do Solo'])
-    if menu == 'O que é solo?':
-        st.markdown('O solo é a camada superficial da Terra que é formada por minerais, matéria orgânica e organismos vivos. Ele é importante para a produção de alimentos, proteção do solo contra erosão, filtragem de água e preservação da biodiversidade.')
-    elif menu == 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?':
-        st.markdown('A Carta de classificação de cor de Munsell é um sistema de cores utilizado para descrever a cor do solo de maneira precisa e uniforme. A cor do solo é importante porque pode fornecer informações so...')
-    elif menu == 'Classificação da Cor do Solo':
-        st.markdown('Selecione a imagem do solo seco ou úmido e ajuste a largura e altura desejadas para o processamento da imagem.')
-        img_file = st.file_uploader('Fazer upload da imagem do solo seco ou úmido')
-        largura = st.slider('Largura', 100, 1000, 400)
-        altura = st.slider('Altura', 100, 1000, 400)
-        k = st.number_input('Quantidade de cores dominantes', min_value=1, max_value=10, value=3)
-        if img_file is not None:
-            cores = classificar_cor_solo(img_file, largura, altura, k)
-            st.markdown(f'As cores dominantes encontradas foram: {cores}')
+st.title('Classificação da Cor do Solo')
+st.subheader('Carta de cor de solo Munsell')
+menu = st.sidebar.selectbox('Selecione uma opção', ['O que é solo?', 'O que é Carta de classificação de cor de Munsell e porque a cor do solo é importante?', 'Como proceder e analisar cor de solo, segundo a Embrapa', 'Classificação da Cor do Solo'])
+se menu == 'Classificação da Cor do Solo':
+st.markdown('Selecione uma imagem para classificar a cor do solo.')
+img_path = st.file_uploader('Imagem', type='jpg')
+se img_path não for Nenhum:
+largura = st.number_input('Largura', min_value=1, max_value=1000, valor=500)
+altura = st.number_input('Altura', min_value=1, max_value=1000, valor=500)
+k = st.number_input('Número de clusters', min_value=1, max_value=20, value=5)
+color_percentages = classificar_cor_solo(img_path, largura, altura, k)
+st.bar_chart(color_percentages
 
-if __name__ == '__main__':
-    main()
+if __name
 
 
