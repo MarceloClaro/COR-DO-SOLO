@@ -98,5 +98,5 @@ for munsell, count in cores.items():
     st.bar_chart(munsell_values, munsell_labels)
 
 if name == "main":
-main()
+    main()
    
