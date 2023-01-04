@@ -124,15 +124,20 @@ def main():
     
     # Se o usuário tiver carregado uma imagem
     if uploaded_file is not None:
-                # Converta o arquivo em uma imagem opencv.
-        image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
-        # Obter largura e altura da imagem redimensionada pelo usuário
-    if uploaded_file is not None:
-      
-        largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
-        altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
-        k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
-        total_pixels = largura * altura
+    # Converta o arquivo em uma imagem opencv.
+    image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+    # Obter largura e altura da imagem redimensionada pelo usuário
+    largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
+    altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=100, max_value=1000, value=500)
+    k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
+    total_pixels = largura * altura
+    
+    # Mostrar a imagem na tela
+    st.image(image, width=600)
+    
+    # Chamada da função para classificar as cores da imagem
+    cores = classificar_cor_solo(image, largura, altura, k)
+
     
     # Chamada da função para classificar as cores da imagem
     cores = classificar_cor_solo(image, largura, altura, k)
