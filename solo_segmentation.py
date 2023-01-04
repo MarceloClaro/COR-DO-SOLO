@@ -97,13 +97,29 @@ def classificar_cor_solo(img, largura, altura, k):
     # Retornar dicionário de cores e quantidades de pixels
     return cores
 
-def main():
-    st.title("CLASSIFICADOR DE COR DE SOLO - MUNSEL")
+ st.title("CLASSIFICADOR DE COR DE SOLO - MUNSEL")
     st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características físisicas e químicas, pois reflete a presença de diferentes componentes e nutrientes. O estudo da cor do solo é importante em diversas áreas, como agricultura, geologia e meio ambiente.")
     st.write("Para classificar as cores do solo, utilizamos o sistema de cores Munsell. O sistema de cores Munsell é um método padronizado para descrever cores baseado em três fatores: tonalidade (matiz), valor (brilho) e croma (saturação). Esses três fatores são combinados em uma notação que indica a cor específica, por exemplo, '5Y 7/4' significa uma cor de tonalidade amarela, valor 7 e croma 4.")
     st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar as cores dominantes na imagem. Escolha o número de clusters para o agrupamento da imagem e clique em 'Classificar cores' para ver os resultados.")
     
-    # Permitir o upload de imagem pelo usuário
+def main():
+    uploaded_file = st.file_uploader("Escolha uma imagem do solo", type="jpg")
+    if uploaded_file is not None:
+        # Convert the file to an opencv image.
+        uploaded_file = str(uploaded_file)
+        image = cv2.imread(uploaded_file)
+
+        # Se o usuário tiver carregado uma imagem
+        largura = st.sidebar.number_input("Largura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
+        altura = st.sidebar.number_input("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
+        k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
+        margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
+
+        # Mostrar a imagem na tela
+        st.image(image, width=600)
+
+        st.write("As cores dominantes na imagem são:")
+         # Permitir o upload de imagem pelo usuário
     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
     
     # Se o usuário tiver carregado uma imagem
@@ -126,6 +142,8 @@ def main():
     df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
     df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
+        
+   
     
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
     if st.sidebar.button("Classificar cores"):
