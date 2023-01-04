@@ -114,11 +114,12 @@ def main():
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
         # Obter largura e altura da imagem redimensionada pelo usuário
+        margem_erro = st.sidebar.number_input("Margem de erro para classificação de cor (em %):", 0, 50, 10)
         largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
-        altura = st.sidebar.number_input("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
-        k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
+        altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
+        k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
         
-        margem_erro = st.sidebar.slider("Margem de erro para classificação de cor (em %):", 0, 50, 10)
+        
 
            # Mostrar a imagem na tela
     st.image(image, width=600)
