@@ -66,6 +66,7 @@ def classificar_cor_solo(img, largura, altura, k):
         munsell = rgb_to_munsell(center)
         cores[munsell] = (labels == i).sum()
     return cores
+
 def main():
   st.title("CLASSIFICADOR DE COR DE SOLO - MUNSEL")
   st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características físisicas e químicas, pois reflete a presença de diferentes componentes e nutrientes. O estudo da cor do solo é importante em diversas áreas, como agricultura, geologia e meio ambiente.")
@@ -74,13 +75,12 @@ def main():
   uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
   if uploaded_file is not None:
     if os.path.exists(uploaded_file):
-        image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+      image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
     else:
       st.write("Arquivo não encontrado!")
     if uploaded_file is not None:
         # Convert the file to an opencv image.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
-
         largura = st.slider("Largura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
         altura = st.slider("Altura da imagem redimensionada:", min_value=100, max_value=1000, value=300)
         k = st.slider("Número de clusters:", min_value=2, max_value=20, value=5)
@@ -99,12 +99,12 @@ def main():
             df = pd.DataFrame(list(cores.items()), columns=['Cor', 'Porcentagem de pixels'])
             df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
             st.bar_chart(df)
-        if st.sidebar.button("Classificar cores"):
+    if st.sidebar.button("Classificar cores"):
             munsell_labels = []
             munsell_values = []
-        for munsell, count in cores.items():
-            munsell_labels.append(munsell)
-            munsell_values.append(count / total_pixels)
-            st.bar_chart(munsell_values, munsell_labels)
-if __name__ == "__main__":
-    main()
+    for munsell, count in cores.items():
+      munsell_labels.append(munsell)
+      munsell_values.append(count / total_pixels)
+      st.bar_chart(munsell_values, munsell_labels)
+    if __name__ == "__main__":
+      main()
