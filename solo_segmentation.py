@@ -108,7 +108,9 @@ def main():
     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
 
     # Se o usuário tiver carregado uma imagem
-    if uploaded_file is not None:
+    if image is not None:
+        st.image(image, width=600)
+
         # Converta o arquivo em uma imagem opencv.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
@@ -119,8 +121,7 @@ def main():
 
         
         margem_erro = st.sidebar.number_input("Margem de erro para classificação de cor (em %):", 0, 50, 10)
-        
-        
+              
         
 
            # Mostrar a imagem na tela
@@ -137,13 +138,16 @@ def main():
 
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
-    munsell_labels = []
-    munsell_values = []
-    for munsell, contagem in cores.items():
-        munsell_labels.append(munsell)
-        contagem = 0
+    if total_pixels is not None and total_pixels > 0:
         munsell_values.append(contagem / total_pixels)
-    st.bar_chart(munsell_values, munsell_labels)
+
+        munsell_labels = []
+        munsell_values = []
+        for munsell, contagem in cores.items():
+            munsell_labels.append(munsell)
+            contagem = 0
+            munsell_values.append(contagem / total_pixels)
+        st.bar_chart(munsell_values, munsell_labels)
 
 
 if __name__ == "__main__":
