@@ -132,7 +132,7 @@ def main():
     # Exibir gráfico de barras com as cores dominantes na imagem
     st.write("As cores dominantes na imagem são:")
     df = pd.DataFrame(list(cores.items()), columns=['Cor de Munsell', 'Porcentagem de pixels'])
-    df['Porcentagem de pixels'8100'%'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
+    df['Porcentagem de pixels'*(100)'%'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
 
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
