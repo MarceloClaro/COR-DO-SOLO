@@ -110,6 +110,11 @@ def main():
     uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
 
     # Se o usuário tiver carregado uma imagem
+    if image is not None:
+        st.image(image, width=600)
+    else:
+        st.write("No image available.")
+
     if uploaded_file is not None:
         # Converta o arquivo em uma imagem opencv.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
