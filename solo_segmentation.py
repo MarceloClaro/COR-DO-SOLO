@@ -115,10 +115,10 @@ def main():
         # Obter largura e altura da imagem redimensionada pelo usuário
         largura = st.sidebar.slider("Largura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
         altura = st.sidebar.slider("Altura da imagem (em pixels):", min_value=1, max_value=5000, value=1000)
-        k = st.slider("Número de clusters:", min_value=1, max_value=20, value=5)
+        k = st.slider("Número de clusters (cores dominantes):", min_value=1, max_value=20, value=5)
 
         
-        margem_erro = st.sidebar.number_input("Margem de erro para classificação de cor (em %):", 0, 50, 10)
+        margem_erro = st.sidebar.number_input("Margem de erro para classificação da cor de Munsell (em %):", 0, 50, 10)
         
         
         
@@ -130,9 +130,9 @@ def main():
     cores = classificar_cor_solo(image, largura, altura, k)
 
     # Exibir gráfico de barras com as cores dominantes na imagem
-    st.write("As cores dominantes na imagem são:")
+    st.write("As cores de Munsell dominantes na imagem são:")
     df = pd.DataFrame(list(cores.items()), columns=['Cor de Munsell', 'Porcentagem de pixels'])
-    df['Porcentagem de pixels'*(100)'%'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
+    df['Porcentagem de pixels'] = df['Porcentagem de pixels'] / df['Porcentagem de pixels'].sum()
     st.bar_chart(df)
 
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
