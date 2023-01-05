@@ -103,18 +103,12 @@ st.title("CLASSIFICADOR DE COR DE SOLO - MUNSEL")
 st.write("Solo é a camada mais superficial da Terra, composta principalmente de rochas e minerais fragmentados, matéria orgânica, água e ar. A cor do solo é um importante indicador de suas características físisicas e químicas, pois reflete a presença de diferentes componentes e nutrientes. O estudo da cor do solo é importante em diversas áreas, como agricultura, geologia e meio ambiente.")
 st.write("Para classificar as cores do solo, utilizamos o sistema de cores Munsell. O sistema de cores Munsell é um método padronizado para descrever cores baseado em três fatores: tonalidade (matiz), valor (brilho) e croma (saturação). Esses três fatores são combinados em uma notação que indica a cor específica, por exemplo, '5Y 7/4' significa uma cor de tonalidade amarela, valor 7 e croma 4.")
 st.write("Neste aplicativo, você pode carregar uma imagem de solo e visualizar as cores dominantes na imagem. Escolha o número de clusters para o agrupamento da imagem e clique em 'Classificar cores' para ver os resultados.")
-uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
-if image is None:
-    st.error("Erro ao ler imagem")
-    return
-
-def main():
     
+def main():
+    uploaded_file = st.file_uploader("Escolha a imagem de solo:", type="jpg")
 
     # Se o usuário tiver carregado uma imagem
-    if image is not None:
-        st.image(image, width=600)
-
+    if uploaded_file is not None:
         # Converta o arquivo em uma imagem opencv.
         image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
@@ -125,7 +119,8 @@ def main():
 
         
         margem_erro = st.sidebar.number_input("Margem de erro para classificação de cor (em %):", 0, 50, 10)
-              
+        
+        
         
 
            # Mostrar a imagem na tela
@@ -141,16 +136,13 @@ def main():
     st.bar_chart(df)
 
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
-    # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
-    if total_pixels is not None and total_pixels > 0:
-        munsell_values.append(contagem / total_pixels)
-
+    if st.sidebar.button("Classificar cores"):
         munsell_labels = []
         munsell_values = []
-        for munsell, contagem in cores.items():
-            munsell_labels.append(munsell)
-            contagem = 0
-            munsell_values.append(contagem / total_pixels)
+    for munsell, contagem in cores.items():
+        munsell_labels.append(munsell)
+        contagem = cores[munsell]
+        munsell_values.append(contagem / total_pixels)
         st.bar_chart(munsell_values, munsell_labels)
 
 
