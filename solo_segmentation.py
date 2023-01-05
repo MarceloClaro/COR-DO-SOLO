@@ -136,10 +136,10 @@ def main():
     st.bar_chart(df)
 
     # Exibir gráfico de barras com as cores classificadas pelo sistema Munsell
-    if st.sidebar.button("Classificar cores"):
+   
         munsell_labels = []
         munsell_values = []
-    for munsell, contagem in cores.items():
+        munsell, contagem in cores.items():
         munsell_labels.append(munsell)
         contagem = cores[munsell]
         munsell_values.append(contagem / total_pixels)
