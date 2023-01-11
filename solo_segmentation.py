@@ -17,23 +17,23 @@ def rgb_to_munsell(center):
     
     # Verificar em qual faixa de ângulo o h se encontra e atribuir a tonalidade correspondente
     if h < 20:
-        hue = "R"
+        hue = "vermelho R"
     elif h < 40:
-        hue = "YR"
+        hue = "amarelo vermelho YR"
     elif h < 75:
-        hue = "Y"
+        hue = "amarelo Y"
     elif h < 155:
-        hue = "GY"
+        hue = "amarelo verde GY"
     elif h < 190:
-        hue = "G"
+        hue = "verde G"
     elif h < 260:
-        hue = "BG" 
+        hue = "verde azul BG" 
     elif h < 290:
-        hue = "B"
+        hue = "azul B"
     elif h < 335:
-        hue = "PB"
+        hue = "azul roxo PB"
     else:
-        hue = "P"
+        hue = "roxo P"
     
     # Verificar em qual faixa o l se encontra e atribuir o valor correspondente
     if l < 0.25:
@@ -80,6 +80,7 @@ def classificar_cor_solo(img, largura, altura, k):
     
     # Aplicar agrupamento K-Means à imagem
     kmeans = KMeans(n_clusters=k, random_state=0).fit(img.reshape((largura * altura, 3)))
+
     labels = kmeans.labels_
     
     # Criar dicionário para armazenar as cores e a quantidade de pixels de cada cor
