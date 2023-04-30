@@ -1,37 +1,88 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import cv2
-import colorsys
-from sklearn.cluster import KMeans
+ 
+import streamlit as st  # importar biblioteca streamlit para criar interface gráfica 
+#import plotly_express as px # importar biblioteca plotly express para criar gráficos  
+import pandas as pd # importar biblioteca pandas para manipular dados em formato de tabela 
+import numpy as np # importa numpy para manipular dados em formato de matriz  
+import cv2 #import opencv #importar biblioteca opencv para manipular imagens 
+#import csv # importar csv para manipular arquivos csv  
+import colorsys # importar colorsys para converter rgb para munsell  
+#from matplotlib import pyplot as plt # importa pyplot para criar gráficos 
+from sklearn.cluster import KMeans # importa k-means para segmentação de imagens 
+#from PIL import Image # importa biblioteca para manipular imagens  
 
-def rgb_to_munsell(center, col_c):
-    r, g, b = center[0][0], center[0][1], center[0][2]
-    h, l, s = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
-    h = h * 360
 
-    hue_table = {20: "R", 40: "YR", 75: "Y", 155: "GY", 190: "G", 260: "BG", 290: "B", 335: "PB"}
-    hue = next((v for k, v in hue_table.items() if h < k), "P")
 
-    lightness_table = {0.25: "2.5", 0.3: "3", 0.4: "4", 0.5: "5", 0.6: "6", 0.7: "7", 0.8: "8"}
-    value = next((v for k, v in lightness_table.items() if l < k), "10")
+def rgb_to_munsell(center,col_c): # define função para converter rgb para munsell
+    r,g,b = center[0][0],center[0][1],center[0][2] # define variáveis para cada canal de cor  
+    #print("R,G,B") # imprime no console  
+    #print(center[0]) # imprime no console  
+    col_c.title('Valores para RGB') # define título para a seção 
+    col_c.write('{0},{1},{2}'.format (r,g,b)) # imprime valores de r,g,b no console  
+    print('passei dentro func') # imprime no console    
+    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0) #converter rgb para hls 
+    h = h*360 # converter h de 0-1 para 0-360 
+    if h < 20: # se h for menor que 20
+        hue = "R" # matiz é vermelho
+    elif h < 40: # se h for menor que 40
+        hue = "YR" # matiz é vermelho-amarelo
+    elif h < 75: # se h for menor que 75
+        hue = "Y" # matiz é amarelo
+    elif h < 155: # se h for menor que 155
+        hue = "GY" # matiz é verde-amarelo
+    elif h < 190: # se h for menor que 190
+        hue = "G" # matiz é verde
+    elif h < 260: # se h for menor que 260
+        hue = "BG" # matiz é verde-azulado
+    elif h < 290: # se h for menor que 290
+        hue = "B" # matiz é azul
+    elif h < 335: # se h for menor que 335
+        hue = "PB" # matiz é roxo-azul
+    else:
+        hue = "P" # matiz é roxo
+    if l < 0.25: # se l for menor que 0,2
+        value = "2.5" # valor é 10
+    elif l < 0.3: # se l for menor que 0.4
+        value = "3" # valor é 20
+    elif l < 0.4: # se l for menor que 0.4
+        value = "4" # valor é 20
+    elif l < 0.5: # se l for menor que 0.4
+        value = "5" # valor é 20
+    elif l < 0.6: # se l for menor que 0.6
+        value = "6"  # valor é 30
+    elif l < 0.7: # se l for menor que 0.4
+        value = "7" # valor é 20
+    elif l < 0.8: #  se l for menor que0.8
+        value = "8" # valor é 40
+    else: 
+        value = "10" # valor é 50
+    if s < 0.1: # se s for menor que 0,1
+        chroma = "0" # croma é 0
+    elif s < 0.2: # se s for menor que 0.2
+        chroma = "1" # croma é 1
+    elif s < 0.3: # se s for menor que 0.3
+        chroma = "2" # croma é 2
+    elif s < 0.4: # se s for menor que 0.4
+        chroma = "3" # croma é 3
+    elif s < 0.5: # se s for menor que 0.5
+        chroma = "4" # croma é 4
+    elif s < 0.6: # se s for menor que 0.6
+        chroma = "5" # croma é 5
+    elif s < 0.7:  # se s for menor que 0.7
+        chroma = "6" # croma é 6
+    elif s < 0.8: # se s for menor que 0.8
+        chroma = "7" # croma é 7
+    elif s < 0.9:  # se s for menor que 0.9
+        chroma = "8" # croma é 8
+    elif s < 1.0: # se s for menor que 1.0
+        chroma = "9" # croma é 9
+    col_c.title('Valores para munsell') # define título para a seção 
+    col_c.write('(MATIZ,VALORES,CROMA)') # imprime valores de h,c,v no console   
+    col_c.write('{0},{1},{2}'.format (hue,value,chroma)) # imprime valores de h,l,s no console 
+    #print(hue + " " + value + " " + chroma )# retorna valor de matiz e croma 
 
-    saturation_table = {0.1: "0", 0.2: "1", 0.3: "2", 0.4: "3", 0.5: "4", 0.6: "5", 0.7: "6", 0.8: "7", 0.9: "8"}
-    chroma = next((v for k, v in saturation_table.items() if s < k), "0")
-
-    col_c.title('Valores para RGB')
-    col_c.write(f'{r}, {g}, {b}')
-    st.write(f'Munsell: {hue}{value}/{chroma}')
-
-def main():
-    st.title("Conversão RGB para Munsell")
-    st.write("Insira uma imagem para converter as cores para o sistema Munsell")
-    uploaded_file = st.file_uploader("Selecione um arquivo de imagem", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        image = cv2.imdecode(np.frombuffer(uploaded_file.read(), np.uint8
 st.image('https://lh6.googleusercontent.com/hiRKdv5UxSXINPZa_bYOf_s2X37WB67MAqwom1r1qzmKZsfCJF1RrLe_zlISG2vfOGeJwuBpTklRx409cgF2-Xo=w1280') # insere imagem da carta de munsell
-st.title('Geomaker - Clube de Pintura e Terapia Junguiana ') # define título para a seção 
-st.subheader('Arquétipos Junguiano ') # define subtítulo para a seção FONTE 12
+st.title('Geomaker -  CLASSIFCAR COR DE SOLO ') # define título para a seção 
+st.subheader('SISTEMA MUNSELL ') # define subtítulo para a seção FONTE 12
 st.write('Prof. Marcelo Claro / marceloclaro@geomaker.org') # define texto para a seção
 st.write('https://orcid.org/0000-0001-8996-2887') # define texto para a seção
 st.write('Whatsapp - (88)98158-7145') # define texto para a seção
@@ -99,4 +150,3 @@ if image is not None: # se imagem for diferente de nulo
 
     st.write('FONTE:  https://pteromys.melonisland.net/munsell/') # imprime no console
     st.write('') # imprime no console
-
