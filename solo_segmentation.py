@@ -114,8 +114,8 @@ soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
 st.write("Tipo de solo correspondente:")
 st.write(soil_type)
 
-#Run your Streamlit app
-if name == 'main':
-main()
+
+if __name__ == '__main__':
+    main()
     
  
