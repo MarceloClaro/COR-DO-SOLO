@@ -84,6 +84,7 @@ if uploaded_file is not None:
     plt.imshow(img)
     plt.show()
 
+    
     # Reshape the image to a list of pixels
     Z = img.reshape((-1,3))
     Z = np.float32(Z)
@@ -117,3 +118,7 @@ if uploaded_file is not None:
 
     st.write("Tipo de solo correspondente:")
     st.write(soil_type)
+
+    # Run your Streamlit app
+if __name__ == '__main__':
+    app()
