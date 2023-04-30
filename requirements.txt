@@ -2,4 +2,4 @@ scikit-learn
 opencv-python-headless
 matplotlib
 seaborn
-PIL
+
