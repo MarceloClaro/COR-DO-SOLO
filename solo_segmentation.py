@@ -1,3 +1,5 @@
+
+# Correção
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -5,8 +7,6 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 from sklearn.cluster import KMeans
-
-
 import colorsys
 
 # Define the function to convert RGB to Munsell
@@ -15,12 +15,6 @@ def rgb_to_munsell(r, g, b):
     h = h*360
     if h < 20:
         hue = "R"
-    elif h < 40:
-        hue = "YR"
-    elif h < 75:
-        hue = "Y"
-    elif h < 155:
-        hue = "GY"
     elif h < 190:
         hue = "G"
     elif h < 260:
@@ -59,12 +53,6 @@ def rgb_to_munsell(r, g, b):
         chroma = "4"
     elif s < 0.6:
         chroma = "5"
-    elif s < 0.7:
-        chroma = "6"
-    elif s < 0.8:
-        chroma = "7"
-    elif s < 0.9:
-        chroma = "8"
     elif s < 1.0:
         chroma = "9"
     else:
@@ -85,14 +73,13 @@ if uploaded_file is not None:
 
     # Reshape the image to a list of pixels
     Z = img.reshape((-1,3))
-    Z = p.float32(Z)
+    Z = np.float32(Z)
 # Define the criteria, number of clusters(K) and apply k-means()
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
 K = 1
-import cv2
 
 # your code here
-ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_C)
+ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
 center = np.uint8(center)
 
 # Convert the image to 8-bit values
