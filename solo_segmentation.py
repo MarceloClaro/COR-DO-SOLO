@@ -5,7 +5,7 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 from sklearn.cluster import KMeans
-from cv2 import KMEANS_RANDOM_C
+
 
 import colorsys
 
@@ -89,7 +89,10 @@ if uploaded_file is not None:
 # Define the criteria, number of clusters(K) and apply k-means()
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
 K = 1
-ret, label, center = KMEANS_RANDOM_C(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+import cv2
+
+# your code here
+ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_C)
 center = np.uint8(center)
 
 # Convert the image to 8-bit values
