@@ -62,11 +62,10 @@ def rgb_to_munsell(r, g, b):
 
 # Load and show the image
 st.title("Classificação de Solo")
-uploaded_file = st.file_uploader("Escolha a imagem", type="jpg")
-if image is not None:
-    st.image(image, caption='Imagem', use_column_width=True)
-    img = cv2.imread(uploaded_file.name)
-     
+uploaded_file = st.file_uploader("Escolha a imagem", type="jpg") 
+if 'image' in locals():
+    if image is not None:
+        st.image(image, caption='Imagem', use_column_width=True)   
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     plt.imshow(img)
     plt.show()
