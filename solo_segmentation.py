@@ -5,6 +5,8 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 from sklearn.cluster import KMeans
+from cv2 import KMEANS_RANDOM_C
+
 import colorsys
 
 # Define the function to convert RGB to Munsell
