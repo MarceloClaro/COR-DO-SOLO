@@ -1,12 +1,9 @@
-#replace the script's seaborn library with matplotlib
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib
-
+import matplotlib.image as mpimg
 import numpy as np
 import cv2
-from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 import colorsys
 
@@ -77,14 +74,13 @@ def rgb_to_munsell(r, g, b):
 st.title("Classificação de Solo")
 uploaded_file = st.file_uploader("Escolha a imagem", type="jpg")
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
+    image = mpimg.imread(uploaded_file)
     st.image(image, caption='Imagem', use_column_width=True)
     img = cv2.imread(uploaded_file)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     plt.imshow(img)
     plt.show()
 
-    
     # Reshape the image to a list of pixels
     Z = img.reshape((-1,3))
     Z = np.float32(Z)
@@ -96,29 +92,30 @@ if uploaded_file is not None:
     center = np.uint8(center)
 
     # Convert the image to 8-bit values
-    res = center[label.flatten()]
+    res = center [label.flatten()]
     res2 = res.reshape((img.shape))
+# Display the image and the corresponding Munsell notation
+plt.imshow(res2)
+plt.title(rgb_to_munsell(center[0][0], center[0][1], center[0][2]))
+st.pyplot()
 
-    # Display the image and the corresponding Munsell notation
-    plt.imshow(res2)
-    plt.title(rgb_to_munsell(center[0][0], center[0][1], center[0][2]))
-    st.pyplot()
+soil_dict = {
+    "7.5YR5/4": "Argissolo Vermelho-Amarelo - Bahia .",
+    "10YR3/3": "Neossolo Regolítico - Pernambuco - .",
+    "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte -",
+    "7R/0": "Luvissolo Crômico - Paraíba - ",
+    
+}     
 
-    soil_dict = {
-        "7.5YR5/4": "Argissolo Vermelho-Amarelo - Bahia .",
-        "10YR3/3": "Neossolo Regolítico - Pernambuco - .",
-        "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte -",
-        "7R/0": "Luvissolo Crômico - Paraíba - ",
-        
-    }     
-
-    munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
-    soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
+munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
+soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
 
 
-    st.write("Tipo de solo correspondente:")
-    st.write(soil_type)
+st.write("Tipo de solo correspondente:")
+st.write(soil_type)
 
-    # Run your Streamlit app
-if __name__ == '__main__':
-    app()
+#Run your Streamlit app
+if name == 'main':
+main()
+    
+ 
