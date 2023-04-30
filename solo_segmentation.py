@@ -89,7 +89,7 @@ if uploaded_file is not None:
 # Define the criteria, number of clusters(K) and apply k-means()
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
 K = 1
-ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+ret, label, center = KMEANS_RANDOM_C(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
 center = np.uint8(center)
 
 # Convert the image to 8-bit values
