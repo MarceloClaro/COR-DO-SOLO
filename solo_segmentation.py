@@ -83,17 +83,17 @@ if uploaded_file is not None:
 
     # Reshape the image to a list of pixels
     Z = img.reshape((-1,3))
-    Z = np.float32(Z)
+    Z = p.float32(Z)
+# Define the criteria, number of clusters(K) and apply k-means()
+criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+K = 1
+ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+center = np.uint8(center)
 
-    # Define the criteria, number of clusters(K) and apply k-means()
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    K = 1
-    ret,label,center=cv2.kmeans(Z,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
-    center = np.uint8(center)
+# Convert the image to 8-bit values
+res = center[label.flatten()]
+res2 = res.reshape((img.shape))
 
-    # Convert the image to 8-bit values
-    res = center [label.flatten()]
-    res2 = res.reshape((img.shape))
 # Display the image and the corresponding Munsell notation
 plt.imshow(res2)
 plt.title(rgb_to_munsell(center[0][0], center[0][1], center[0][2]))
@@ -104,18 +104,10 @@ soil_dict = {
     "10YR3/3": "Neossolo Regolítico - Pernambuco - .",
     "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte -",
     "7R/0": "Luvissolo Crômico - Paraíba - ",
-    
-}     
+}
 
 munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
 soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
 
-
 st.write("Tipo de solo correspondente:")
 st.write(soil_type)
-
-
-if __name__ == '__main__':
-    main()
-    
- 
