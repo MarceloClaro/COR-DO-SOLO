@@ -10,6 +10,15 @@ from sklearn.cluster import KMeans # importa k-means para segmentação de image
 #from PIL import Image # importa biblioteca para manipular imagens  
 
 
+soil_dict = {
+    "7.5YR5/4": "Argissolo Vermelho-Amarelo - Bahia - O Argissolo Vermelho-Amarelo é um solo de grau de fertilidade médio a alto, com capacidade para suportar culturas agrícolas e pastagens. Quanto à umidade, pode variar de média a baixa, dependendo das condições climáticas locais. Entre as carências mais comuns neste solo estão o déficit de matéria orgânica e nutrientes como fósforo e potássio. A vegetação típica desse solo na região é a caatinga, sendo uma vegetação adaptada às condições climáticas de baixa umidade e chuvas irregulares. Em termos de reflorestamento, algumas opções de plantas nativas para serem usadas são o angico, aroeira e jatobá. Quanto a cultivos agrícolas, o solo é adequado para o cultivo de grãos como milho e feijão, e também para frutas como manga e caju.",
+    "10YR3/3": "Neossolo Regolítico - Pernambuco - O Neossolo Regolítico é um solo pouco espesso e com baixa fertilidade natural. Apesar disso, ele pode ser utilizado para cultivos de ciclo curto, como hortaliças e plantas ornamentais. A vegetação típica do Neossolo Regolítico é a caatinga arbustiva e arbórea, com espécies adaptadas à baixa umidade.",
+    "2.5YR5/6": "Argissolo Amarelo - Ceará - O Argissolo Amarelo é um solo de baixa fertilidade natural e com grande parte da matéria orgânica acumulada na camada superficial. Apesar disso, ele pode ser utilizado para culturas de ciclo curto e pastagens, desde que haja um manejo adequado. A vegetação típica do Argissolo Amarelo é a caatinga arbustiva e arbórea, com espécies adaptadas às condições de baixa umidade e chuvas irregulares.",
+    "10YR4/3": "Luvissolo Crômico - Paraíba - O Luvissolo Crômico é um solo com baixa fertilidade natural e com propriedades físicas que podem dificultar a infiltração de água. Apesar disso, ele pode ser utilizado para cultivos de ciclo curto e pastagens, desde que haja um manejo adequado. A vegetação típica desse solo é a caatinga arbustiva e arbórea.",
+    "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte - O Cambissolo Háplico é um solo pouco espesso e com baixa fertilidade natural. Apesar disso, ele pode ser utilizado para cultivos de ciclo curto, como hortaliças e plantas ornamentais. A vegetação típica desse solo é a caatinga arbustiva e arbórea, com espécies adaptadas à baixa umidade e chuvas irregulares.",
+    "7R/0": "Luvissolo Crômico - Paraíba - O Luvissolo Crômico é um solo com baixa fertilidade natural e com propriedades físicas que podem dificultar a infiltração de água. Apesar disso, ele pode ser utilizado para cultivos de ciclo curto e pastagens, desde que haja um manejo adequado. A vegetação típica desse solo é a caatinga arbustiva e arbórea.",
+    
+}     
 
 def rgb_to_munsell(center,col_c): # define função para converter rgb para munsell
     r,g,b = center[0][0],center[0][1],center[0][2] # define variáveis para cada canal de cor  
@@ -76,8 +85,8 @@ def rgb_to_munsell(center,col_c): # define função para converter rgb para muns
         chroma = "9" # croma é 9
     col_c.title('Valores para munsell') # define título para a seção 
     col_c.write('(MATIZ,VALORES,CROMA)') # imprime valores de h,c,v no console   
-    col_c.write('{0},{1},{2}'.format (hue,value,chroma)) # imprime valores de h,l,s no console 
-    #print(hue + " " + value + " " + chroma )# retorna valor de matiz e croma 
+    col_c.write('{0},{1},{2}'.format (value,hue,chroma)) # imprime valores de h,l,s no console 
+    #print(Value + hue + "/" + chroma )# retorna valor de matiz e croma 
 
 st.image('https://lh6.googleusercontent.com/hiRKdv5UxSXINPZa_bYOf_s2X37WB67MAqwom1r1qzmKZsfCJF1RrLe_zlISG2vfOGeJwuBpTklRx409cgF2-Xo=w1280') # insere imagem da carta de munsell
 st.title('Geomaker - Clube de Pintura e Terapia Junguiana ') # define título para a seção 
@@ -136,12 +145,19 @@ if image is not None: # se imagem for diferente de nulo
     #plt.imshow(res2)
     #plt.show() 
 
+munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
+soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
+
+
+     print("Tipo de solo correspondente:")
+     print(soil_type)
 
     print("R,G,B") # imprime no console
     print(center[0]) # imprime no console 
 
     #print("Munsell") # imprime no console
     #print(rgb_to_munsell(center[0][0],center[0][1],center[0][2]))
+    #printsoil_dict.get(munsell_notation, "NÃO CADASTRADO")
     st.button('__________________', on_click = rgb_to_munsell(center,col_c)) # imprime no console
     
 
