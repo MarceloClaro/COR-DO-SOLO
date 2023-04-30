@@ -18,71 +18,72 @@ soil_dict = {
     "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte - O Cambissolo Háplico é um solo pouco espesso e com baixa fertilidade natural. Apesar disso, ele pode ser utilizado para cultivos de ciclo curto, como hortaliças e plantas ornamentais. A vegetação típica desse solo é a caatinga arbustiva e arbórea, com espécies adaptadas à baixa umidade e chuvas irregulares.",
     "7R/0": "Luvissolo Crômico - Paraíba - O Luvissolo Crômico é um solo com baixa fertilidade natural e com propriedades físicas que podem dificultar a infiltração de água. Apesar disso, ele pode ser utilizado para cultivos de ciclo curto e pastagens, desde que haja um manejo adequado. A vegetação típica desse solo é a caatinga arbustiva e arbórea.",
     
-}     
+}
 
-def rgb_to_munsell(center,col_c): # define função para converter rgb para munsell
-    r,g,b = center[0][0],center[0][1],center[0][2] # define variáveis para cada canal de cor  
-    #print("R,G,B") # imprime no console  
-    #print(center[0]) # imprime no console  
-    col_c.title('Valores para RGB') # define título para a seção 
-    col_c.write('{0},{1},{2}'.format (r,g,b)) # imprime valores de r,g,b no console  
-    print('passei dentro func') # imprime no console    
-    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0) #converter rgb para hls 
-    h = h*360 # converter h de 0-1 para 0-360 
-    if h < 20: # se h for menor que 20
-        hue = "R" # matiz é vermelho
-    elif h < 40: # se h for menor que 40
-        hue = "YR" # matiz é vermelho-amarelo
-    elif h < 75: # se h for menor que 75
-        hue = "Y" # matiz é amarelo
-    elif h < 155: # se h for menor que 155
-        hue = "GY" # matiz é verde-amarelo
-    elif h < 190: # se h for menor que 190
-        hue = "G" # matiz é verde
-    elif h < 260: # se h for menor que 260
-        hue = "BG" # matiz é verde-azulado
-    elif h < 290: # se h for menor que 290
-        hue = "B" # matiz é azul
-    elif h < 335: # se h for menor que 335
-        hue = "PB" # matiz é roxo-azul
+def rgb_to_munsell(center, col_c):
+    r,g,b = center[0][0],center[0][1],center[0][2]
+    col_c.title('Valores para RGB')
+    col_c.write('{0},{1},{2}'.format (r,g,b))
+    print('passei dentro func')
+    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
+    h = h*360
+    if h < 20:
+        hue = "R"
+    elif h < 40:
+        hue = "YR"
+    elif h < 75:
+        hue = "Y"
+    elif h < 155:
+        hue = "GY"
+    elif h < 190:
+        hue = "G"
+    elif h < 260:
+        hue = "BG"
+    elif h < 290:
+        hue = "B"
+    elif h < 335:
+        hue = "PB"
     else:
-        hue = "P" # matiz é roxo
-    if l < 0.25: # se l for menor que 0,2
-        value = "2.5" # valor é 10
-    elif l < 0.3: # se l for menor que 0.4
-        value = "3" # valor é 20
-    elif l < 0.4: # se l for menor que 0.4
-        value = "4" # valor é 20
-    elif l < 0.5: # se l for menor que 0.4
-        value = "5" # valor é 20
-    elif l < 0.6: # se l for menor que 0.6
-        value = "6"  # valor é 30
-    elif l < 0.7: # se l for menor que 0.4
-        value = "7" # valor é 20
-    elif l < 0.8: #  se l for menor que0.8
-        value = "8" # valor é 40
+        hue = "P"
+    if l < 0.25:
+        value = "2.5"
+    elif l < 0.3:
+        value = "3"
+    elif l < 0.4:
+        value = "4"
+    elif l < 0.5:
+        value = "5"
+    elif l < 0.6:
+        value = "6"
+    elif l < 0.7:
+        value = "7"
+    elif l < 0.8:
+        value = "8"
     else: 
-        value = "10" # valor é 50
-    if s < 0.1: # se s for menor que 0,1
-        chroma = "0" # croma é 0
-    elif s < 0.2: # se s for menor que 0.2
-        chroma = "1" # croma é 1
-    elif s < 0.3: # se s for menor que 0.3
-        chroma = "2" # croma é 2
-    elif s < 0.4: # se s for menor que 0.4
-        chroma = "3" # croma é 3
-    elif s < 0.5: # se s for menor que 0.5
-        chroma = "4" # croma é 4
-    elif s < 0.6: # se s for menor que 0.6
-        chroma = "5" # croma é 5
-    elif s < 0.7:  # se s for menor que 0.7
-        chroma = "6" # croma é 6
-    elif s < 0.8: # se s for menor que 0.8
-        chroma = "7" # croma é 7
-    elif s < 0.9:  # se s for menor que 0.9
-        chroma = "8" # croma é 8
-    elif s < 1.0: # se s for menor que 1.0
-        chroma = "9" # croma é 9
+        value = "10"
+    if s < 0.1:
+        chroma = "0"
+    elif s < 0.2:
+        chroma = "1"
+    elif s < 0.3:
+        chroma = "2"
+    elif s < 0.4:
+        chroma = "3"
+    elif s < 0.5:
+        chroma = "4"
+    elif s < 0.6:
+        chroma = "5"
+    elif s < 0.7:
+        chroma = "6"
+    elif s < 0.8:
+        chroma = "7"
+    elif s < 0.9:
+        chroma = "8"
+    else:
+        chroma = "9"
+    return hue + value + "/" + chroma
+
+
     col_c.title('Valores para munsell') # define título para a seção 
     col_c.write('(MATIZ,VALORES,CROMA)') # imprime valores de h,c,v no console   
     col_c.write('{0},{1},{2}'.format (value,hue,chroma)) # imprime valores de h,l,s no console 
