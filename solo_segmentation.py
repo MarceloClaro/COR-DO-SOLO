@@ -1,9 +1,8 @@
+#replace the script's seaborn library with matplotlib
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
-from PIL import Image
-
+import matplotlib
 
 import numpy as np
 import cv2
