@@ -5,29 +5,11 @@ from PIL import Image
 import colorsys
 import matplotlib.pyplot as plt
 
+
 # Função para converter RGB em notação Munsell
 def rgb_to_munsell(r, g, b):
     h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
     h = h*360
-    hue = ""
-    if h < 20:
-        hue = "R"
-    elif h < 40:
-        hue = "YR"
-    elif h < 75:
-        hue = "Y"
-    elif h < 155:
-        hue = "GY"
-    elif h < 190:
-        hue = "G"
-    elif h < 260:
-        hue = "BG"
-    elif h < 290:
-        hue = "B"
-    elif h < 335:
-        hue = "PB"
-    else:
-        hue = "P"
     value = ""
     if l < 0.25:
         value = "2.5"
@@ -44,7 +26,7 @@ def rgb_to_munsell(r, g, b):
     elif l < 0.8:
         value = "8"
     else:
-        value = "10"
+        value = "10YR 9/2"
     chroma = ""
     if s < 0.1:
         chroma = "0"
@@ -68,8 +50,73 @@ def rgb_to_munsell(r, g, b):
         chroma = "9"
     else:
         chroma = "0"
+    hue = ""
+    if h < 15:
+        hue = "7.5YR"
+    elif h < 20:
+        hue = "10YR"
+    elif h < 25:
+        hue = "2.5Y"
+    elif h < 40:
+        hue = "5Y"
+    elif h < 60:
+        hue = "7.5Y"
+    elif h < 75:
+        hue = "10Y"
+    elif h < 90:
+        hue = "2.5GY"
+    elif h < 115:
+        hue = "5GY"
+    elif h < 135:
+        hue = "7.5GY"
+    elif h < 155:
+        hue = "10GY"
+    elif h < 175:
+        hue = "2.5G"
+    elif h < 190:
+    hue = "5G"
+    elif h < 220:
+        hue = "7.5G"
+    elif h < 260:
+        hue = "10G"
+    elif h < 290:
+        hue = "2.5BG"
+    elif h < 315:
+        hue = "5BG"
+    elif h < 335:
+        hue = "7.5BG"
+    elif h < 355:
+        hue = "10BG"
+    elif h < 380:
+        hue = "2.5B"
+    elif h < 435:
+        hue = "5B"
+    elif h < 495:
+        hue = "7.5B"
+    elif h < 540:
+        hue = "10B"
+    elif h < 575:
+        hue = "2.5PB"
+    elif h < 605:
+        hue = "5PB"
+    elif h < 630:
+        hue = "7.5PB"
+    elif h < 660:
+        hue = "10PB"
+    elif h < 700:
+        hue = "2.5P"
+    elif h < 750:
+        hue = "5P"
+    elif h < 800:
+        hue = "7.5P"
+    elif h < 850:
+        hue = "10P"
+    else:
+        hue = "2.5RP"
+    return value + hue + " " + chroma + "/"
 
-    return value + hue + "/" + chroma
+
+
 
 # Carregar e exibir a imagem
 st.title("Classificação de Solo")
