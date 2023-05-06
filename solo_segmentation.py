@@ -255,10 +255,10 @@ def main():
         ax[0].scatter(centers[:, 0], centers[:, 1], c='red', marker='*', s=300)
         ax[0].set_title("K-means")
 
-ax[1].scatter(Z[:, 0], Z[:, 1], c=cntr_u.argmax(axis=0), edgecolor='k')
-ax[1].scatter(cntr[:, 0], cntr[:, 1], c='red', marker='*', s=300)
-ax[1].set_title("Fuzzy c-means")
+        ax[1].scatter(Z[:, 0], Z[:, 1], c=cntr_u.argmax(axis=0), edgecolor='k')
+        ax[1].scatter(cntr[:, 0], cntr[:, 1], c='red', marker='*', s=300)
+        ax[1].set_title("Fuzzy c-means")
 
-plt.show()
+        plt.show()
 
-st.pyplot(fig)
+        st.pyplot(fig)
