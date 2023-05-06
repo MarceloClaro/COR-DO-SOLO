@@ -193,7 +193,6 @@ soil_dict = {
         "cultivos_manejo": "Culturas anuais e perenes, com uso de práticas conservacionistas e correção da acidez do solo."
     },
 }
-
 def main():
     st.title("Determinação da cor dominante do solo")
     uploaded_file = st.file_uploader("Escolha uma imagem", type=["jpg", "png"])
@@ -242,12 +241,12 @@ def main():
         soil_info = soil_dict.get(embrapa_munsell)
 
 # Apresentar os resultados
-        st.write(f"Cor do solo (Munsell): {embrapa_munsell}")
-        st.write(f"Classificação do solo (Embrapa): {soil_info['solo_embrapa']}")
-        st.write(f"Descrição: {soil_info['descricao']}")
-        st.write(f"Características: {soil_info['caracteristicas']}")
-        st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
-        st.write(f"Cultivos e manejo: {soil_info['cultivos_manejo']}")
+st.write(f"Cor do solo (Munsell): {embrapa_munsell}")
+st.write(f"Classificação do solo (Embrapa): {soil_info['solo_embrapa']}")
+st.write(f"Descrição: {soil_info['descricao']}")
+st.write(f"Características: {soil_info['caracteristicas']}")
+st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
+st.write(f"Cultivos e manejo: {soil_info['cultivos_manejo']}")
 
 # Exibir gráfico de comparação entre k-means e fuzzy
         fig, ax = plt.subplots(1, 2, figsize=(12, 6))
