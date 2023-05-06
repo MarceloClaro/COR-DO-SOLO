@@ -3,3 +3,5 @@ opencv-python-headless
 matplotlib
 fuzzy-c-means
 fcmeans
+scikit-image
+skimage.color
