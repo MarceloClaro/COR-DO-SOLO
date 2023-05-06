@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 import cv2
@@ -119,7 +118,7 @@ if uploaded_file is not None:
     # Calcular a margem de erro e o desvio padrão da clusterização
     mean_error, std_deviation = calculate_error_and_std_deviation(Z, center)
 
-        # Converter a imagem para valores de 8 bits
+    # Converter a imagem para valores de 8 bits
     res = center[label.flatten()]
     res2 = res.reshape((img.shape))
 
@@ -130,7 +129,6 @@ if uploaded_file is not None:
     ax.axis('off')
     st.pyplot(fig)
 
-    # embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
     embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
     soil_type = soil_dict.get(embrapa_notation, "NÃO CADASTRADO")
 
@@ -138,4 +136,3 @@ if uploaded_file is not None:
     st.write(soil_type)
     st.write("Margem de erro da clusterização: {:.2f}".format(mean_error))
     st.write("Desvio padrão da clusterização: {:.2f}".format(std_deviation))
-
