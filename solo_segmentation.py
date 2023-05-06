@@ -60,36 +60,76 @@ def calculate_error_and_std_deviation(Z, center):
 
 # Dicionário e lógica de classificação do solo
 soil_dict = {
-    "7.5YR5/4": {
-        "sistema_munsell": "7.5YR5/4",
-        "solo_embrapa": "Argissolo Vermelho-Amarelo",
-        "descricao": "Solos com coloração vermelho-amarela, profundos e bem drenados.",
-        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
-        "vegetacao_tipica": "Cerrado, Caatinga e Mata Atlântica",
-        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    "7.5YR4/2": {
+        "sistema_munsell": "7.5YR4/2",
+        "solo_embrapa": "Solonetz Solodizado",
+        "descricao": "Solos com alto teor de sódio, baixa permeabilidade e drenagem restrita.",
+        "caracteristicas": "Textura argilosa, baixa fertilidade natural e alta suscetibilidade à compactação.",
+        "vegetacao_tipica": "Cerrado",
+        "cultivos_manejo": "Uso limitado para agricultura. Recomenda-se a adoção de práticas conservacionistas e correção da salinidade."
     },
-    "10YR3/3": {
-        "sistema_munsell": "10YR3/3",
-        "solo_embrapa": "Neossolo Regolítico",
-        "descricao": "Solos pouco desenvolvidos, geralmente rasos e localizados em áreas com relevo acentuado.",
-        "caracteristicas": "Baixa fertilidade natural, baixa capacidade de retenção de água e alta susceptibilidade à erosão.",
-        "vegetacao_tipica": "Caatinga e Cerrado",
-        "cultivos_manejo": "Uso limitado para agricultura. Preferencialmente, deve ser preservado para conservação ambiental e recarga de aquíferos."
+    "5YR5/3": {
+        "sistema_munsell": "5YR5/3",
+        "solo_embrapa": "Plintossolo Háplico",
+        "descricao": "Solos com presença de camadas de plintita, que dificultam a infiltração de água.",
+        "caracteristicas": "Textura argilosa, baixa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado",
+        "cultivos_manejo": "Uso limitado para agricultura. Recomenda-se a adoção de práticas conservacionistas e manejo adequado da camada de plintita."
     },
-    "2.5YR5/4": {
-        "sistema_munsell": "2.5YR5/4",
-        "solo_embrapa": "Cambissolo Háplico",
-        "descricao": "Solos de coloração avermelhada, geralmente pouco profundos e com horizonte B incipiente.",
-        "caracteristicas": "Textura média, fertilidade natural moderada e moderada capacidade de retenção de água.",
-        "vegetacao_tipica": "Cerrado, Mata Atlântica e Floresta Amazônica",
-        "cultivos_manejo": "Pode ser cultivado com culturas anuais e perenes, desde que sejam adotadas práticas conservacionistas e adubação adequada."
+    "10R 5/3": {
+        "sistema_munsell": "10R 5/3",
+        "solo_embrapa": "Plintossolo Háplico",
+        "descricao": "Solos com presença de camadas de plintita, que dificultam a infiltração de água.",
+        "caracteristicas": "Textura argilosa, baixa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado",
+        "cultivos_manejo": "Uso limitado para agricultura. Recomenda-se a adoção de práticas conservacionistas e manejo adequado da camada de plintita."
     },
     "7R/0": {
         "sistema_munsell": "7R/0",
-        "solo_embrapa": "Luvissolo Crômico",
+        "solo_embrapa": "Solonetz Solodizado",
         "descricao": "Solos de coloração avermelhada a arroxeada, profundos e bem drenados.",
         "caracteristicas": "Textura argilosa, alta fertilidade natural e alta capacidade de retenção de água.",
         "vegetacao_tipica": "Mata Atlântica e Floresta Amazônica",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    },
+    "10YR8/6": {
+        "sistema_munsell": "10YR8/6",
+        "solo_embrapa": "Argissolo Amarelo",
+        "descricao": "Solos com coloração amarela, profundos e bem drenados.",
+        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    },
+    "2.5YR 3/3": {
+        "sistema_munsell": "2.5YR 3/3",
+        "solo_embrapa": "Vertissolo Háplico Eutrófico",
+        "descricao": "Solos com presença de argila expansiva, formando fissuras quando secos.",
+        "caracteristicas": "Textura argilosa, alta fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado e Caatinga",
+        "cultivos_manejo": "Pode ser cultivado com culturas anuais e perenes, desde que sejam adotadas práticas conservacionistas e adubação adequada."
+    },
+    "5YR6/2": {
+        "sistema_munsell": "5YR6/2",
+        "solo_embrapa": "Argissolo Vermelho-Amarelo Eutrófico",
+        "descricao": "Solos com coloração vermelho-amarela, profundos e bem drenados.",
+        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    },
+    "7.5YR4/3": {
+        "sistema_munsell": "7.5YR4/3",
+        "solo_embrapa": "Argissolo Vermelho-Amarelo",
+        "descricao": "Solos com coloração vermelho-amarela, profundos e bem drenados.",
+        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    },
+    "10YR6/6": {
+        "sistema_munsell": "10YR6/6",
+        "solo_embrapa": "Argissolo Amarelo",
+        "descricao": "Solos com coloração amarela, profundos e bem drenados.",
+        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado",
         "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
     }
 }
