@@ -152,7 +152,7 @@ if uploaded_file is not None:
         }
 }
 
- embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
+embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
 soil_type = soil_dict.get(embrapa_notation, "NÃO CADASTRADO")
 
 st.write("Tipo de solo correspondente:")
