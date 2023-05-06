@@ -1,13 +1,6 @@
+streamlit
 scikit-learn
 opencv-python-headless
 matplotlib
-fcmeans
-sklearn.cluster
-numpy
-cv2
-PIL
-colorsys
-matplotlib.pyplot
-sklearn.cluster
-fcmeans
-skimage.color
+scikit-image
+fuzzy-c-means
