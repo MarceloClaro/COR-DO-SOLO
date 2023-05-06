@@ -1,20 +1,23 @@
-
-# Correção
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import numpy as np
 import cv2
-from sklearn.cluster import KMeans
+from PIL import Image
 import colorsys
+import matplotlib.pyplot as plt
 
-# Define the function to convert RGB to Munsell
+# Função para converter RGB em notação Munsell
 def rgb_to_munsell(r, g, b):
     h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
     h = h*360
+    hue = ""
     if h < 20:
         hue = "R"
+    elif h < 40:
+        hue = "YR"
+    elif h < 75:
+        hue = "Y"
+    elif h < 155:
+        hue = "GY"
     elif h < 190:
         hue = "G"
     elif h < 260:
@@ -25,6 +28,7 @@ def rgb_to_munsell(r, g, b):
         hue = "PB"
     else:
         hue = "P"
+    value = ""
     if l < 0.25:
         value = "2.5"
     elif l < 0.3:
@@ -41,6 +45,7 @@ def rgb_to_munsell(r, g, b):
         value = "8"
     else:
         value = "10"
+    chroma = ""
     if s < 0.1:
         chroma = "0"
     elif s < 0.2:
@@ -53,6 +58,12 @@ def rgb_to_munsell(r, g, b):
         chroma = "4"
     elif s < 0.6:
         chroma = "5"
+    elif s < 0.7:
+        chroma = "6"
+    elif s < 0.8:
+        chroma = "7"
+    elif s < 0.9:
+        chroma = "8"
     elif s < 1.0:
         chroma = "9"
     else:
@@ -60,45 +71,44 @@ def rgb_to_munsell(r, g, b):
 
     return value + hue + "/" + chroma
 
-# Load and show the image
+# Carregar e exibir a imagem
 st.title("Classificação de Solo")
-uploaded_file = st.file_uploader("Escolha a imagem", type="jpg") 
-if 'image' in locals():
-    if image is not None:
-        st.image(image, caption='Imagem', use_column_width=True)   
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    plt.imshow(img)
-    plt.show()
+uploaded_file = st.file_uploader("Escolha a imagem", type="jpg")
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Imagem', use_column_width=True)
+    img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
-    # Reshape the image to a list of pixels
+    # Redimensionar a imagem para uma lista de pixels
     Z = img.reshape((-1,3))
     Z = np.float32(Z)
-# Define the criteria, number of clusters(K) and apply k-means()
-criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-K = 1
 
-# your code here
-ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
-center = np.uint8(center)
+    # Definir os critérios, número de clusters(K) e aplicar k-means()
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    K = 1
+    ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    center = np.uint8(center)
 
-# Convert the image to 8-bit values
-res = center[label.flatten()]
-res2 = res.reshape((img.shape))
+        # Converter a imagem para valores de 8 bits
+    res = center[label.flatten()]
+    res2 = res.reshape((img.shape))
 
-# Display the image and the corresponding Munsell notation
-plt.imshow(res2)
-plt.title(rgb_to_munsell(center[0][0], center[0][1], center[0][2]))
-st.pyplot()
+    # Exibir a imagem e a notação Munsell correspondente
+    fig, ax = plt.subplots()
+    ax.imshow(res2)
+    ax.set_title(rgb_to_munsell(center[0][0], center[0][1], center[0][2]))
+    ax.axis('off')
+    st.pyplot(fig)
 
-soil_dict = {
-    "7.5YR5/4": "Argissolo Vermelho-Amarelo - Bahia .",
-    "10YR3/3": "Neossolo Regolítico - Pernambuco - .",
-    "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte -",
-    "7R/0": "Luvissolo Crômico - Paraíba - ",
-}
+    soil_dict = {
+        "7.5YR5/4": "Argissolo Vermelho-Amarelo - Bahia .",
+        "10YR3/3": "Neossolo Regolítico - Pernambuco - .",
+        "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte -",
+        "7R/0": "Luvissolo Crômico - Paraíba - ",
+    }
 
-munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
-soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
+    munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
+    soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
 
-st.write("Tipo de solo correspondente:")
-st.write(soil_type)
+    st.write("Tipo de solo correspondente:")
+    st.write(soil_type)
