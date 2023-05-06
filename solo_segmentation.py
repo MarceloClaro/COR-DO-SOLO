@@ -235,7 +235,7 @@ def main():
         st.write(f"Desvio padrão: {fcm_std_deviation:.4f}")
 
         # Classificar a cor do solo
-embrapa_munsell = rgb_to_embrapa_munsell(r, g, b)
+        embrapa_munsell = rgb_to_embrapa_munsell(r, g, b)
 
         # Encontrar informações do solo
 soil_info = soil_dict.get(embrapa_munsell)
