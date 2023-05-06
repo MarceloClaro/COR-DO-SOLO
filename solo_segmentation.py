@@ -123,7 +123,7 @@ soil_dict = {
         "caracteristicas": "Textura argilosa, elevada capacidade de armazenamento de água e nutrientes, e suscetibilidade à fissuração.",
         "vegetacao_tipica": "Cerrado, Caatinga e Mata Atlântica.",
         "cultivos_manejo": "Culturas anuais e perenes, com uso de práticas conservacionistas e correção da acidez e da fertilidade do solo."
-    }
+    },
     "10YR3/3": {
         "sistema_munsell": "10YR3/3",
         "solo_embrapa": "Luvissolo",
@@ -155,7 +155,7 @@ soil_dict = {
         "caracteristicas": "Textura predominantemente arenosa, baixa capacidade de armazenamento de água e nutrientes.",
         "vegetacao_tipica": "Restinga, Caatinga e Cerrado.",
         "cultivos_manejo": "Uso limitado para agricultura. Recomenda-se a adoção de práticas conservacionistas e correção da fertilidade do solo."
-    }
+    },
     "5YR4/6": {
         "sistema_munsell": "5YR4/6",
         "solo_embrapa": "Podzólico Vermelho-Amarelo",
@@ -187,7 +187,7 @@ soil_dict = {
         "caracteristicas": "Textura variada, elevada capacidade de armazenamento de água e nutrientes, e alta fertilidade natural.",
         "vegetacao_tipica": "Mata Atlântica, Cerrado e Caatinga.",
         "cultivos_manejo": "Culturas anuais e perenes, com uso de práticas conservacionistas e correção da acidez do solo."
-    }
+    },
 }
 
 # Carregar e exibir a imagem
