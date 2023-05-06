@@ -101,11 +101,40 @@ if uploaded_file is not None:
     st.pyplot(fig)
 
     soil_dict = {
-        "7.5YR5/4": "Argissolo Vermelho-Amarelo - Bahia .",
-        "10YR3/3": "Neossolo Regolítico - Pernambuco - .",
-        "2.5YR5/4": "Cambissolo Háplico - Rio Grande do Norte -",
-        "7R/0": "Luvissolo Crômico - Paraíba - ",
+    "7.5YR5/4": {
+        "sistema_munsell": "7.5YR5/4",
+        "solo_embrapa": "Argissolo Vermelho-Amarelo",
+        "descricao": "Solos com coloração vermelho-amarela, profundos e bem drenados.",
+        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado, Caatinga e Mata Atlântica",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    },
+    "10YR3/3": {
+        "sistema_munsell": "10YR3/3",
+        "solo_embrapa": "Neossolo Regolítico",
+        "descricao": "Solos pouco desenvolvidos, geralmente rasos e localizados em áreas com relevo acentuado.",
+        "caracteristicas": "Baixa fertilidade natural, baixa capacidade de retenção de água e alta susceptibilidade à erosão.",
+        "vegetacao_tipica": "Caatinga e Cerrado",
+        "cultivos_manejo": "Uso limitado para agricultura. Preferencialmente, deve ser preservado para conservação ambiental e recarga de aquíferos."
+    },
+    "2.5YR5/4": {
+        "sistema_munsell": "2.5YR5/4",
+        "solo_embrapa": "Cambissolo Háplico",
+        "descricao": "Solos de coloração avermelhada, geralmente pouco profundos e com horizonte B incipiente.",
+        "caracteristicas": "Textura média, fertilidade natural moderada e moderada capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado, Mata Atlântica e Floresta Amazônica",
+        "cultivos_manejo": "Pode ser cultivado com culturas anuais e perenes, desde que sejam adotadas práticas conservacionistas e adubação adequada."
+    },
+    "7R/0": {
+        "sistema_munsell": "7R/0",
+        "solo_embrapa": "Luvissolo Crômico",
+        "descricao": "Solos de coloração avermelhada a arroxeada, profundos e bem drenados.",
+        "caracteristicas": "Textura argilosa, alta fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Mata Atlântica e Floresta Amazônica",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
     }
+}
+
 
     munsell_notation = rgb_to_munsell(center[0][0], center[0][1], center[0][2])
     soil_type = soil_dict.get(munsell_notation, "NÃO CADASTRADO")
