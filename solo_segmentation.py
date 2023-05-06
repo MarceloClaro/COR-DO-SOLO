@@ -91,7 +91,7 @@ soil_dict = {
         "caracteristicas": "Textura predominantemente argilosa, baixa fertilidade natural e suscetibilidade à erosão.",
         "vegetacao_tipica": "Cerrado, Mata Atlântica e Floresta de Araucária.",
         "cultivos_manejo": "Culturas anuais e perenes, com uso de práticas conservacionistas e correção da acidez e da fertilidade do solo."
-    }
+    },
     "2.5YR3/6": {
         "sistema_munsell": "2.5YR3/6",
         "solo_embrapa": "Nitossolo Vermelho",
