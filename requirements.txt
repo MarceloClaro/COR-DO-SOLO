@@ -2,3 +2,4 @@ scikit-learn
 opencv-python-headless
 matplotlib
 fuzzy-c-means
+fcmeans
