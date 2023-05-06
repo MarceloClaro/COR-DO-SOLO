@@ -98,9 +98,9 @@ soil_dict = {
 st.title("Classificação de Solo")
 uploaded_file = st.file_uploader("Escolha a imagem", type="jpg")
 if uploaded_file is not None:
-image = Image.open(uploaded_file)
-st.image(image, caption='Imagem', use_column_width=True)
-img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+  image = Image.open(uploaded_file)
+  st.image(image, caption='Imagem', use_column_width=True)
+  img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
 # Redimensionar a imagem para uma lista de pixels
 Z = img.reshape((-1,3))
