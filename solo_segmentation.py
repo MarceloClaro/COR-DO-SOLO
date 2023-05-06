@@ -249,15 +249,14 @@ st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
 st.write(f"Cultivos e manejo: {soil_info['cultivos_manejo']}")
 
 # Exibir gráfico de comparação entre k-means e fuzzy
-        fig, ax = plt.subplots(1, 2, figsize=(12, 6))
-        ax[0].scatter(Z[:, 0], Z[:, 1], c=labels.astype(np.float), edgecolor='k')
-        ax[0].scatter(centers[:, 0], centers[:, 1], c='red', marker='*', s=300)
-        ax[0].set_title("K-means")
+fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+ax[0].scatter(Z[:, 0], Z[:, 1], c=labels.astype(np.float), edgecolor='k')
+ax[0].scatter(centers[:, 0], centers[:, 1], c='red', marker='*', s=300)
+ax[0].set_title("K-means")
 
-        ax[1].scatter(Z[:, 0], Z[:, 1], c=cntr_u.argmax(axis=0), edgecolor='k')
-        ax[1].scatter(cntr[:, 0], cntr[:, 1], c='red', marker='*', s=300)
-        ax[1].set_title("Fuzzy c-means")
+ax[1].scatter(Z[:, 0], Z[:, 1], c=cntr_u.argmax(axis=0), edgecolor='k')
+ax[1].scatter(cntr[:, 0], cntr[:, 1], c='red', marker='*', s=300)
+ax[1].set_title("Fuzzy c-means")
 
-        plt.show()
-
-        st.pyplot(fig)
+plt.show()
+st.pyplot(fig)
