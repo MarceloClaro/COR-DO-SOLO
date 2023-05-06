@@ -1,9 +1,13 @@
+
 import streamlit as st
 import numpy as np
 import cv2
 from PIL import Image
 import colorsys
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from fcmeans import FCM
+from skimage.color import rgb2lab, deltaE_ciede2000
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
@@ -190,42 +194,71 @@ soil_dict = {
     },
 }
 
-# Carregar e exibir a imagem
-st.title("Classificação de Solo")
-uploaded_file = st.file_uploader("Escolha a imagem", type="jpg")
-if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption='Imagem', use_column_width=True)
-    img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+def main():
+    st.title("Determinação da cor dominante do solo")
+    uploaded_file = st.file_uploader("Escolha uma imagem", type=["jpg", "png"])
 
-    # Redimensionar a imagem para uma lista de pixels
-    Z = img.reshape((-1,3))
-    Z = np.float32(Z)
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Imagem carregada", use_column_width=True)
 
-    # Definir os critérios, número de clusters(K) e aplicar k-means()
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    K = 1
-    ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
-    center = np.uint8(center)
+        img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
-    # Calcular a margem de erro e o desvio padrão da clusterização
-    mean_error, std_deviation = calculate_error_and_std_deviation(Z, center)
+        # Converter imagem para espaço de cores LAB
+        img_lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+        img_lab = img_lab.reshape((img_lab.shape[0] * img_lab.shape[1], 3))
 
-    # Converter a imagem para valores de 8 bits
-    res = center[label.flatten()]
-    res2 = res.reshape((img.shape))
+        # Determinar a cor dominante usando K-Means e Fuzzy C-Means
+        k = 1
+        kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42)
+        kmeans.fit(img_lab)
 
-    # Exibir a imagem e a notação Munsell correspondente
-    fig, ax = plt.subplots()
-    ax.imshow(res2)
-    ax.set_title(rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2]))
-    ax.axis('off')
-    st.pyplot(fig)
+        fcm = FCM(n_clusters=k, random_state=42)
+        fcm.fit(np.array(img_lab, dtype=np.float32))
 
-    embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
-    soil_type = soil_dict.get(embrapa_notation, "NÃO CADASTRADO")
+        # Calcular erro e desvio padrão
+        kmeans_error, kmeans_std_deviation = calculate_error_and_std_deviation(img_lab, kmeans.cluster_centers_[0])
+        fcm_error, fcm_std_deviation = calculate_error_and_std_deviation(img_lab, fcm.centers[0])
 
-    st.write("Tipo de solo correspondente:")
-    st.write(soil_type)
-    st.write("Margem de erro da clusterização: {:.2f}".format(mean_error))
-    st.write("Desvio padrão da clusterização: {:.2f}".format(std_deviation))
+        # Converter a cor dominante LAB para RGB
+        dominant_color_kmeans = cv2.cvtColor(np.array([[kmeans.cluster_centers_[0]]], dtype=np.uint8), cv2.COLOR_LAB2BGR)[0][0]
+        dominant_color_fcm = cv2.cvtColor(np.array([[fcm.centers[0]]], dtype=np.uint8), cv2.COLOR_LAB2BGR)[0][0]
+
+        # Comparar resultados do K-Means e Fuzzy C-Means
+        st.write("K-Means:")
+        st.write(f"Cor dominante (RGB): {dominant_color_kmeans}")
+        st.write(f"Erro médio: {kmeans_error:.4f}")
+        st.write(f"Desvio padrão: {kmeans_std_deviation:.4f}")
+
+        st.write("Fuzzy C-Means:")
+        st.write(f"Cor dominante (RGB): {dominant_color_fcm}")
+        st.write(f"Erro médio: {fcm_error:.4f}")
+        st.write(f"Desvio padrão: {fcm_std_deviation:.4f}")
+
+        # Classificar a cor do solo
+embrapa_munsell = rgb_to_embrapa_munsell(r, g, b)
+
+# Encontrar informações do solo
+soil_info = soil_dict.get(embrapa_munsell)
+
+# Apresentar os resultados
+st.write(f"Cor do solo (Munsell): {embrapa_munsell}")
+st.write(f"Classificação do solo (Embrapa): {soil_info['solo_embrapa']}")
+st.write(f"Descrição: {soil_info['descricao']}")
+st.write(f"Características: {soil_info['caracteristicas']}")
+st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
+st.write(f"Cultivos e manejo: {soil_info['cultivos_manejo']}")
+
+# Exibir gráfico de comparação entre k-means e fuzzy
+fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+ax[0].scatter(Z[:, 0], Z[:, 1], c=labels.astype(np.float), edgecolor='k')
+ax[0].scatter(centers[:, 0], centers[:, 1], c='red', marker='*', s=300)
+ax[0].set_title("K-means")
+
+ax[1].scatter(Z[:, 0], Z[:, 1], c=cntr_u.argmax(axis=0), edgecolor='k')
+ax[1].scatter(cntr[:, 0], cntr[:, 1], c='red', marker='*', s=300)
+ax[1].set_title("Fuzzy c-means")
+
+plt.show()
+
+st.pyplot(fig)
