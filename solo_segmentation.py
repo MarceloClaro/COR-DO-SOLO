@@ -74,7 +74,7 @@ def rgb_to_munsell(r, g, b):
     elif h < 175:
         hue = "2.5G"
     elif h < 190:
-    hue = "5G"
+        hue = "5G"
     elif h < 220:
         hue = "7.5G"
     elif h < 260:
