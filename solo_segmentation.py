@@ -5,88 +5,101 @@ from PIL import Image
 import colorsys
 import matplotlib.pyplot as plt
 
-
+# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
-    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
-    h = h*360
-    
-    hues = {
-        "Red": (0, 20),
-        "Yellow-Red": (20, 40),
-        "Yellow": (40, 75),
-        "Green-Yellow": (75, 115),
-        "Green": (115, 150),
-        "Blue-Green": (150, 175),
-        "Blue": (175, 225),
-        "Purple-Blue": (225, 260),
-        "Purple": (260, 290),
-        "Purple-Red": (290, 335),
-        "Red": (335, 360)
-    }
-    
-    hues_embrapa = {
-        "Red": "2.5R",
-        "Yellow-Red": "5YR",
-        "Yellow": "10YR",
-        "Green-Yellow": "2.5Y",
-        "Green": "5G",
-        "Blue-Green": "2.5BG",
-        "Blue": "5B",
-        "Purple-Blue": "5PB",
-        "Purple": "5P",
-        "Purple-Red": "2.5RP"
-    }
-    
-    value = ""
-    if l < 0.25:
-        value = "2.5"
-    elif l < 0.3:
-        value = "3"
-    elif l < 0.4:
-        value = "4"
-    elif l < 0.5:
-        value = "5"
-    elif l < 0.6:
-        value = "6"
-    elif l < 0.7:
-        value = "7"
-    elif l < 0.8:
-        value = "8"
+    def rgb_to_embrapa_munsell(r, g, b):
+    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+    hue = hue * 360
+    lightness = lightness * 100
+    saturation = saturation * 100
+
+    # Aproximar a notação Munsell com base na tabela da Embrapa
+    if lightness < 10:
+        munsell_value = "2.5"
+    elif lightness < 30:
+        munsell_value = "3.5"
+    elif lightness < 50:
+        munsell_value = "4.5"
+    elif lightness < 70:
+        munsell_value = "5.5"
+    elif lightness < 85:
+        munsell_value = "6.5"
     else:
-        value = "10"
-    
-    chroma = ""
-    if s < 0.1:
-        chroma = "0"
-    elif s < 0.2:
-        chroma = "1"
-    elif s < 0.3:
-        chroma = "2"
-    elif s < 0.4:
-        chroma = "3"
-    elif s < 0.5:
-        chroma = "4"
-    elif s < 0.6:
-        chroma = "5"
-    elif s < 0.7:
-        chroma = "6"
-    elif s < 0.8:
-        chroma = "7"
-    elif s < 0.9:
-        chroma = "8"
-    elif s < 1.0:
-        chroma = "9"
-        
-    hue_embrapa = ""
-    if (h >= 335 and h <= 360) or (h >= 0 and h < 20):
-        hue_embrapa = hues_embrapa["Red"]
+        munsell_value = "7.5"
+
+    if saturation < 5:
+        munsell_chroma = "1"
+    elif saturation < 15:
+        munsell_chroma = "2"
+    elif saturation < 30:
+        munsell_chroma = "3"
     else:
-        for hue, (min_hue, max_hue) in hues.items():
-            if h >= min_hue and h < max_hue:
-                hue_embrapa = hues_embrapa[hue]
-                break
-            carta_embrapa = hue_embrapa + value + "/" + chroma
-    return carta_embrapa
+        munsell_chroma = "4"
+
+    if hue < 20:
+        munsell_hue = "10R"
+    elif hue < 50:
+        munsell_hue = "7.5YR"
+    elif hue < 70:
+        munsell_hue = "5YR"
+    elif hue < 150:
+        munsell_hue = "2.5YR"
+    elif hue < 250:
+        munsell_hue = "10YR"
+    else:
+        munsell_hue = "10R"
+
+    embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
+    return embrapa_munsell
+
+
+# Função para calcular a margem de erro e o desvio padrão da clusterização
+def calculate_error_and_std_deviation(Z, center):
+    def calculate_error_and_std_deviation(Z, center):
+    error = np.linalg.norm(Z - center, axis=1)
+    mean_error = np.mean(error)
+    std_deviation = np.std(error)
+    return mean_error, std_deviation
+
+
+# Dicionário e lógica de classificação do solo
+soil_dict = {
+    soil_dict = {
+    "7.5YR5/4": {
+        "sistema_munsell": "7.5YR5/4",
+        "solo_embrapa": "Argissolo Vermelho-Amarelo",
+        "descricao": "Solos com coloração vermelho-amarela, profundos e bem drenados.",
+        "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado, Caatinga e Mata Atlântica",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    },
+    "10YR3/3": {
+        "sistema_munsell": "10YR3/3",
+        "solo_embrapa": "Neossolo Regolítico",
+        "descricao": "Solos pouco desenvolvidos, geralmente rasos e localizados em áreas com relevo acentuado.",
+        "caracteristicas": "Baixa fertilidade natural, baixa capacidade de retenção de água e alta susceptibilidade à erosão.",
+        "vegetacao_tipica": "Caatinga e Cerrado",
+        "cultivos_manejo": "Uso limitado para agricultura. Preferencialmente, deve ser preservado para conservação ambiental e recarga de aquíferos."
+    },
+    "2.5YR5/4": {
+        "sistema_munsell": "2.5YR5/4",
+        "solo_embrapa": "Cambissolo Háplico",
+        "descricao": "Solos de coloração avermelhada, geralmente pouco profundos e com horizonte B incipiente.",
+        "caracteristicas": "Textura média, fertilidade natural moderada e moderada capacidade de retenção de água.",
+        "vegetacao_tipica": "Cerrado, Mata Atlântica e Floresta Amazônica",
+        "cultivos_manejo": "Pode ser cultivado com culturas anuais e perenes, desde que sejam adotadas práticas conservacionistas e adubação adequada."
+    },
+    "7R/0": {
+        "sistema_munsell": "7R/0",
+        "solo_embrapa": "Luvissolo Crômico",
+        "descricao": "Solos de coloração avermelhada a arroxeada, profundos e bem drenados.",
+        "caracteristicas": "Textura argilosa, alta fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Mata Atlântica e Floresta Amazônica",
+        "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
+    }
+}
+
+}
 
 # Carregar e exibir a imagem
 st.title("Classificação de Solo")
@@ -106,6 +119,9 @@ if uploaded_file is not None:
     ret, label, center = cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
     center = np.uint8(center)
 
+    # Calcular a margem de erro e o desvio padrão da clusterização
+    mean_error, std_deviation = calculate_error_and_std_deviation(Z, center)
+
     # Converter a imagem para valores de 8 bits
     res = center[label.flatten()]
     res2 = res.reshape((img.shape))
@@ -117,44 +133,10 @@ if uploaded_file is not None:
     ax.axis('off')
     st.pyplot(fig)
 
-    soil_dict = {
-        "7.5YR5/4": {
-            "sistema_munsell": "7.5YR5/4",
-            "solo_embrapa": "Argissolo Vermelho-Amarelo",
-            "descricao": "Solos com coloração vermelho-amarela, profundos e bem drenados.",
-            "caracteristicas": "Textura média ou argilosa, boa fertilidade natural e alta capacidade de retenção de água.",
-            "vegetacao_tipica": "Cerrado, Caatinga e Mata Atlântica",
-            "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
-        },
-        "10YR3/3": {
-            "sistema_munsell": "10YR3/3",
-            "solo_embrapa": "Neossolo Regolítico",
-            "descricao": "Solos pouco desenvolvidos, geralmente rasos e localizados em áreas com relevo acentuado.",
-            "caracteristicas": "Baixa fertilidade natural, baixa capacidade de retenção de água e alta susceptibilidade à erosão.",
-            "vegetacao_tipica": "Caatinga e Cerrado",
-            "cultivos_manejo": "Uso limitado para agricultura. Preferencialmente, deve ser preservado para conservação ambiental e recarga de aquíferos."
-        },
-        "2.5YR5/4": {
-            "sistema_munsell": "2.5YR5/4",
-            "solo_embrapa": "Cambissolo Háplico",
-            "descricao": "Solos de coloração avermelhada, geralmente pouco profundos e com horizonte B incipiente.",
-            "caracteristicas": "Textura média, fertilidade natural moderada e moderada capacidade de retenção de água.",
-            "vegetacao_tipica": "Cerrado, Mata Atlântica e Floresta Amazônica",
-            "cultivos_manejo": "Pode ser cultivado com culturas anuais e perenes, desde que sejam adotadas práticas conservacionistas e adubação adequada."
-        },
-        "7R/0": {
-            "sistema_munsell": "7R/0",
-            "solo_embrapa": "Luvissolo Crômico",
-            "descricao": "Solos de coloração avermelhada a arroxeada, profundos e bem drenados.",
-            "caracteristicas": "Textura argilosa, alta fertilidade natural e alta capacidade de retenção de água.",
-            "vegetacao_tipica": "Mata Atlântica e Floresta Amazônica",
-            "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
-        }
-}
+    embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
+    soil_type = soil_dict.get(embrapa_notation, "NÃO CADASTRADO")
 
-embrapa_notation = rgb_to_embrapa_munsell(center[0][0], center[0][1], center[0][2])
-soil_type = soil_dict.get(embrapa_notation, "NÃO CADASTRADO")
-
-st.write("Tipo de solo correspondente:")
-st.write(soil_type)
-               
+    st.write("Tipo de solo correspondente:")
+    st.write(soil_type)
+    st.write("Margem de erro da clusterização: {:.2f}".format(mean_error))
+    st.write("Desvio padrão da clusterização: {:.2f}".format(std_deviation))
