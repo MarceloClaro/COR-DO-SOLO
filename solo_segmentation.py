@@ -69,9 +69,6 @@ soil_dict = {
         "cultivos_manejo": "Adequado para culturas perenes e anuais. Recomenda-se o uso de práticas conservacionistas e adubação equilibrada."
     },
     "10YR3/3": {
-            Aqui está o restante do código corrigido:
-
-```python
         "sistema_munsell": "10YR3/3",
         "solo_embrapa": "Neossolo Regolítico",
         "descricao": "Solos pouco desenvolvidos, geralmente rasos e localizados em áreas com relevo acentuado.",
