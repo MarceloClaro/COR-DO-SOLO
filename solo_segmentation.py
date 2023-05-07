@@ -229,7 +229,7 @@ def main():
         image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
 
         cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-        n_clusters = st.slider("Selecione o número de clusters:", 1)
+        n_clusters = 1
         
         original_rgb = st.checkbox("Manter os tons originais da imagem", value=False)
 
