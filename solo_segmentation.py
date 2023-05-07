@@ -17,6 +17,14 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 # Dicionário e lógica de classificação do solo
 # ...
 
+def convert_cluster_centers_to_munsell(cluster_centers):
+    munsell_colors = []
+    for center in cluster_centers:
+        r, g, b = center
+        munsell_color = rgb_to_embrapa_munsell(r, g, b)
+        munsell_colors.append(munsell_color)
+    return munsell_colors
+
 # Streamlit interface
 st.title("Classificação de cores de solo com base na notação Munsell")
 
