@@ -10,6 +10,7 @@ from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 import skimage
+from scipy.stats import shapiro
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
@@ -101,6 +102,14 @@ def calculate_error_and_std_deviation(Z, center):
     mean_error = np.mean(error)
     std_deviation = np.std(error)
     return mean_error, std_deviation
+# Teste de Shapiro-Wilk para verificar normalidade dos dados
+st.subheader("Teste de Shapiro-Wilk:")
+stat, p = shapiro(error)
+if p > 0.05:
+    st.write("Os dados não têm distribuição normal")
+else:
+    st.write("Os dados têm distribuição normal")
+
 
 
 # Dicionário e lógica de classificação do solo
@@ -250,6 +259,9 @@ def main():
             plot_munsell_distribution(munsell_colors)
             plot_error_distribution(image_array, cluster_centers)
             plot_std_deviation_distribution(image_array, cluster_centers)
+            # Exibir informações do App
+            st.subheader("Classificação do solo:")            
+            
 
 
 
