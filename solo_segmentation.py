@@ -36,7 +36,7 @@ def rgb_to_embrapa_munsell(r, g, b):
         munsell_chroma = "4"
         
     if hue < 2:
-        munsell_hue = "10R"
+    munsell_hue = "10R"
     elif hue < 4:
         munsell_hue = "2.5YR"
     elif hue < 7:
