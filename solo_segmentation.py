@@ -432,9 +432,6 @@ def main():
 
 
 
-if __name__ == '__main__':
-    main()
-
 # Exibir informações do App
 st.subheader("Sobre o aplicativo:")
 st.write("""
@@ -474,3 +471,6 @@ st.write("""
 3. Streamlit. [https://www.streamlit.io/]
 4. OpenAI. GPT-4. [https://www.openai.com/]
 """)
+
+if __name__ == "__main__":
+    main()
