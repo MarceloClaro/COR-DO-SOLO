@@ -250,7 +250,9 @@ def main():
                     center = fcm.centers_[0]
                     mean_color = np.mean(cluster_image, axis=0)
                     cluster_centers[i] = np.append(mean_color, center)
-                labels =
+                    mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
+
+                labels
 
 
             munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
