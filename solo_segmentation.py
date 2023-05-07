@@ -182,6 +182,33 @@ def plot_std_deviation_distribution(image_array, cluster_centers):
     plt.title("Distribuição do desvio padrão")
     st.pyplot(plt.gcf())
     plt.clf()
+  
+def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation):
+    # Definindo os dados para o gráfico
+    labels = ['Margem de Erro', 'Desvio Padrão']
+    kmeans_values = [kmeans_error, kmeans_std_deviation]
+    fcm_values = [fcm_error, fcm_std_deviation]
+
+    # Definindo a largura das barras
+    bar_width = 0.35
+
+    # Criando as posições das barras
+    kmeans_positions = [i - bar_width/2 for i in range(len(labels))]
+    fcm_positions = [i + bar_width/2 for i in range(len(labels))]
+
+    # Configurando o gráfico
+    fig, ax = plt.subplots()
+    ax.bar(kmeans_positions, kmeans_values, width=bar_width, label='K-Means')
+    ax.bar(fcm_positions, fcm_values, width=bar_width, label='Fuzzy C-Means')
+
+    # Adicionando títulos e rótulos aos eixos
+    ax.set_ylabel('Valores')
+    ax.set_title('Comparação entre K-Means e Fuzzy C-Means')
+    ax.set_xticks(range(len(labels)))
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    return fig
 
 # Streamlit interface
 def main():
@@ -264,8 +291,11 @@ def main():
             st.write(f"Fuzzy C-Means - Margem de erro: {fcm_error}")
             st.write(f"Fuzzy C-Means - Desvio padrão: {fcm_std_deviation}")
 
+          
             # Exibir comparação em gráficos (opcional)
             st.subheader("Gráficos de comparação:")
+            comparison_chart = plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation)
+            st.pyplot(comparison_chart)
 
 
 
