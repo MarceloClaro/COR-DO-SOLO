@@ -38,11 +38,10 @@ if uploaded_file is not None:
             cluster_centers = kmeans.cluster_centers_
             labels = kmeans.labels_
         elif cluster_method == "Fuzzy C-Means":
-            cntr, u, u0, d, jm, p, fpc = fuzz.cluster.cmeans(
-                image_array.T, n_clusters, 2, error=0.005, maxiter=1000, init=None
-            )
-            labels = np.argmax(u, axis=0)
-            cluster_centers = cntr
+            fcm = FCM(n_clusters=n_clusters)
+            fcm.fit(image_array)
+            labels = fcm.predict(image_array)
+            cluster_centers = fcm.centers
 
         munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
 
