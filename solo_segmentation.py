@@ -93,33 +93,36 @@ def calculate_error_and_std_deviation(Z, center):
     std_deviation = np.std(error)
     return mean_error, std_deviation
 
+
 # Dicionário e lógica de classificação do solo
 soil_dict = {
     "10YR4/4": {
-    "sistema_munsell": "10YR4/4",
-    "solo_embrapa": "Latossolo Vermelho-Amarelo",
-    "descricao": "Solos bem desenvolvidos, com horizonte B latossólico e alta saturação por bases.",
-    "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e boa fertilidade natural.",
-    "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica, Cerrado e Caatinga.",
-    "cultivos_manejo_recomendado": {
-        "recomendados": ["Café", "Citros", "Eucalipto", "Banana"],
-        "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
-        "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-    }
-},
+        "sistema_munsell": "10YR4/4",
+        "solo_embrapa": "Latossolo Vermelho-Amarelo",
+        "descricao": "Solos bem desenvolvidos, com horizonte B latossólico e alta saturação por bases.",
+        "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e boa fertilidade natural.",
+        "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica, Cerrado e Caatinga.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Café", "Citros", "Eucalipto", "Banana"],
+            "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        }
+    },
 
-"2.5YR5/8": {
-    "sistema_munsell": "2.5YR5/8",
-    "solo_embrapa": "Latossolo Vermelho",
-    "descricao": "Solos profundos, com horizonte B latossólico e alta saturação por bases.",
-    "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e alta fertilidade natural.",
-    "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
-    "cultivos_manejo_recomendado": {
-        "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
-        "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
-        "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+    "2.5YR5/8": {
+        "sistema_munsell": "2.5YR5/8",
+        "solo_embrapa": "Latossolo Vermelho",
+        "descricao": "Solos profundos, com horizonte B latossólico e alta saturação por bases.",
+        "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e alta fertilidade natural.",
+        "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
+            "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        }
     }
 }
+
 
 def convert_cluster_centers_to_munsell(cluster_centers):
     munsell_colors = []
@@ -129,42 +132,59 @@ def convert_cluster_centers_to_munsell(cluster_centers):
         munsell_colors.append(munsell_color)
     return munsell_colors
 
+
 def display_munsell_colors(munsell_colors):
     st.subheader("Cores Munsell:")
     for color in munsell_colors:
         st.write(color)
 
+
+# Função para criar uma imagem segmentada com base na clusterização
+def create_segmented_image(image_array, labels, cluster_centers):
+    num_clusters = cluster_centers.shape[0]
+    segmented_array = np.zeros_like(image_array)
+    segmented_image = segmented_array.reshape((50, 50, 3))
+    segmented_image = (segmented_image * 255).astype(np.uint8)
+    return segmented_image
+
+
+
 # Streamlit interface
-st.title("Classificação de cores de solo com base na notação Munsell")
+def main():
+    st.title("Classificação de cores de solo com base na notação Munsell")
 
-uploaded_file = st.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
-if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-    resized_image = image.resize((50, 50), Image.ANTIALIAS)
-    image_array = np.array(resized_image)
-    image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
+    uploaded_file = st.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Imagem de solo carregada", use_column_width=True)
+        resized_image = image.resize((50, 50), Image.ANTIALIAS)
+        image_array = np.array(resized_image)
+        image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
 
-    cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-    n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
-    
-    if st.button("Classificar cores"):
-        if cluster_method == "K-Means":
-            kmeans = KMeans(n_clusters=n_clusters)
-            kmeans.fit(image_array)
-            cluster_centers = kmeans.cluster_centers_
-            labels = kmeans.labels_
-        elif cluster_method == "Fuzzy C-Means":
-            fcm = FCM(n_clusters=n_clusters)
-            fcm.fit(image_array)
-            labels = fcm.predict(image_array)
-            cluster_centers = fcm.centers
+        cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
+        n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
 
-        munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
+        if st.button("Classificar cores"):
+            if cluster_method == "K-Means":
+                kmeans = KMeans(n_clusters=n_clusters)
+                kmeans.fit(image_array)
+                cluster_centers = kmeans.cluster_centers_
+                labels = kmeans.labels_
+            elif cluster_method == "Fuzzy C-Means":
+                fcm = FCM(n_clusters=n_clusters)
+                fcm.fit(image_array)
+                labels = fcm.predict(image_array)
+                cluster_centers = fcm.centers
 
-        display_munsell_colors(munsell_colors)
+            munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
 
-        segmented_image = create_segmented_image(image_array, labels, cluster_centers)
-        st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
-if name == 'main':
-main()
+            display_munsell_colors(munsell_colors)
+
+            segmented_image = create_segmented_image(image_array, labels, cluster_centers)
+            st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
+
+
+if __name__ == '__main__':
+    main()
+
+
