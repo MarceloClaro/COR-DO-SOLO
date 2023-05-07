@@ -164,7 +164,7 @@ def plot_munsell_distribution(munsell_colors):
     plt.ylabel("Frequência")
     plt.title("Distribuição das cores Munsell")
     plt.xticks(rotation=45)
-    st.pyplot(plt.gcf())
+    st.pyplot(plt.clf())
     plt.clf()
 
 def plot_error_distribution(image_array, cluster_centers):
