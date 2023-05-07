@@ -13,7 +13,7 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 def rgb_to_embrapa_munsell(r, g, b):
     hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
     hue = hue * 360
-    lightness = lightness * 100
+    value = lightness * 100
     saturation = saturation * 100
 
     # Aproximar a notação Munsell com base na tabela da Embrapa
