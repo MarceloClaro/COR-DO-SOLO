@@ -285,7 +285,4 @@ st.write("4. OpenAI. GPT-4. [https://www.openai.com/]")
 if name == 'main':
 main()
 
-if name == 'main':
-main()
-
             
