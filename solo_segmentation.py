@@ -8,7 +8,35 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
+import math
 
+
+def munsell_approximation(hue, value, chroma):
+    h = (hue / 360) * 2 * math.pi
+    v = value / 100
+    c = chroma / 100
+
+    x = v * (1 + c * math.cos(h))
+    y = v * (1 + c * math.sin(h))
+
+    r, g, b = 0, 0, 0
+
+    if h < 2 * math.pi / 3:
+        b = y
+        r = x - b
+        g = 1 - r - b
+    elif h < 4 * math.pi / 3:
+        h = h - 2 * math.pi / 3
+        r = y
+        g = x - r
+        b = 1 - r - g
+    else:
+        h = h - 4 * math.pi / 3
+        g = y
+        b = x - g
+        r = 1 - g - b
+
+    return r * 255, g * 255, b * 255
 
 def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
     if original_rgb:
@@ -90,7 +118,19 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
         munsell_hue = "7.5B"    
     embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
     return embrapa_munsell, original_rgb
+    
+    # Extract hue, value, and chroma as floats
+    hue_float = float(munsell_hue[:-1])
+    value_float = float(munsell_value)
+    chroma_float = float(munsell_chroma)
 
+    # Convert the Munsell color to RGB using the custom approximation function
+    converted_rgb = munsell_approximation(hue_float, value_float, chroma_float)
+
+    # Make sure the RGB values are integers
+    converted_rgb = tuple(map(int, converted_rgb))
+
+    return converted_rgb
 
    
 # Função para criar uma imagem segmentada com base na clusterização
