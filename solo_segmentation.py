@@ -10,8 +10,12 @@ from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
-def rgb_to_embrapa_munsell(r, g, b):
-    hue, value, chroma = colorsys.rgb_to_hvc((r+1)/256, (g+1)/256, (b+1)/256)
+hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+    hue = hue * 360
+    lightness = lightness * 100
+    saturation = saturation * 100
+
+    # Aproximar a notação Munsell com base na tabela da Embrapa
     
     if value < 2:
         munsell_value = "2.5"
