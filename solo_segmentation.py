@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 import cv2
@@ -11,26 +10,31 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
-    hue, value, chroma = colorsys.rgb_to_hvc(r/255, g/255, b/255)
-    
-    if value < 2:
+    # Converter de RGB para HLS
+    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+    hue = hue * 360
+    lightness = lightness * 100
+    saturation = saturation * 100
+
+    # Aproximar a notação Munsell com base na tabela da Embrapa
+    if lightness < 2:
         munsell_value = "2.5"
-    elif value < 4:
+    elif lightness < 4:
         munsell_value = "3.5"
-    elif value < 6:
+    elif lightness < 6:
         munsell_value = "4.5"
-    elif value < 8:
+    elif lightness < 8:
         munsell_value = "5.5"
-    elif value < 9.5:
+    elif lightness < 9.5:
         munsell_value = "6.5"
     else:
         munsell_value = "7.5"
         
-    if chroma < 1:
+    if saturation < 1:
         munsell_chroma = "1"
-    elif chroma < 2:
+    elif saturation < 2:
         munsell_chroma = "2"
-    elif chroma < 3:
+    elif saturation < 3:
         munsell_chroma = "3"
     else:
         munsell_chroma = "4"
@@ -76,97 +80,67 @@ def rgb_to_embrapa_munsell(r, g, b):
     elif hue < 290:
         munsell_hue = "7.5BG"
     elif hue < 310:
-        munsell_hue = "10BG"
-    elif hue < 340:
+                munsell_hue = "10BG"
+    elif hue < 330:
         munsell_hue = "2.5B"
-    elif hue < 360:
+    elif hue < 350:
         munsell_hue = "5B"
-        
-    embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
-    return embrapa_munsell
+    elif hue < 370:
+        munsell_hue = "7.5B"
+    elif hue < 390:
+        munsell_hue = "10B"
+    elif hue < 410:
+        munsell_hue = "2.5PB"
+    elif hue < 430:
+        munsell_hue = "5PB"
+    elif hue < 450:
+        munsell_hue = "7.5PB"
+    elif hue < 470:
+        munsell_hue = "10PB"
+    else:
+        munsell_hue = "10P"
 
+    return f"{munsell_hue} {munsell_value}/{munsell_chroma}"
 
-# Função para calcular a margem de erro e o desvio padrão da clusterização
-def calculate_error_and_std_deviation(Z, center):
-    error = np.linalg.norm(Z - center, axis=1)
-    mean_error = np.mean(error)
-    std_deviation = np.std(error)
-    return mean_error, std_deviation
+# Função para carregar e exibir a imagem
+def load_image(image_file):
+    img = Image.open(image_file)
+    img = np.array(img)
+    st.image(img, caption='Imagem carregada', use_column_width=True)
+    return img
 
-# Dicionário e lógica de classificação do solo
-soil_dict = {
-"10YR4/4": {
-    "sistema_munsell": "10YR4/4",
-    "solo_embrapa": "Latossolo Vermelho-Amarelo",
-    "descricao": "Solos bem desenvolvidos, com horizonte B latossólico e alta saturação por bases.",
-    "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e boa fertilidade natural.",
-    "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica, Cerrado e Caatinga.",
-    "cultivos_manejo_recomendado": {
-        "recomendados": ["Café", "Citros", "Eucalipto", "Banana"],
-        "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
-        "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-    }
-},
+st.title("Classificador de Cores de Solo Embrapa")
+uploaded_file = st.file_uploader("Escolha uma imagem de solo", type=['jpg', 'jpeg', 'png'])
 
-"2.5YR5/8": {
-    "sistema_munsell": "2.5YR5/8",
-    "solo_embrapa": "Latossolo Vermelho",
-    "descricao": "Solos profundos, com horizonte B latossólico e alta saturação por bases.",
-    "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e alta fertilidade natural.",
-    "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
-    "cultivos_manejo_recomendado": {
-        "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
-        "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
-        "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-    }
-}
-
-def convert_cluster_centers_to_munsell(cluster_centers):
-    munsell_colors = []
-    for center in cluster_centers:
-        r, g, b = center
-        munsell_color = rgb_to_embrapa_munsell(r, g, b)
-        munsell_colors.append(munsell_color)
-    return munsell_colors
-
-def display_munsell_colors(munsell_colors):
-    st.subheader("Cores Munsell:")
-    for color in munsell_colors:
-        st.write(color)
-
-# Streamlit interface
-st.title("Classificação de cores de solo com base na notação Munsell")
-
-uploaded_file = st.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-    resized_image = image.resize((50, 50), Image.ANTIALIAS)
-    image_array = np.array(resized_image)
-    image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
+    img = load_image(uploaded_file)
 
-    cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-    n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
-    
-    if st.button("Classificar cores"):
-        if cluster_method == "K-Means":
-            kmeans = KMeans(n_clusters=n_clusters)
-            kmeans.fit(image_array)
-            cluster_centers = kmeans.cluster_centers_
-            labels = kmeans.labels_
-        elif cluster_method == "Fuzzy C-Means":
-            fcm = FCM(n_clusters=n_clusters)
-            fcm.fit(image_array)
-            labels = fcm.predict(image_array)
-            cluster_centers = fcm.centers
+    # Pré-processamento da imagem
+    img_resized = cv2.resize(img, (100, 100), interpolation=cv2.INTER_AREA)
+    img_reshaped = img_resized.reshape(img_resized.shape[0] * img_resized.shape[1], img_resized.shape[2])
 
-        munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
+    # Agrupamento de cores usando K-means
+    kmeans = KMeans(n_clusters=5)
+    kmeans.fit(img_reshaped)
+    colors = kmeans.cluster_centers_
 
-        display_munsell_colors(munsell_colors)
+    # Agrupamento de cores usando FCM
+    fcm = FCM(n_clusters=5)
+    fcm.fit(img_reshaped)
+    fcm_colors = fcm.centers_
 
-        segmented_image = create_segmented_image(image_array, labels, cluster_centers, original_rgb=original_rgb)
-        st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
+    # Conversão das cores para Munsell e exibição
+    st.header("Cores Munsell usando K-means")
+    for idx, color in enumerate(colors):
+        rgb_color = tuple(map(int, color))
+        munsell_color = rgb_to_embrapa_munsell(*rgb_color)
+        st.write(f"Cor {idx + 1}: {munsell_color}")
+        st.write(f"Cor correspondente em RGB: {rgb_color}")
 
- 
-if name == 'main':
-main()
+    st.header("Cores Munsell usando FCM")
+    for idx, color in enumerate(fcm_colors):
+        rgb_color = tuple(map(int, color))
+        munsell_color = rgb_to_embrapa_munsell(*rgb_color)
+        st.write(f"Cor {idx + 1}: {munsell_color}")
+        st.write(f"Cor correspondente em RGB: {rgb_color}")
+
