@@ -1,4 +1,5 @@
 
+
 import streamlit as st
 import numpy as np
 import cv2
@@ -8,6 +9,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
+import skimage
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
@@ -164,7 +166,7 @@ def plot_munsell_distribution(munsell_colors):
     plt.ylabel("Frequência")
     plt.title("Distribuição das cores Munsell")
     plt.xticks(rotation=45)
-    st.pyplot(plt.clf())
+    st.pyplot(plt.gcf())
     plt.clf()
 
 def plot_error_distribution(image_array, cluster_centers):
@@ -186,6 +188,7 @@ def plot_std_deviation_distribution(image_array, cluster_centers):
     plt.title("Distribuição do desvio padrão")
     st.pyplot(plt.gcf())
     plt.clf()
+
 
 # Streamlit interface
 def main():
