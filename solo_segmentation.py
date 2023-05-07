@@ -253,11 +253,11 @@ def main():
                     st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
                     st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
                     st.write("\n")
-        # Exibir gráficos
-        st.subheader("Gráficos:")
-        plot_munsell_distribution(munsell_colors)
-        plot_error_distribution(image_array, cluster_centers)
-        plot_std_deviation_distribution(image_array, cluster_centers)
+                    # Exibir gráficos
+                    st.subheader("Gráficos:")
+                    plot_munsell_distribution(munsell_colors)
+                    plot_error_distribution(image_array, cluster_centers)
+                    plot_std_deviation_distribution(image_array, cluster_centers)
 
 
 if __name__ == '__main__':
