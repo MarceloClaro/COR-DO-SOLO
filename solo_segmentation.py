@@ -254,17 +254,17 @@ def main():
                 st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
                 st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
                 st.write("\n")
-                # Exibir gráficos
-                st.subheader("Gráficos:")
-                plot_munsell_distribution(munsell_colors)
-                plot_error_distribution(image_array, cluster_centers)
-                plot_std_deviation_distribution(image_array, cluster_centers)
+         # Exibir gráficos
+         st.subheader("Gráficos:")
+         plot_munsell_distribution(munsell_colors)
+         plot_error_distribution(image_array, cluster_centers)
+         plot_std_deviation_distribution(image_array, cluster_centers)
 
-                # Exibir informações do App
-                st.subheader("Sobre o aplicativo:")
-                st.write("Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.")
-                st.subheader("Como usar:")
-                st.write("1. Faça o upload de uma imagem do solo que você deseja analisar.")
+# Exibir informações do App
+st.subheader("Sobre o aplicativo:")
+st.write("Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.")
+st.subheader("Como usar:")
+st.write("1. Faça o upload de uma imagem do solo que você deseja analisar.")
                 st.write("2. Selecione o método de clusterização que você deseja usar (K-Means ou Fuzzy C-Means).")
                 st.write("3. Selecione o número de clusters que você deseja usar na análise.")
                 st.write("4. Clique no botão 'Classificar cores' para iniciar a análise.")
@@ -281,7 +281,8 @@ def main():
                 st.write("1. Munsell Soil Color Charts. [https://www.munsell.com/color-services/color-standards/soil-color-charts/]")
                 st.write("2. Embrapa. Sistema Brasileiro de Classificação de Solos. [https://www.embrapa.br/solos/sistema-brasileiro-de-classificacao-de-solos]")
                 st.write("3. Streamlit. [https://www.streamlit.io/]")
-                st.write("4. OpenAI. GPT-4. [https://www.openai.com/]")
+                st.write("4. OpenAI. GPT-4. [https://www.openai.com/]")                
+               
 
 if __name__ == '__main__':
     main()
