@@ -80,7 +80,7 @@ if uploaded_file is not None:
     cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
     n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
     if st.button("Classificar cores"):
-    if cluster_method == "K-Means":
+if cluster_method == "K-Means":
         kmeans = KMeans(n_clusters=n_clusters, random_state=42)
         kmeans.fit(image_array)
         cluster_centers = kmeans.cluster_centers_
