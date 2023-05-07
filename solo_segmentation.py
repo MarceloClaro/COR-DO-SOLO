@@ -10,7 +10,7 @@ from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
-hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
     hue = hue * 360
     lightness = lightness * 100
     saturation = saturation * 100
