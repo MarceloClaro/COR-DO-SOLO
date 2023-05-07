@@ -229,6 +229,7 @@ soil_dict = {
         "teor_nutrientes": "Baixo a médio",
         "manejo_inadequado": {
             "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
     },
     "2.5YR 4/4": {
         "sistema_munsell": "2.5YR 4/4",
