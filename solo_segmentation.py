@@ -55,7 +55,11 @@ def rgb_to_embrapa_munsell(r, g, b):
     return embrapa_munsell
 
 # Função para calcular a margem de erro e o desvio padrão da clusterização
-# ...
+def calculate_error_and_std_deviation(Z, center):
+    error = np.linalg.norm(Z - center, axis=1)
+    mean_error = np.mean(error)
+    std_deviation = np.std(error)
+    return mean_error, std_deviation
 
 # Dicionário e lógica de classificação do solo
 # ...
