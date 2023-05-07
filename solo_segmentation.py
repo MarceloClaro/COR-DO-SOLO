@@ -1,4 +1,4 @@
-#APP cor de solo
+#APP cor de solo Streamlit
 import streamlit as st
 import numpy as np
 import cv2
@@ -105,21 +105,8 @@ def calculate_error_and_std_deviation(Z, center):
 
 # Dicionário e lógica de classificação do solo
 soil_dict = {
-    "2.5GY 7.5/4": {
-        "sistema_munsell": "2.5GY 7.5/4",
-        "solo_embrapa": "Latossolo Vermelho-Amarelo",
-        "descricao": "Solos bem desenvolvidos, com horizonte B latossólico e alta saturação por bases.",
-        "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e boa fertilidade natural.",
-        "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica, Cerrado e Caatinga.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Café", "Citros", "Eucalipto", "Banana"],
-            "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        }
-    },
-
-    "2.5YR5/8": {
-        "sistema_munsell": "2.5YR5/8",
+    "2.5YR 5/8": {
+        "sistema_munsell": "2.5YR 5/8",
         "solo_embrapa": "Latossolo Vermelho",
         "descricao": "Solos profundos, com horizonte B latossólico e alta saturação por bases.",
         "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e alta fertilidade natural.",
@@ -128,6 +115,137 @@ soil_dict = {
             "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
             "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
             "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "5.5 - 6.0",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Alto",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
+    },
+    "7.5YR 6/6": {
+        "sistema_munsell": "7.5YR 6/6",
+        "solo_embrapa": "Argissolo Amarelo",
+        "descricao": "Solos com horizonte B textural e média a alta saturação por alumínio.",
+        "caracteristicas": "Textura média a argilosa, moderada capacidade de retenção de água e média fertilidade natural.",
+        "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Milho", "Feijão", "Mandioca", "Cana-de-açúcar"],
+            "condicionantes": "Calagem e adubação podem ser necessárias para melhorar a fertilidade e reduzir a acidez do solo.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "4.5 - 5.5",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Médio",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
+    },
+    "10YR 7/2": {
+        "sistema_munsell": "10YR 7/2",
+        "solo_embrapa": "Neossolo Quartzarênico",
+        "descricao": "Solos pouco desenvolvidos, com baixa capacidade de retenção de água e baixa fertilidade natural.",
+        "caracteristicas": "Textura arenosa, drenagem rápida e susceptível à erosão.",
+        "vegetacao_tipica": "Vegetação de restinga, caatinga e cerrado.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Coco", "Cajueiro", "Pinus", "Eucalipto"],
+            "condicionantes": "Irrigação e adubação são necessárias para melhorar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "5.0 - 6.0",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Baixo",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
+    },
+    "10YR 5/4": {
+        "sistema_munsell": "10YR 5/4",
+        "solo_embrapa": "Cambissolo Háplico",
+        "descricao": "Solos com horizonte B incipiente e moderada capacidade de retenção de água.",
+        "caracteristicas": "Textura média a argilosa, moderada fertilidade natural e susceptível à erosão.",
+        "vegetacao_tipica": "Mata Atlântica, cerrado e caatinga.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Milho", "Feijão", "Mandioca", "Hortaliças"],
+            "condicionantes": "Adubação e correção do solo podem ser necessárias para melhorar a fertilidade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "5.5 - 6.5",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Médio",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
+    },
+    "2.5YR 4/6": {
+        "sistema_munsell": "2.5YR 4/6",
+        "solo_embrapa": "Nitossolo Vermelho",
+        "descricao": "Solos bem desenvolvidos, com horizonte B nítico e alta capacidade de retenção de água.",
+        "caracteristicas": "Textura argilosa, alta fertilidade natural e boa capacidade de armazenamento de água.",
+        "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
+            "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "6.0 - 6.5",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Alto",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
+    },
+    "10YR 6/3": {
+        "sistema_munsell": "10YR 6/3",
+        "solo_embrapa": "Planossolo",
+        "descricao": "Solos com horizonte B textural e baixa a média capacidade de retenção de água.",
+        "caracteristicas": "Textura média a argilosa, moderada fertilidade natural e susceptível à encharcamento.",
+        "vegetacao_tipica": "Cerrado, campos úmidos e áreas alagáveis.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Arroz", "Pastagens", "Canola", "Soja"],
+            "condicionantes": "Drenagem e adubação podem ser necessárias para melhorar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "5.0 - 6.0",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Médio",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+        }
+    },
+    "10YR 4/1": {
+        "sistema_munsell": "10YR 4/1",
+        "solo_embrapa": "Gleissolo",
+        "descricao": "Solos hidromórficos, geralmente encharcados, com horizonte B textural ou hístico.",
+        "caracteristicas": "Textura variável, baixa a média fertilidade natural e alta capacidade de retenção de água.",
+        "vegetacao_tipica": "Áreas alagáveis, várzeas e banhados.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Arroz", "Taro", "Açaí", "Pupunha"],
+            "condicionantes": "Drenagem e adubação podem ser necessárias para melhorar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "4.5 - 6.0",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Baixo a médio",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+    },
+    "2.5YR 4/4": {
+        "sistema_munsell": "2.5YR 4/4",
+        "solo_embrapa": "Vertissolo",
+        "descricao": "Solos com horizonte B vértico, caracterizados por grande quantidade de argila expansiva.",
+        "caracteristicas": "Textura argilosa, alta capacidade de retenção de água e média a alta fertilidade natural.",
+        "vegetacao_tipica": "Cerrado, Caatinga e áreas de transição.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Algodão", "Milho", "Sorgo", "Pastagens"],
+            "condicionantes": "Correção do solo e adubação podem ser necessárias para melhorar a produtividade.",
+            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "5.5 - 6.5",
+        "condutividade_eletrica": "Baixa",
+        "teor_nutrientes": "Médio a alto",
+        "manejo_inadequado": {
+            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
         }
     }
 }
@@ -251,7 +369,7 @@ def main():
             display_munsell_colors(munsell_colors)
 
             segmented_image = create_segmented_image(image_array, labels, cluster_centers)
-            st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
+            #st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
                         # Exibir margem de erro e desvio padrão
             mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
             st.subheader("Margem de erro e desvio padrão:")
@@ -272,7 +390,13 @@ def main():
                     st.write(f"  - Recomendados: {', '.join(soil_info['cultivos_manejo_recomendado']['recomendados'])}")
                     st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
                     st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
+                    st.write(f"pH: {soil_info['ph']}")
+                    st.write(f"Condutividade elétrica: {soil_info['condutividade_eletrica']}")
+                    st.write(f"Teor de nutrientes: {soil_info['teor_nutrientes']}")
+                    st.write("Manejo inadequado:")
+                    st.write(f"  - Consequências: {', '.join(soil_info['manejo_inadequado']['consequencias'])}")
                     st.write("\n")
+
             # Exibir gráficos
             st.subheader("Gráficos:")
             plot_munsell_distribution(munsell_colors)
