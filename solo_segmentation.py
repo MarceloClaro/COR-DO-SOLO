@@ -8,44 +8,15 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
-import math
 
-
-def munsell_approximation(hue, value, chroma):
-    h = (hue / 360) * 2 * math.pi
-    v = value / 100
-    c = chroma / 100
-
-    x = v * (1 + c * math.cos(h))
-    y = v * (1 + c * math.sin(h))
-
-    r, g, b = 0, 0, 0
-
-    if h < 2 * math.pi / 3:
-        b = y
-        r = x - b
-        g = 1 - r - b
-    elif h < 4 * math.pi / 3:
-        h = h - 2 * math.pi / 3
-        r = y
-        g = x - r
-        b = 1 - r - g
-    else:
-        h = h - 4 * math.pi / 3
-        g = y
-        b = x - g
-        r = 1 - g - b
-
-    return r * 255, g * 255, b * 255
-
-def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
-    if original_rgb:
-        return r, g, b
-    hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
+def rgb_to_embrapa_munsell(r, g, b):
+    # Converter de RGB para HLS
+    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
     hue = hue * 360
     lightness = lightness * 100
     saturation = saturation * 100
-
+    # Aproximar a notação Munsell com base na tabela da Embrapa
     if lightness < 2:
         munsell_value = "2.5"
     elif lightness < 4:
@@ -58,7 +29,7 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
         munsell_value = "6.5"
     else:
         munsell_value = "7.5"
-
+        
     if saturation < 1:
         munsell_chroma = "1"
     elif saturation < 2:
@@ -67,7 +38,7 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
         munsell_chroma = "3"
     else:
         munsell_chroma = "4"
-
+        
     if hue < 2:
         munsell_hue = "10R"
     elif hue < 4:
@@ -115,47 +86,12 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
     elif hue < 340:
         munsell_hue = "5B"
     else:
-        munsell_hue = "7.5B"    
+        munsell_hue = "7.5B"  
+        
     embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
-    return embrapa_munsell, original_rgb
-    
-    # Extract hue, value, and chroma as floats
-    hue_float = float(munsell_hue[:-1])
-    value_float = float(munsell_value)
-    chroma_float = float(munsell_chroma)
+    return embrapa_munsell
 
-    # Convert the Munsell color to RGB using the custom approximation function
-    converted_rgb = munsell_approximation(hue_float, value_float, chroma_float)
 
-    # Make sure the RGB values are integers
-    converted_rgb = tuple(map(int, converted_rgb))
-
-    return converted_rgb
-
-   
-# Função para criar uma imagem segmentada com base na clusterização
-def create_segmented_image(image_array, labels, cluster_centers, original_colors):
-    num_clusters = cluster_centers.shape[0]
-    segmented_array = np.zeros_like(image_array)
-
-    for i in range(len(image_array)):
-        segmented_array[i] = rgb_to_embrapa_munsell(*cluster_centers[labels[i]], original_rgb=original_rgb)
-
-    segmented_image = segmented_array.reshape((50, 50, 3))
-    segmented_image = (segmented_image * 255).astype(np.uint8)
-    return segmented_image
-
-def convert_cluster_centers_to_munsell(cluster_centers):
-    munsell_colors = []
-    original_colors = []
-
-    for center in cluster_centers:
-        r, g, b = center
-        munsell_color, original_rgb = rgb_to_embrapa_munsell(r, g, b)
-        munsell_colors.append(munsell_color)
-        original_colors.append(original_rgb)
-
-    return munsell_colors, original_colors
 
 # Função para calcular a margem de erro e o desvio padrão da clusterização
 def calculate_error_and_std_deviation(Z, center):
@@ -211,11 +147,9 @@ def display_munsell_colors(munsell_colors):
 
 
 # Função para criar uma imagem segmentada com base na clusterização
-def create_segmented_image(image_array, labels, cluster_centers, original_rgb=False):
+def create_segmented_image(image_array, labels, cluster_centers):
     num_clusters = cluster_centers.shape[0]
     segmented_array = np.zeros_like(image_array)
-    for i in range(len(labels)):
-        segmented_array[i] = rgb_to_embrapa_munsell(*cluster_centers[labels[i]], original_rgb=original_rgb)
     segmented_image = segmented_array.reshape((50, 50, 3))
     segmented_image = (segmented_image * 255).astype(np.uint8)
     return segmented_image
@@ -249,33 +183,6 @@ def plot_std_deviation_distribution(image_array, cluster_centers):
     plt.title("Distribuição do desvio padrão")
     st.pyplot(plt.gcf())
     plt.clf()
-  
-def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation):
-    # Definindo os dados para o gráfico
-    labels = ['Margem de Erro', 'Desvio Padrão']
-    kmeans_values = [kmeans_error, kmeans_std_deviation]
-    fcm_values = [fcm_error, fcm_std_deviation]
-
-    # Definindo a largura das barras
-    bar_width = 0.35
-
-    # Criando as posições das barras
-    kmeans_positions = [i - bar_width/2 for i in range(len(labels))]
-    fcm_positions = [i + bar_width/2 for i in range(len(labels))]
-
-    # Configurando o gráfico
-    fig, ax = plt.subplots()
-    ax.bar(kmeans_positions, kmeans_values, width=bar_width, label='K-Means')
-    ax.bar(fcm_positions, fcm_values, width=bar_width, label='Fuzzy C-Means')
-
-    # Adicionando títulos e rótulos aos eixos
-    ax.set_ylabel('Valores')
-    ax.set_title('Comparação entre K-Means e Fuzzy C-Means')
-    ax.set_xticks(range(len(labels)))
-    ax.set_xticklabels(labels)
-    ax.legend()
-
-    return fig
 
 # Streamlit interface
 def main():
@@ -285,15 +192,13 @@ def main():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-        resized_image = image.resize((50, 50), Image.LANCZOS)
+        resized_image = image.resize((50, 50), Image.ANTIALIAS)
         image_array = np.array(resized_image)
         image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
 
         cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-        n_clusters = st.slider("Selecione o número de clusters:", 1)
+        n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
         
-        original_rgb = st.checkbox("Manter os tons originais da imagem", value=False)
-
 
         if st.button("Classificar cores"):
             if cluster_method == "K-Means":
@@ -339,37 +244,10 @@ def main():
             plot_munsell_distribution(munsell_colors)
             plot_error_distribution(image_array, cluster_centers)
             plot_std_deviation_distribution(image_array, cluster_centers)
-            # Aplicando K-Means
-            kmeans = KMeans(n_clusters=n_clusters)
-            kmeans.fit(image_array)
-            kmeans_centers = kmeans.cluster_centers_
-            kmeans_labels = kmeans.labels_
-            kmeans_error, kmeans_std_deviation = calculate_error_and_std_deviation(image_array, kmeans_centers)
-
-            # Aplicando Fuzzy C-Means
-            fcm = FCM(n_clusters=n_clusters)
-            fcm.fit(image_array)
-            fcm_labels = fcm.predict(image_array)
-            fcm_centers = fcm.centers
-            fcm_error, fcm_std_deviation = calculate_error_and_std_deviation(image_array, fcm_centers)
-
-            # Exibir margem de erro e desvio padrão
-            st.subheader("Margem de erro e desvio padrão:")
-            st.write(f"K-Means - Margem de erro: {kmeans_error}")
-            st.write(f"K-Means - Desvio padrão: {kmeans_std_deviation}")
-            st.write(f"Fuzzy C-Means - Margem de erro: {fcm_error}")
-            st.write(f"Fuzzy C-Means - Desvio padrão: {fcm_std_deviation}")
-
-          
-            # Exibir comparação em gráficos (opcional)
-            st.subheader("Gráficos de comparação:")
-            comparison_chart = plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation)
-            st.pyplot(comparison_chart)
 
 
 
 
 if __name__ == '__main__':
     main()
-
 
