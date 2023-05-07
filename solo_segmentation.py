@@ -102,13 +102,24 @@ def calculate_error_and_std_deviation(Z, center):
     mean_error = np.mean(error)
     std_deviation = np.std(error)
     return mean_error, std_deviation
-# Teste de Shapiro-Wilk para verificar normalidade dos dados
-st.subheader("Teste de Shapiro-Wilk:")
-stat, p = shapiro(error)
+# Aplicar teste de Shapiro-Wilk aos dados de entrada da clusterização
+st.subheader("Teste de normalidade:")
+stat, p = shapiro(image_array[:, 0])
 if p > 0.05:
-    st.write("Os dados não têm distribuição normal")
+    st.write(f"A distribuição dos dados de entrada é normal (p={p}).")
 else:
-    st.write("Os dados têm distribuição normal")
+    st.write(f"A distribuição dos dados de entrada não é normal (p={p}).")
+from scipy.stats import shapiro
+
+# Aplicar teste de Shapiro-Wilk aos dados de entrada da clusterização
+st.subheader("Teste de normalidade:")
+for i, color in enumerate(["R", "G", "B"]):
+    stat, p = shapiro(image_array[:, i])
+    if p > 0.05:
+        st.write(f"A distribuição dos dados de entrada no canal {color} é normal (p={p}).")
+    else:
+        st.write(f"A distribuição dos dados de entrada no canal {color} não é normal (p={p}).")
+
 
 
 
