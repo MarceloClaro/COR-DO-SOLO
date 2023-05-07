@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 
-# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
+# Função para converter cores RGB em notação Munsell conforme as 160 classificações de cores de solo da Embrapa
 # ...
 
 # Função para calcular a margem de erro e o desvio padrão da clusterização
