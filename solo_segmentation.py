@@ -172,14 +172,16 @@ def plot_error_distribution(image_array, cluster_centers):
     st.pyplot(plt.gcf())
     plt.clf()
 
-def display_error_and_std_deviation(image_array, cluster_centers):
-    st.subheader("Margem de erro e desvio padrão:")
-    for i, center in enumerate(cluster_centers):
-        mean_error, std_deviation = calculate_error_and_std_deviation(image_array, center)
-        st.write(f"Cluster {i + 1}:")
-        st.write(f"Margem de erro: {mean_error:.2f}")
-        st.write(f"Desvio padrão: {std_deviation:.2f}")
-
+def plot_std_deviation_distribution(image_array, cluster_centers):
+    error = np.linalg.norm(image_array - cluster_centers, axis=1)
+    std_deviation = np.std(error)
+    plt.hist(error, bins='auto', density=True)
+    plt.axvline(std_deviation, color='r', linestyle='dashed', linewidth=2)
+    plt.xlabel("Desvio padrão")
+    plt.ylabel("Frequência")
+    plt.title("Distribuição do desvio padrão")
+    st.pyplot(plt.gcf())
+    plt.clf()
 
 # Streamlit interface
 def main():
