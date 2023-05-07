@@ -25,6 +25,11 @@ def convert_cluster_centers_to_munsell(cluster_centers):
         munsell_colors.append(munsell_color)
     return munsell_colors
 
+def display_munsell_colors(munsell_colors):
+    st.subheader("Cores Munsell:")
+    for color in munsell_colors:
+        st.write(color)
+
 # Streamlit interface
 st.title("Classificação de cores de solo com base na notação Munsell")
 
