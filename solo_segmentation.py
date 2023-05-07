@@ -189,17 +189,34 @@ def plot_std_deviation_distribution(image_array, cluster_centers):
     st.pyplot(plt.gcf())
     plt.clf()
 
-def glcm_features(gray_image, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4], levels=256):
-    glcm = greycomatrix(gray_image, distances, angles, levels, symmetric=True, normed=True)
-    contrast = greycoprops(glcm, 'contrast')
-    dissimilarity = greycoprops(glcm, 'dissimilarity')
-    homogeneity = greycoprops(glcm, 'homogeneity')
-    asm = greycoprops(glcm, 'ASM')
-    energy = greycoprops(glcm, 'energy')
-    correlation = greycoprops(glcm, 'correlation')
-    
-    return contrast, dissimilarity, homogeneity, asm, energy, correlation
+def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation):
+    # Definindo os dados para o gráfico
+    labels = ['Margem de Erro', 'Desvio Padrão']
+    kmeans_values = [kmeans_error, kmeans_std_deviation]
+    fcm_values = [fcm_error, fcm_std_deviation]
 
+    # Definindo a largura das barras
+    bar_width = 0.35
+
+    # Criando as posições das barras
+    kmeans_positions = [i - bar_width/2 for i in range(len(labels))]
+    fcm_positions = [i + bar_width/2 for i in range(len(labels))]
+
+    # Configurando o gráfico
+    fig, ax = plt.subplots()
+    ax.bar(kmeans_positions, kmeans_values, width=bar_width, label='K-Means')
+    ax.bar(fcm_positions, fcm_values, width=bar_width, label='Fuzzy C-Means')
+
+    # Adicionando títulos e rótulos aos eixos
+    ax.set_ylabel('Valores')
+    ax.set_title('Comparação entre K-Means e Fuzzy C-Means')
+    ax.set_xticks(range(len(labels)))
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    return fig
+
+# Streamlit interface
 def main():
     st.title("Classificação de cores de solo com base na notação Munsell")
 
@@ -210,28 +227,32 @@ def main():
         resized_image = image.resize((50, 50), Image.LANCZOS)
         image_array = np.array(resized_image)
         image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
+
         cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-        n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
+        n_clusters = st.slider("Selecione o número de clusters:", 1)
+        
+        original_rgb = st.checkbox("Manter os tons originais da imagem", value=False)
+
 
         if st.button("Classificar cores"):
             if cluster_method == "K-Means":
-                kmeans = KMeans(n_clusters=n_clusters, n_init=10)
+                kmeans = KMeans(n_clusters=n_clusters)
                 kmeans.fit(image_array)
                 cluster_centers = kmeans.cluster_centers_
                 labels = kmeans.labels_
             elif cluster_method == "Fuzzy C-Means":
-                fcm = FCM(n_clusters=n_clusters, n_init=10)
+                fcm = FCM(n_clusters=n_clusters)
                 fcm.fit(image_array)
                 labels = fcm.predict(image_array)
                 cluster_centers = fcm.centers
 
             munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
+
             display_munsell_colors(munsell_colors)
 
             segmented_image = create_segmented_image(image_array, labels, cluster_centers)
             st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
-
-            # Exibir margem de erro e desvio padrão
+                        # Exibir margem de erro e desvio padrão
             mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
             st.subheader("Margem de erro e desvio padrão:")
             st.write(f"Margem de erro: {mean_error}")
@@ -252,20 +273,41 @@ def main():
                     st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
                     st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
                     st.write("\n")
-
             # Exibir gráficos
             st.subheader("Gráficos:")
             plot_munsell_distribution(munsell_colors)
             plot_error_distribution(image_array, cluster_centers)
             plot_std_deviation_distribution(image_array, cluster_centers)
-                      
+            # Aplicando K-Means
+            kmeans = KMeans(n_clusters=n_clusters)
+            kmeans.fit(image_array)
+            kmeans_centers = kmeans.cluster_centers_
+            kmeans_labels = kmeans.labels_
+            kmeans_error, kmeans_std_deviation = calculate_error_and_std_deviation(image_array, kmeans_centers)
+
+            # Aplicando Fuzzy C-Means
+            fcm = FCM(n_clusters=n_clusters)
+            fcm.fit(image_array)
+            fcm_labels = fcm.predict(image_array)
+            fcm_centers = fcm.centers
+            fcm_error, fcm_std_deviation = calculate_error_and_std_deviation(image_array, fcm_centers)
+
+            # Exibir margem de erro e desvio padrão
+            st.subheader("Margem de erro e desvio padrão:")
+            st.write(f"K-Means - Margem de erro: {kmeans_error}")
+            st.write(f"K-Means - Desvio padrão: {kmeans_std_deviation}")
+            st.write(f"Fuzzy C-Means - Margem de erro: {fcm_error}")
+            st.write(f"Fuzzy C-Means - Desvio padrão: {fcm_std_deviation}")
+
+          
             # Exibir comparação em gráficos (opcional)
             st.subheader("Gráficos de comparação:")
             comparison_chart = plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation)
             st.pyplot(comparison_chart)
 
 
-                    
+
+
 if __name__ == '__main__':
     main()
 
