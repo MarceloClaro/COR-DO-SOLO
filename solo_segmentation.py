@@ -268,6 +268,14 @@ if __name__ == '__main__':
 st.subheader("Sobre o aplicativo:")
 st.write("""
 Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.
+O código apresentado consiste em um aplicativo para classificação de cores de solo baseado na notação Munsell e na clusterização de cores. O aplicativo tem como funcionalidades principais: 
+- Conversão de cores RGB para notação Munsell de acordo com a classificação de cores de solo da Embrapa;
+- Implementação de algoritmos de clusterização, K-Means e Fuzzy C-Means;
+- Cálculo da margem de erro e desvio padrão da clusterização;
+- Exibição de informações sobre a classificação do solo, como descrição, características, vegetação típica e cultivos e manejo recomendado;
+- Exibição de gráficos, como distribuição das cores Munsell, margem de erro e desvio padrão.
+Em relação à otimização, o código utiliza técnicas como redimensionamento da imagem para reduzir o tempo de processamento e a utilização de bibliotecas otimizadas para processamento de imagens, clusterização e cálculo de estatísticas. Além disso, o código apresenta uma lógica eficiente para a conversão de cores RGB para notação Munsell baseada em tabelas estabelecidas pela Embrapa.
+Quanto à aplicabilidade em áreas técnicas, o aplicativo pode ser útil em diversas áreas, como geologia, estatística, geografia, educação ambiental, atividade agrícola e recuperação de áreas nativas. Por exemplo, pode ser utilizado para análise da qualidade do solo em áreas de cultivo, recuperação de áreas degradadas, avaliação de impactos ambientais, entre outros. Porém, é importante ressaltar que o aplicativo é limitado pela capacidade de reconhecimento de cores do sistema RGB, que pode ser influenciado por diversos fatores, como iluminação, sombras, entre outros.
 """)
 
 st.subheader("Como usar:")
