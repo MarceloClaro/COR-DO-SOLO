@@ -251,7 +251,7 @@ def main():
             display_munsell_colors(munsell_colors)
 
             segmented_image = create_segmented_image(image_array, labels, cluster_centers)
-            st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
+            #st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
                         # Exibir margem de erro e desvio padrão
             mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
             st.subheader("Margem de erro e desvio padrão:")
