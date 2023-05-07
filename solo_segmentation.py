@@ -245,12 +245,12 @@ def main():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-        resized_image = image.resize((50, 50), Image.ANTIALIAS)
+        resized_image = image.resize((50, 50), Image.LANCZOS)
         image_array = np.array(resized_image)
         image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
 
         cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-        n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
+        n_clusters = st.slider("Selecione o número de clusters:", 1)
         
         original_rgb = st.checkbox("Manter os tons originais da imagem", value=False)
 
