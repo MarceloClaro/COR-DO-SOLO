@@ -243,6 +243,29 @@ def main():
             plot_munsell_distribution(munsell_colors)
             plot_error_distribution(image_array, cluster_centers)
             plot_std_deviation_distribution(image_array, cluster_centers)
+            # Aplicando K-Means
+            kmeans = KMeans(n_clusters=n_clusters)
+            kmeans.fit(image_array)
+            kmeans_centers = kmeans.cluster_centers_
+            kmeans_labels = kmeans.labels_
+            kmeans_error, kmeans_std_deviation = calculate_error_and_std_deviation(image_array, kmeans_centers)
+
+            # Aplicando Fuzzy C-Means
+            fcm = FCM(n_clusters=n_clusters)
+            fcm.fit(image_array)
+            fcm_labels = fcm.predict(image_array)
+            fcm_centers = fcm.centers
+            fcm_error, fcm_std_deviation = calculate_error_and_std_deviation(image_array, fcm_centers)
+
+            # Exibir margem de erro e desvio padrão
+            st.subheader("Margem de erro e desvio padrão:")
+            st.write(f"K-Means - Margem de erro: {kmeans_error}")
+            st.write(f"K-Means - Desvio padrão: {kmeans_std_deviation}")
+            st.write(f"Fuzzy C-Means - Margem de erro: {fcm_error}")
+            st.write(f"Fuzzy C-Means - Desvio padrão: {fcm_std_deviation}")
+
+            # Exibir comparação em gráficos (opcional)
+            st.subheader("Gráficos de comparação:")
 
 
 
