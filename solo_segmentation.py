@@ -258,6 +258,11 @@ def main():
             plot_munsell_distribution(munsell_colors)
             plot_error_distribution(image_array, cluster_centers)
             plot_std_deviation_distribution(image_array, cluster_centers)
+                      
+            # Exibir comparação em gráficos (opcional)
+            st.subheader("Gráficos de comparação:")
+            comparison_chart = plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation)
+            st.pyplot(comparison_chart)
 
 
                     
