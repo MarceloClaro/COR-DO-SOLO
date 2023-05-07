@@ -11,6 +11,25 @@ from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 import skimage
 from scipy.stats import shapiro
+from skimage.feature import greycomatrix, greycoprops
+
+def get_glcm_features(image):
+    # Converter a imagem para escala de cinza
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Calcular a matriz GLCM com a distância de 1 pixel e ângulo de 0 graus
+    glcm = greycomatrix(gray_image, [1], [0], symmetric=True, normed=True)
+
+    # Calcular as propriedades da matriz GLCM
+    contrast = greycoprops(glcm, 'contrast')[0][0]
+    dissimilarity = greycoprops(glcm, 'dissimilarity')[0][0]
+    homogeneity = greycoprops(glcm, 'homogeneity')[0][0]
+    energy = greycoprops(glcm, 'energy')[0][0]
+    correlation = greycoprops(glcm, 'correlation')[0][0]
+
+    # Retornar as propriedades da matriz GLCM como um vetor
+    return np.array([contrast, dissimilarity, homogeneity, energy, correlation])
+
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
@@ -210,15 +229,29 @@ def main():
 
         if st.button("Classificar cores"):
             if cluster_method == "K-Means":
-                kmeans = KMeans(n_clusters=n_clusters)
-                kmeans.fit(image_array)
-                cluster_centers = kmeans.cluster_centers_
-                labels = kmeans.labels_
+                cluster_centers = np.zeros((n_clusters, 3))
+                for i in range(n_clusters):
+                    indices = np.where(labels == i)[0]
+                    cluster_image = image_array[indices]
+                    glcm_features = np.apply_along_axis(get_glcm_features, 1, cluster_image)
+                    kmeans = KMeans(n_clusters=1)
+                    kmeans.fit(glcm_features)
+                    center = kmeans.cluster_centers_[0]
+                    mean_color = np.mean(cluster_image, axis=0)
+                    cluster_centers[i] = np.append(mean_color, center)
             elif cluster_method == "Fuzzy C-Means":
-                fcm = FCM(n_clusters=n_clusters)
-                fcm.fit(image_array)
-                labels = fcm.predict(image_array)
-                cluster_centers = fcm.centers
+                cluster_centers = np.zeros((n_clusters, 4))
+                for i in range(n_clusters):
+                    indices = np.where(labels == i)[0]
+                    cluster_image = image_array[indices]
+                    glcm_features = np.apply_along_axis(get_glcm_features, 1, cluster_image)
+                    fcm = FCM(n_clusters=1)
+                    fcm.fit(glcm_features)
+                    center = fcm.centers_[0]
+                    mean_color = np.mean(cluster_image, axis=0)
+                    cluster_centers[i] = np.append(mean_color, center)
+                labels =
+
 
             munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
 
