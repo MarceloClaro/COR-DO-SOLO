@@ -200,7 +200,6 @@ def glcm_features(gray_image, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.p
     
     return contrast, dissimilarity, homogeneity, asm, energy, correlation
 
-# Streamlit interface
 def main():
     st.title("Classificação de cores de solo com base na notação Munsell")
 
@@ -253,13 +252,15 @@ def main():
                     st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
                     st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
                     st.write("\n")
-                    # Exibir gráficos
-                    st.subheader("Gráficos:")
-                    plot_munsell_distribution(munsell_colors)
-                    plot_error_distribution(image_array, cluster_centers)
-                    plot_std_deviation_distribution(image_array, cluster_centers)
+
+            # Exibir gráficos
+            st.subheader("Gráficos:")
+            plot_munsell_distribution(munsell_colors)
+            plot_error_distribution(image_array, cluster_centers)
+            plot_std_deviation_distribution(image_array, cluster_centers)
 
 
+                    
 if __name__ == '__main__':
     main()
 
