@@ -11,7 +11,7 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
-    hue, value, chroma = colorsys.rgb_to_hvc(r/255, g/255, b/255)
+    hue, value, chroma = colorsys.rgb_to_hvc((r+1)/256, (g+1)/256, (b+1)/256)
     
     if value < 2:
         munsell_value = "2.5"
