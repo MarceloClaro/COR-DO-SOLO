@@ -99,7 +99,7 @@ def create_segmented_image(image_array, labels, cluster_centers, original_colors
     segmented_array = np.zeros_like(image_array)
 
     for i in range(len(image_array)):
-        segmented_array[i] = original_colors[labels[i]]
+        segmented_array[i] = rgb_to_embrapa_munsell(*cluster_centers[labels[i]], original_rgb=original_rgb)
 
     segmented_image = segmented_array.reshape((50, 50, 3))
     segmented_image = (segmented_image * 255).astype(np.uint8)
