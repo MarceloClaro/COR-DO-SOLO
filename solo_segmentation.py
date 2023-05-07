@@ -211,8 +211,8 @@ def main():
         resized_image = image.resize((50, 50), Image.ANTIALIAS)
         image_array = np.array(resized_image)
         image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
-            cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-    n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
+        cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
+        n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
     
     if st.button("Classificar cores"):
         if cluster_method == "K-Means":
