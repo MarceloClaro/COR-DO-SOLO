@@ -150,9 +150,12 @@ def display_munsell_colors(munsell_colors):
 def create_segmented_image(image_array, labels, cluster_centers):
     num_clusters = cluster_centers.shape[0]
     segmented_array = np.zeros_like(image_array)
+    for i in range(num_clusters):
+        segmented_array[labels == i] = cluster_centers[i]
     segmented_image = segmented_array.reshape((50, 50, 3))
     segmented_image = (segmented_image * 255).astype(np.uint8)
     return segmented_image
+
 
 def plot_munsell_distribution(munsell_colors):
     unique_colors, counts = np.unique(munsell_colors, return_counts=True)
