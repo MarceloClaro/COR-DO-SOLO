@@ -193,6 +193,98 @@ soil_dict = {
     },
 }
 
+
+import streamlit as st
+import numpy as np
+import cv2
+from PIL import Image
+import colorsys
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from fcmeans import FCM
+from skimage.color import rgb2lab, deltaE_ciede2000
+
+# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
+def rgb_to_embrapa_munsell(r, g, b):
+    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+    hue = hue * 360
+    lightness = lightness * 100
+    saturation = saturation * 100
+
+    # Aproximar a notação Munsell com base na tabela da Embrapa
+    if lightness < 10:
+        munsell_value = "2.5"
+    elif lightness < 30:
+        munsell_value = "3.5"
+    elif lightness < 50:
+        munsell_value = "4.5"
+    elif lightness < 70:
+        munsell_value = "5.5"
+    elif lightness < 85:
+        munsell_value = "6.5"
+    else:
+        munsell_value = "7.5"
+
+    if saturation < 5:
+        munsell_chroma = "1"
+    elif saturation < 15:
+        munsell_chroma = "2"
+    elif saturation < 30:
+        munsell_chroma = "3"
+    else:
+        munsell_chroma = "4"
+
+    if hue < 20:
+        munsell_hue = "10R"
+    elif hue < 50:
+        munsell_hue = "7.5YR"
+    elif hue < 70:
+        munsell_hue = "5YR"
+    elif hue < 150:
+        munsell_hue = "2.5YR"
+    elif hue < 250:
+        munsell_hue = "10YR"
+    else:
+        munsell_hue = "10R"
+
+    embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
+    return embrapa_munsell
+
+# Função para calcular a margem de erro e o desvio padrão da clusterização
+def calculate_error_and_std_deviation(Z, center):
+    error = np.linalg.norm(Z - center, axis=1)
+    mean_error = np.mean(error)
+    std_deviation = np.std(error)
+    return mean_error, std_deviation
+
+# Dicionário e lógica de classificação do solo
+soil_dict = {
+    "10YR4/4": {
+    "sistema_munsell": "10YR4/4",
+    "solo_embrapa": "Latossolo Vermelho-Amarelo",
+    "descricao": "Solos bem desenvolvidos, com horizonte B latossólico e alta saturação por bases.",
+    "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e boa fertilidade natural.",
+    "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica, Cerrado e Caatinga.",
+    "cultivos_manejo_recomendado": {
+        "recomendados": ["Café", "Citros", "Eucalipto", "Banana"],
+        "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
+        "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+    }
+},
+
+"2.5YR5/8": {
+    "sistema_munsell": "2.5YR5/8",
+    "solo_embrapa": "Latossolo Vermelho",
+    "descricao": "Solos profundos, com horizonte B latossólico e alta saturação por bases.",
+    "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e alta fertilidade natural.",
+    "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
+    "cultivos_manejo_recomendado": {
+        "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
+        "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
+        "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+    }
+}
+
 def convert_cluster_centers_to_munsell(cluster_centers):
     munsell_colors = []
     for center in cluster_centers:
@@ -238,3 +330,6 @@ if uploaded_file is not None:
 
         segmented_image = create_segmented_image(image_array, labels, cluster_centers)
         st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
+if name == 'main':
+main()
+
