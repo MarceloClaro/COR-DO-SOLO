@@ -153,7 +153,35 @@ def create_segmented_image(image_array, labels, cluster_centers):
     segmented_image = (segmented_image * 255).astype(np.uint8)
     return segmented_image
 
+def plot_munsell_distribution(munsell_colors):
+    unique_colors, counts = np.unique(munsell_colors, return_counts=True)
+    plt.bar(unique_colors, counts)
+    plt.xlabel("Cores Munsell")
+    plt.ylabel("Frequência")
+    plt.title("Distribuição das cores Munsell")
+    plt.xticks(rotation=45)
+    st.pyplot(plt.gcf())
+    plt.clf()
 
+def plot_error_distribution(image_array, cluster_centers):
+    error = np.linalg.norm(image_array - cluster_centers, axis=1)
+    plt.hist(error, bins='auto')
+    plt.xlabel("Margem de erro")
+    plt.ylabel("Frequência")
+    plt.title("Distribuição da margem de erro")
+    st.pyplot(plt.gcf())
+    plt.clf()
+
+def plot_std_deviation_distribution(image_array, cluster_centers):
+    error = np.linalg.norm(image_array - cluster_centers, axis=1)
+    std_deviation = np.std(error)
+    plt.hist(error, bins='auto', density=True)
+    plt.axvline(std_deviation, color='r', linestyle='dashed', linewidth=2)
+    plt.xlabel("Desvio padrão")
+    plt.ylabel("Frequência")
+    plt.title("Distribuição do desvio padrão")
+    st.pyplot(plt.gcf())
+    plt.clf()
 
 # Streamlit interface
 def main():
@@ -169,6 +197,7 @@ def main():
 
         cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
         n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
+        
 
         if st.button("Classificar cores"):
             if cluster_method == "K-Means":
@@ -209,6 +238,12 @@ def main():
                     st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
                     st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
                     st.write("\n")
+            # Exibir gráficos
+            st.subheader("Gráficos:")
+            plot_munsell_distribution(munsell_colors)
+            plot_error_distribution(image_array, cluster_centers)
+            plot_std_deviation_distribution(image_array, cluster_centers)
+
 
 
 
