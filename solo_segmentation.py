@@ -215,12 +215,12 @@ def main():
 
         if st.button("Classificar cores"):
             if cluster_method == "K-Means":
-                kmeans = KMeans(n_clusters=num_clusters, n_init=10)
+                kmeans = KMeans(n_clusters=n_clusters, n_init=10)
                 kmeans.fit(image_array)
                 cluster_centers = kmeans.cluster_centers_
                 labels = kmeans.labels_
             elif cluster_method == "Fuzzy C-Means":
-                fcm = FCM(n_clusters=num_clusters, n_init=10)
+                fcm = FCM(n_clusters=n_clusters, n_init=10)
                 fcm.fit(image_array)
                 labels = fcm.predict(image_array)
                 cluster_centers = fcm.centers
