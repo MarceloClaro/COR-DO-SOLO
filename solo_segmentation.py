@@ -208,7 +208,7 @@ def main():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-        resized_image = image.resize((50, 50), Image.ANTIALIAS)
+        resized_image = image.resize((50, 50), Image.LANCZOS)
         image_array = np.array(resized_image)
         image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
         cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
@@ -216,12 +216,12 @@ def main():
 
         if st.button("Classificar cores"):
             if cluster_method == "K-Means":
-                kmeans = KMeans(n_clusters=n_clusters)
+                kmeans = KMeans(n_clusters=num_clusters, n_init=10)
                 kmeans.fit(image_array)
                 cluster_centers = kmeans.cluster_centers_
                 labels = kmeans.labels_
             elif cluster_method == "Fuzzy C-Means":
-                fcm = FCM(n_clusters=n_clusters)
+                fcm = FCM(n_clusters=num_clusters, n_init=10)
                 fcm.fit(image_array)
                 labels = fcm.predict(image_array)
                 cluster_centers = fcm.centers
