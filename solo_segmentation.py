@@ -259,30 +259,38 @@ def main():
         plot_error_distribution(image_array, cluster_centers)
         plot_std_deviation_distribution(image_array, cluster_centers)
 
-# Exibir informações do App
-st.subheader("Sobre o aplicativo:")
-st.write("Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.")
-st.subheader("Como usar:")
-st.write("1. Faça o upload de uma imagem do solo que você deseja analisar.")
-st.write("2. Selecione o método de clusterização que você deseja usar (K-Means ou Fuzzy C-Means).")
-st.write("3. Selecione o número de clusters que você deseja usar na análise.")
-st.write("4. Clique no botão 'Classificar cores' para iniciar a análise.")
-st.write("5. O aplicativo exibirá a imagem segmentada, a classificação do solo, gráficos e informações adicionais sobre a margem de erro e desvio padrão.")
-st.write("6. Explore os resultados e ajuste as configurações conforme necessário para obter os melhores resultados.")
 
-st.subheader("Créditos:")
-st.write("Este aplicativo foi desenvolvido usando a biblioteca Streamlit para Python e a arquitetura GPT-4 da OpenAI. Agradecimentos especiais à Embrapa pelo fornecimento das informações sobre a classificação de solos e notação Munsell.")
-st.write("Desenvolvedor: [Seu nome aqui]")
-st.write("Contato: [Seu email aqui]")
-st.write("GitHub: [Link do seu repositório]")
-
-st.subheader("Referências:")
-st.write("1. Munsell Soil Color Charts. [https://www.munsell.com/color-services/color-standards/soil-color-charts/]")
-st.write("2. Embrapa. Sistema Brasileiro de Classificação de Solos. [https://www.embrapa.br/solos/sistema-brasileiro-de-classificacao-de-solos]")
-st.write("3. Streamlit. [https://www.streamlit.io/]")
-st.write("4. OpenAI. GPT-4. [https://www.openai.com/]")
-
-if name == 'main':
+if __name__ == '__main__':
     main()
 
-            
+# Exibir informações do App
+st.subheader("Sobre o aplicativo:")
+st.write("""
+Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.
+""")
+
+st.subheader("Como usar:")
+st.write("""
+1. Faça o upload de uma imagem do solo que você deseja analisar.
+2. Selecione o método de clusterização que você deseja usar (K-Means ou Fuzzy C-Means).
+3. Selecione o número de clusters que você deseja usar na análise.
+4. Clique no botão 'Classificar cores' para iniciar a análise.
+5. O aplicativo exibirá a imagem segmentada, a classificação do solo, gráficos e informações adicionais sobre a margem de erro e desvio padrão.
+6. Explore os resultados e ajuste as configurações conforme necessário para obter os melhores resultados.
+""")
+
+st.subheader("Créditos:")
+st.write("""
+Este aplicativo foi desenvolvido usando a biblioteca Streamlit para Python e a arquitetura GPT-4 da OpenAI. Agradecimentos especiais à Embrapa pelo fornecimento das informações sobre a classificação de solos e notação Munsell.
+""")
+st.write("Desenvolvedor: [professor Marcelo Claro]")
+st.write("Contato: [marceloclaro@gmail.com]")
+st.write("GitHub: [https://github.com/MarceloClaro/COR-DO-SOLO/edit/master/solo_segmentation.py]")
+
+st.subheader("Referências:")
+st.write("""
+1. Munsell Soil Color Charts. [https://www.munsell.com/color-services/color-standards/soil-color-charts/]
+2. Embrapa. Sistema Brasileiro de Classificação de Solos. [https://www.embrapa.br/solos/sistema-brasileiro-de-classificacao-de-solos]
+3. Streamlit. [https://www.streamlit.io/]
+4. OpenAI. GPT-4. [https://www.openai.com/]
+""")
