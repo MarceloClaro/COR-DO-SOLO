@@ -431,6 +431,8 @@ def main():
             st.pyplot(comparison_chart)
 
 
+if __name__ == "__main__":
+    main()
 
 
 # Exibir informações do App
@@ -473,5 +475,3 @@ st.write("""
 4. OpenAI. GPT-4. [https://www.openai.com/]
 """)
 
-if __name__ == "__main__":
-    main()
