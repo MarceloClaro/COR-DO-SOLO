@@ -122,7 +122,7 @@ if uploaded_file is not None:
     # Agrupamento de cores usando K-means
     kmeans = KMeans(n_clusters=5)
     kmeans.fit(img_reshaped)
-    colors = kmeans.cluster_centers_
+    colors = kmeans.cluster_centers
 
     # Agrupamento de cores usando FCM
     fcm = FCM(n_clusters=5)
