@@ -188,6 +188,28 @@ def main():
 
             segmented_image = create_segmented_image(image_array, labels, cluster_centers)
             st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
+                        # Exibir margem de erro e desvio padrão
+            mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
+            st.subheader("Margem de erro e desvio padrão:")
+            st.write(f"Margem de erro: {mean_error}")
+            st.write(f"Desvio padrão: {std_deviation}")
+
+            # Exibir informações de classificação do solo
+            st.subheader("Classificação do solo:")
+            for color in munsell_colors:
+                if color in soil_dict:
+                    soil_info = soil_dict[color]
+                    st.write(f"Cor Munsell: {soil_info['sistema_munsell']}")
+                    st.write(f"Solo Embrapa: {soil_info['solo_embrapa']}")
+                    st.write(f"Descrição: {soil_info['descricao']}")
+                    st.write(f"Características: {soil_info['caracteristicas']}")
+                    st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
+                    st.write("Cultivos e manejo recomendado:")
+                    st.write(f"  - Recomendados: {', '.join(soil_info['cultivos_manejo_recomendado']['recomendados'])}")
+                    st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
+                    st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
+                    st.write("\n")
+
 
 
 if __name__ == '__main__':
