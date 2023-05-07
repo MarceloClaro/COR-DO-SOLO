@@ -105,8 +105,8 @@ def calculate_error_and_std_deviation(Z, center):
 
 # Dicionário e lógica de classificação do solo
 soil_dict = {
-    "10YR4/4": {
-        "sistema_munsell": "10YR4/4",
+    "2.5GY 7.5/4": {
+        "sistema_munsell": "2.5GY 7.5/4",
         "solo_embrapa": "Latossolo Vermelho-Amarelo",
         "descricao": "Solos bem desenvolvidos, com horizonte B latossólico e alta saturação por bases.",
         "caracteristicas": "Textura predominantemente argilosa, boa capacidade de retenção de água e boa fertilidade natural.",
