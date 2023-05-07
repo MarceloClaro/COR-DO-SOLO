@@ -177,10 +177,6 @@ soil_dict = {
             "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
         }
     },
-    "10YR 5/4": {
-        # Cambissolo Háplico
-        # ...
-    },
     "2.5YR 4/6": {
         "sistema_munsell": "2.5YR 4/6",
         "solo_embrapa": "Nitossolo Vermelho",
@@ -216,13 +212,6 @@ soil_dict = {
         "manejo_inadequado": {
             "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
         }
-    }
-
-soil_dict = {
-    # ...
-    "10YR 6/3": {
-        # Planossolo
-        # ...
     },
     "10YR 4/1": {
         "sistema_munsell": "10YR 4/1",
@@ -260,6 +249,7 @@ soil_dict = {
         }
     }
 }
+
 
 def convert_cluster_centers_to_munsell(cluster_centers):
     munsell_colors = []
