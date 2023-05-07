@@ -80,32 +80,26 @@ if uploaded_file is not None:
     cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
     n_clusters = st.slider("Selecione o número de clusters:", 1, 10, 5)
     if st.button("Classificar cores"):
-if cluster_method == "K-Means":
-        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+if st.button("Classificar cores"):
+    if cluster_method == "K-Means":
+        kmeans = KMeans(n_clusters=n_clusters)
         kmeans.fit(image_array)
         cluster_centers = kmeans.cluster_centers_
+        labels = kmeans.labels_
     elif cluster_method == "Fuzzy C-Means":
         cntr, u, u0, d, jm, p, fpc = fuzz.cluster.cmeans(
             image_array.T, n_clusters, 2, error=0.005, maxiter=1000, init=None
         )
+        labels = np.argmax(u, axis=0)
         cluster_centers = cntr
 
-    munsell_colors = []
-    for center in cluster_centers:
-        munsell_color = munsell.from_rgb([int(round(x)) for x in center])
-        munsell_colors.append(munsell_color)
+    munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
 
-    st.header("Resultados:")
-    st.write("Cores Munsell encontradas:")
+    display_munsell_colors(munsell_colors)
 
-    for i, color in enumerate(munsell_colors):
-        st.write(f"Cluster {i + 1}: {color}")
+    segmented_image = create_segmented_image(image_array, labels, cluster_centers)
+    st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
 
-    st.header("Visualização dos Clusters:")
-    segmented_image = np.zeros((image_array.shape[0], 3), dtype=np.uint8)
-    for i, center in enumerate(cluster_centers):
-        segmented_image[kmeans.labels_ == i] = center
 
-    segmented_image = segmented_image.reshape((50, 50, 3))
-    st.image(segmented_image, caption="Imagem segmentada", use_column_width=True)
+
 
