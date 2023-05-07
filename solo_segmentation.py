@@ -9,17 +9,15 @@ from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 
-# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
+
 def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
     if original_rgb:
         return r, g, b
-    # Converter de RGB para HLS
-    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+    hue, lightness, saturation = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
     hue = hue * 360
     lightness = lightness * 100
     saturation = saturation * 100
 
-    # Aproximar a notação Munsell com base na tabela da Embrapa
     if lightness < 2:
         munsell_value = "2.5"
     elif lightness < 4:
@@ -32,7 +30,7 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
         munsell_value = "6.5"
     else:
         munsell_value = "7.5"
-        
+
     if saturation < 1:
         munsell_chroma = "1"
     elif saturation < 2:
@@ -41,7 +39,7 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
         munsell_chroma = "3"
     else:
         munsell_chroma = "4"
-        
+
     if hue < 2:
         munsell_hue = "10R"
     elif hue < 4:
@@ -92,7 +90,9 @@ def rgb_to_embrapa_munsell(r, g, b, original_rgb=False):
         munsell_hue = "7.5B"    
     embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
     return embrapa_munsell, original_rgb
-    
+
+
+   
 # Função para criar uma imagem segmentada com base na clusterização
 def create_segmented_image(image_array, labels, cluster_centers, original_colors):
     num_clusters = cluster_centers.shape[0]
