@@ -1,4 +1,3 @@
-#APP cor de solo Streamlit
 import streamlit as st
 import numpy as np
 import cv2
@@ -94,7 +93,6 @@ def rgb_to_embrapa_munsell(r, g, b):
     return embrapa_munsell
 
 
-
 # Função para calcular a margem de erro e o desvio padrão da clusterização
 def calculate_error_and_std_deviation(Z, center):
     error = np.linalg.norm(Z - center, axis=1)
@@ -132,346 +130,117 @@ soil_dict = {
         "cultivos_manejo_recomendado": {
             "recomendados": ["Milho", "Feijão", "Mandioca", "Cana-de-açúcar"],
             "condicionantes": "Calagem e adubação podem ser necessárias para melhorar a fertilidade e reduzir a acidez do solo.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+           "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
+        },
+        "ph": "5.5 - 6.0",
+        "condutividade_eletrica": "Média",
+        "teor_nutrientes": "Médio",
+        "manejo_inadequado": {
+            "consequencias": ["Compactação do solo", "Baixa produtividade", "Perda de nutrientes"]
+        }
+    },
+    "10YR 3/3": {
+        "sistema_munsell": "10YR 3/3",
+        "solo_embrapa": "Neossolo Quartzarênico",
+        "descricao": "Solos arenosos e pouco desenvolvidos, com baixa saturação por bases.",
+        "caracteristicas": "Textura arenosa, baixa capacidade de retenção de água e baixa fertilidade natural.",
+        "vegetacao_tipica": "Caatinga e Cerrado.",
+        "cultivos_manejo_recomendado": {
+            "recomendados": ["Mandioca", "Melancia", "Cenoura"],
+            "condicionantes": "Uso de técnicas de conservação de solo e irrigação é essencial para garantir a produtividade.",
+            "manejo": "Uso de técnicas de conservação de solo, como cultivo mínimo e rotação de culturas, é recomendado para evitar a degradação do solo."
         },
         "ph": "4.5 - 5.5",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Médio",
-        "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
-        }
-    },
-    "10YR 7/2": {
-        "sistema_munsell": "10YR 7/2",
-        "solo_embrapa": "Neossolo Quartzarênico",
-        "descricao": "Solos pouco desenvolvidos, com baixa capacidade de retenção de água e baixa fertilidade natural.",
-        "caracteristicas": "Textura arenosa, drenagem rápida e susceptível à erosão.",
-        "vegetacao_tipica": "Vegetação de restinga, caatinga e cerrado.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Coco", "Cajueiro", "Pinus", "Eucalipto"],
-            "condicionantes": "Irrigação e adubação são necessárias para melhorar a produtividade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        },
-        "ph": "5.0 - 6.0",
-        "condutividade_eletrica": "Baixa",
+        "condutividade_eletrica": "Alta",
         "teor_nutrientes": "Baixo",
         "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
-        }
-    },
-    "10YR 5/4": {
-        "sistema_munsell": "10YR 5/4",
-        "solo_embrapa": "Cambissolo Háplico",
-        "descricao": "Solos com horizonte B incipiente e moderada capacidade de retenção de água.",
-        "caracteristicas": "Textura média a argilosa, moderada fertilidade natural e susceptível à erosão.",
-        "vegetacao_tipica": "Mata Atlântica, cerrado e caatinga.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Milho", "Feijão", "Mandioca", "Hortaliças"],
-            "condicionantes": "Adubação e correção do solo podem ser necessárias para melhorar a fertilidade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        },
-        "ph": "5.5 - 6.5",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Médio",
-        "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
-        }
-    },
-    "2.5YR 4/6": {
-        "sistema_munsell": "2.5YR 4/6",
-        "solo_embrapa": "Nitossolo Vermelho",
-        "descricao": "Solos bem desenvolvidos, com horizonte B nítico e alta capacidade de retenção de água.",
-        "caracteristicas": "Textura argilosa, alta fertilidade natural e boa capacidade de armazenamento de água.",
-        "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica e Cerrado.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar"],
-            "condicionantes": "Adubação e irrigação podem ser necessárias para maximizar a produtividade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        },
-        "ph": "6.0 - 6.5",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Alto",
-        "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
-        }
-    },
-    "10YR 6/3": {
-        "sistema_munsell": "10YR 6/3",
-        "solo_embrapa": "Planossolo",
-        "descricao": "Solos com horizonte B textural e baixa a média capacidade de retenção de água.",
-        "caracteristicas": "Textura média a argilosa, moderada fertilidade natural e susceptível à encharcamento.",
-        "vegetacao_tipica": "Cerrado, campos úmidos e áreas alagáveis.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Arroz", "Pastagens", "Canola", "Soja"],
-            "condicionantes": "Drenagem e adubação podem ser necessárias para melhorar a produtividade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        },
-        "ph": "5.0 - 6.0",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Médio",
-        "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
-        }
-    },
-    "10YR 4/1": {
-        "sistema_munsell": "10YR 4/1",
-        "solo_embrapa": "Gleissolo",
-        "descricao": "Solos hidromórficos, geralmente encharcados, com horizonte B textural ou hístico.",
-        "caracteristicas": "Textura variável, baixa a média fertilidade natural e alta capacidade de retenção de água.",
-        "vegetacao_tipica": "Áreas alagáveis, várzeas e banhados.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Arroz", "Taro", "Açaí", "Pupunha"],
-            "condicionantes": "Drenagem e adubação podem ser necessárias para melhorar a produtividade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        },
-        "ph": "4.5 - 6.0",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Baixo a médio",
-        "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
-        }
-    },
-    "2.5YR 4/4": {
-        "sistema_munsell": "2.5YR 4/4",
-        "solo_embrapa": "Vertissolo",
-        "descricao": "Solos com horizonte B vértico, caracterizados por grande quantidade de argila expansiva.",
-        "caracteristicas": "Textura argilosa, alta capacidade de retenção de água e média a alta fertilidade natural.",
-        "vegetacao_tipica": "Cerrado, Caatinga e áreas de transição.",
-        "cultivos_manejo_recomendado": {
-            "recomendados": ["Algodão", "Milho", "Sorgo", "Pastagens"],
-            "condicionantes": "Correção do solo e adubação podem ser necessárias para melhorar a produtividade.",
-            "manejo": "Práticas conservacionistas, como plantio direto, rotação de culturas e uso de cobertura vegetal, são recomendadas para preservar a qualidade do solo."
-        },
-        "ph": "5.5 - 6.5",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Médio a alto",
-        "manejo_inadequado": {
-            "consequencias": ["Erosão", "Perda de nutrientes", "Degradação ambiental"]
+            "consequencias": ["Desertificação", "Erosão", "Perda de água e nutrientes"]
         }
     }
 }
 
+# Função para classificar a cor do solo
+def classify_soil_color(image):
+    # Conversão da imagem para um array numpy
+    image_array = np.array(image)
+    
+    # Redimensionar a imagem para acelerar o processamento
+    resized_image = cv2.resize(image_array, (300, 300), interpolation=cv2.INTER_AREA)
+    
+    # Converter a imagem para o espaço de cor LAB
+    lab_image = rgb2lab(resized_image)
+    
+    # Extrair os canais L, A e B
+    l_channel = lab_image[:, :, 0]
+    a_channel = lab_image[:, :, 1]
+    b_channel = lab_image[:, :, 2]
+    
+    # Empilhar os canais A e B
+    ab_channels = np.stack((a_channel, b_channel), axis=2)
+    
+    # Redimensionar o array para 2D
+    ab_channels_2d = ab_channels.reshape(ab_channels.shape[0] * ab_channels.shape[1], ab_channels.shape[2])
+    
+    # Realizar a clusterização utilizando o algoritmo Fuzzy C-means
+    fcm = FCM(n_clusters=3)
+    fcm.fit(ab_channels_2d)
+    fcm_centers = fcm.centers
+    
+    # Calcular a margem de erro e o desvio padrão da clusterização
+    mean_error, std_deviation = calculate_error_and_std_deviation(ab_channels_2d, fcm_centers)
+    
+    # Identificar o centro que representa a cor do solo
+    soil_color_center = fcm_centers[np.argmax(std_deviation)]
+    
+    # Converter a cor do solo para RGB
+    soil_color_rgb = lab_image[0, 0, :]
+    soil_color_rgb[1:] = soil_color_center
+    
+    # Converter a cor do solo para notação Munsell
+    munsell_color = rgb_to_embrapa_munsell(*soil_color_rgb)
+    
+    return munsell_color
 
-def convert_cluster_centers_to_munsell(cluster_centers):
-    munsell_colors = []
-    for center in cluster_centers:
-        r, g, b = center
-        munsell_color = rgb_to_embrapa_munsell(r, g, b)
-        munsell_colors.append(munsell_color)
-    return munsell_colors
-
-
-def display_munsell_colors(munsell_colors):
-    st.subheader("Cores Munsell:")
-    for color in munsell_colors:
-        st.write(color)
-
-
-# Função para criar uma imagem segmentada com base na clusterização
-def create_segmented_image(image_array, labels, cluster_centers):
-    num_clusters = cluster_centers.shape[0]
-    segmented_array = np.zeros_like(image_array)
-    for i in range(num_clusters):
-        segmented_array[labels == i] = cluster_centers[i]
-    segmented_image = segmented_array.reshape((50, 50, 3))
-    segmented_image = (segmented_image * 255).astype(np.uint8)
-    return segmented_image
-
-
-def plot_munsell_distribution(munsell_colors):
-    unique_colors, counts = np.unique(munsell_colors, return_counts=True)
-    plt.bar(unique_colors, counts)
-    plt.xlabel("Cores Munsell")
-    plt.ylabel("Frequência")
-    plt.title("Distribuição das cores Munsell")
-    plt.xticks(rotation=45)
-    st.pyplot(plt.gcf())
-    plt.clf()
-
-def plot_error_distribution(image_array, cluster_centers):
-    error = np.linalg.norm(image_array - cluster_centers, axis=1)
-    plt.hist(error, bins='auto')
-    plt.xlabel("Margem de erro")
-    plt.ylabel("Frequência")
-    plt.title("Distribuição da margem de erro")
-    st.pyplot(plt.gcf())
-    plt.clf()
-
-def plot_std_deviation_distribution(image_array, cluster_centers):
-    error = np.linalg.norm(image_array - cluster_centers, axis=1)
-    std_deviation = np.std(error)
-    plt.hist(error, bins='auto', density=True)
-    plt.axvline(std_deviation, color='r', linestyle='dashed', linewidth=2)
-    plt.xlabel("Desvio padrão")
-    plt.ylabel("Frequência")
-    plt.title("Distribuição do desvio padrão")
-    st.pyplot(plt.gcf())
-    plt.clf()
-
-def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation):
-    # Definindo os dados para o gráfico
-    labels = ['Margem de Erro', 'Desvio Padrão']
-    kmeans_values = [kmeans_error, kmeans_std_deviation]
-    fcm_values = [fcm_error, fcm_std_deviation]
-
-    # Definindo a largura das barras
-    bar_width = 0.35
-
-    # Criando as posições das barras
-    kmeans_positions = [i - bar_width/2 for i in range(len(labels))]
-    fcm_positions = [i + bar_width/2 for i in range(len(labels))]
-
-    # Configurando o gráfico
-    fig, ax = plt.subplots()
-    ax.bar(kmeans_positions, kmeans_values, width=bar_width, label='K-Means')
-    ax.bar(fcm_positions, fcm_values, width=bar_width, label='Fuzzy C-Means')
-
-    # Adicionando títulos e rótulos aos eixos
-    ax.set_ylabel('Valores')
-    ax.set_title('Comparação entre K-Means e Fuzzy C-Means')
-    ax.set_xticks(range(len(labels)))
-    ax.set_xticklabels(labels)
-    ax.legend()
-
-    return fig
-
-# Streamlit interface
+# Função principal do aplicativo
 def main():
-    st.title("Classificação de cores de solo com base na notação Munsell")
-
-    uploaded_file = st.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
+    st.title("Classificação de Cores de Solo")
+    st.write("Este aplicativo realiza a classificação das cores de solo com base na notação Munsell e na clusterização de cores.")
+    
+    uploaded_file = st.file_uploader("Carregar Imagem", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-        resized_image = image.resize((50, 50), Image.LANCZOS)
-        image_array = np.array(resized_image)
-        image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
-
-        cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-        n_clusters = 1
+        st.image(image, caption="Imagem do Solo", use_column_width=True)
         
-        original_rgb = st.checkbox("Manter os tons originais da imagem", value=False)
+        # Processar a imagem e classificar a cor do solo
+        munsell_color = classify_soil_color(image)
+        
+        # Exibir a cor do solo classificada
+        st.subheader("Cor do Solo Classificada:")
+        st.write(munsell_color)
+        
+        # Exibir informações adicionais sobre o solo classificado
+        if munsell_color in soil_dict:
+            soil_info = soil_dict[munsell_color]
+            st.subheader("Informações sobre o Solo:")
+            st.write("Sistema Munsell:", soil_info["sistema_munsell"])
+            st.write("Solo Embrapa:", soil_info["solo_embrapa"])
+            st.write("Descrição:", soil_info["descricao"])
+            st.write("Características:", soil_info["caracteristicas"])
+            st.write("Vegetação Típica:", soil_info["vegetacao_tipica"])
+            st.subheader("Cultivos e Manejo Recomendado:")
+            st.write("Recomendados:", ", ".join(soil_info["cultivos_manejo_recomendado"]["recomendados"]))
+            st.write("Condicionantes:", soil_info["cultivos_manejo_recomendado"]["condicionantes"])
+            st.write("Manejo:", soil_info["cultivos_manejo_recomendado"]["manejo"])
+            st.subheader("Propriedades do Solo:")
+            st.write("pH:", soil_info["ph"])
+            st.write("Condutividade Elétrica:", soil_info["condutividade_eletrica"])
+            st.write("Teor de Nutrientes:", soil_info["teor_nutrientes"])
+            st.subheader("Consequências do Manejo Inadequado:")
+            st.write(", ".join(soil_info["manejo_inadequado"]["consequencias"]))
+        else:
+            st.subheader("Informações sobre o Solo:")
+            st.write("Não foram encontradas informações para o solo classificado.")
 
-
-        if st.button("Classificar cores"):
-            if cluster_method == "K-Means":
-                kmeans = KMeans(n_clusters=n_clusters)
-                kmeans.fit(image_array)
-                cluster_centers = kmeans.cluster_centers_
-                labels = kmeans.labels_
-            elif cluster_method == "Fuzzy C-Means":
-                fcm = FCM(n_clusters=n_clusters)
-                fcm.fit(image_array)
-                labels = fcm.predict(image_array)
-                cluster_centers = fcm.centers
-
-            munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
-
-            display_munsell_colors(munsell_colors)
-
-            segmented_image = create_segmented_image(image_array, labels, cluster_centers)
-            #st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
-                        # Exibir margem de erro e desvio padrão
-            mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
-            st.subheader("Margem de erro e desvio padrão:")
-            st.write(f"Margem de erro: {mean_error}")
-            st.write(f"Desvio padrão: {std_deviation}")
-
-            # Exibir informações de classificação do solo
-            st.subheader("Classificação do solo:")
-            for color in munsell_colors:
-                if color in soil_dict:
-                    soil_info = soil_dict[color]
-                    st.write(f"Cor Munsell: {soil_info['sistema_munsell']}")
-                    st.write(f"Solo Embrapa: {soil_info['solo_embrapa']}")
-                    st.write(f"Descrição: {soil_info['descricao']}")
-                    st.write(f"Características: {soil_info['caracteristicas']}")
-                    st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
-                    st.write("Cultivos e manejo recomendado:")
-                    st.write(f"  - Recomendados: {', '.join(soil_info['cultivos_manejo_recomendado']['recomendados'])}")
-                    st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
-                    st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
-                    st.write(f"pH: {soil_info['ph']}")
-                    st.write(f"Condutividade elétrica: {soil_info['condutividade_eletrica']}")
-                    st.write(f"Teor de nutrientes: {soil_info['teor_nutrientes']}")
-                    st.write("Manejo inadequado:")
-                    st.write(f"  - Consequências: {', '.join(soil_info['manejo_inadequado']['consequencias'])}")
-                    st.write("\n")
-
-            # Exibir gráficos
-            st.subheader("Gráficos:")
-            plot_munsell_distribution(munsell_colors)
-            plot_error_distribution(image_array, cluster_centers)
-            plot_std_deviation_distribution(image_array, cluster_centers)
-            # Aplicando K-Means
-            kmeans = KMeans(n_clusters=n_clusters)
-            kmeans.fit(image_array)
-            kmeans_centers = kmeans.cluster_centers_
-            kmeans_labels = kmeans.labels_
-            kmeans_error, kmeans_std_deviation = calculate_error_and_std_deviation(image_array, kmeans_centers)
-
-            # Aplicando Fuzzy C-Means
-            fcm = FCM(n_clusters=n_clusters)
-            fcm.fit(image_array)
-            fcm_labels = fcm.predict(image_array)
-            fcm_centers = fcm.centers
-            fcm_error, fcm_std_deviation = calculate_error_and_std_deviation(image_array, fcm_centers)
-
-            # Exibir margem de erro e desvio padrão
-            st.subheader("Margem de erro e desvio padrão:")
-            st.write(f"K-Means - Margem de erro: {kmeans_error}")
-            st.write(f"K-Means - Desvio padrão: {kmeans_std_deviation}")
-            st.write(f"Fuzzy C-Means - Margem de erro: {fcm_error}")
-            st.write(f"Fuzzy C-Means - Desvio padrão: {fcm_std_deviation}")
-
-          
-            # Exibir comparação em gráficos (opcional)
-            st.subheader("Gráficos de comparação:")
-            comparison_chart = plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation)
-            st.pyplot(comparison_chart)
-
-
+# Executar o aplicativo
 if __name__ == "__main__":
     main()
-
-
-# Exibir informações do App
-st.subheader("Sobre o aplicativo:")
-st.write("""
-Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.
-O código apresentado consiste em um aplicativo para classificação de cores de solo baseado na notação Munsell e na clusterização de cores. O aplicativo tem como funcionalidades principais: 
-- Conversão de cores RGB para notação Munsell de acordo com a classificação de cores de solo da Embrapa;
-- Implementação de algoritmos de clusterização, K-Means e Fuzzy C-Means;
-- Cálculo da margem de erro e desvio padrão da clusterização;
-- Exibição de informações sobre a classificação do solo, como descrição, características, vegetação típica e cultivos e manejo recomendado;
-- Exibição de gráficos, como distribuição das cores Munsell, margem de erro e desvio padrão.
-Em relação à otimização, o código utiliza técnicas como redimensionamento da imagem para reduzir o tempo de processamento e a utilização de bibliotecas otimizadas para processamento de imagens, clusterização e cálculo de estatísticas. Além disso, o código apresenta uma lógica eficiente para a conversão de cores RGB para notação Munsell baseada em tabelas estabelecidas pela Embrapa.
-Quanto à aplicabilidade em áreas técnicas, o aplicativo pode ser útil em diversas áreas, como geologia, estatística, geografia, educação ambiental, atividade agrícola e recuperação de áreas nativas. Por exemplo, pode ser utilizado para análise da qualidade do solo em áreas de cultivo, recuperação de áreas degradadas, avaliação de impactos ambientais, entre outros. Porém, é importante ressaltar que o aplicativo é limitado pela capacidade de reconhecimento de cores do sistema RGB, que pode ser influenciado por diversos fatores, como iluminação, sombras, entre outros.
-""")
-
-st.subheader("Como usar:")
-st.write("""
-1. Faça o upload de uma imagem do solo que você deseja analisar.
-2. Selecione o método de clusterização que você deseja usar (K-Means ou Fuzzy C-Means).
-3. Selecione o número de clusters que você deseja usar na análise.
-4. Clique no botão 'Classificar cores' para iniciar a análise.
-5. O aplicativo exibirá a imagem segmentada, a classificação do solo, gráficos e informações adicionais sobre a margem de erro e desvio padrão.
-6. Explore os resultados e ajuste as configurações conforme necessário para obter os melhores resultados.
-""")
-
-st.subheader("Créditos:")
-st.write("""
-Este aplicativo foi desenvolvido usando a biblioteca Streamlit para Python e a arquitetura GPT-4 da OpenAI. Agradecimentos especiais à Embrapa pelo fornecimento das informações sobre a classificação de solos e notação Munsell.
-""")
-st.write("Desenvolvedor: [professor Marcelo Claro]")
-st.write("Contato: [marceloclaro@gmail.com]")
-st.write("GitHub: [https://github.com/MarceloClaro/COR-DO-SOLO/edit/master/solo_segmentation.py]")
-
-st.subheader("Referências:")
-st.write("""
-1. Munsell Soil Color Charts. [https://www.munsell.com/color-services/color-standards/soil-color-charts/]
-2. Embrapa. Sistema Brasileiro de Classificação de Solos. [https://www.embrapa.br/solos/sistema-brasileiro-de-classificacao-de-solos]
-3. Streamlit. [https://www.streamlit.io/]
-4. OpenAI. GPT-4. [https://www.openai.com/]
-""")
-
