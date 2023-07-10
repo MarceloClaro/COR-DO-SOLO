@@ -474,4 +474,3 @@ st.write("""
 3. Streamlit. [https://www.streamlit.io/]
 4. OpenAI. GPT-4. [https://www.openai.com/]
 """)
-
