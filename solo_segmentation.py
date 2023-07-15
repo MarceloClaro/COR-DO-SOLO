@@ -11,7 +11,7 @@ from skimage.color import rgb2lab, deltaE_ciede2000
 import skimage
 from skimage.feature import greycomatrix, greycoprops
 
-Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
+#Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
 # Converter de RGB para HLS
 hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
@@ -93,15 +93,15 @@ else:
 embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
 return embrapa_munsell
 
-Copiar
-Função para calcular a margem de erro e o desvio padrão da clusterização
+
+#Função para calcular a margem de erro e o desvio padrão da clusterização
 def calculate_error_and_std_deviation(Z, center):
 error = np.linalg.norm(Z - center, axis=1)
 mean_error = np.mean(error)
 std_deviation = np.std(error)
 return mean_error, std_deviation
 
-Dicionário e lógica de classificação do solo
+#Dicionário e lógica de classificação do solo
 soil_dict = {
 "2.5YR 5/8": {
 "sistema_munsell": "2.5YR 5/8",
@@ -262,7 +262,7 @@ st.subheader("Cores Munsell:")
 for color in munsell_colors:
 st.write(color)
 
-Função para criar uma imagem segmentada com base na clusterização
+#Função para criar uma imagem segmentada com base na clusterização
 def create_segmented_image(image_array, labels, cluster_centers):
 num_clusters = cluster_centers.shape[0]
 segmented_array = np.zeros_like(image_array)
@@ -328,7 +328,7 @@ ax.set_xticklabels(labels)
 ax.legend()
 
 return fig
-Streamlit interface
+#Streamlit interface
 def main():
 st.title("Classificação de cores de solo com base na notação Munsell")
 
@@ -425,7 +425,7 @@ if uploaded_file is not None:
 if name == "main":
 main()
 
-Exibir informações do App
+#Exibir informações do App
 st.subheader("Sobre o aplicativo:")
 st.write("""
 Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.
