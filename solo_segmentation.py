@@ -377,27 +377,7 @@ def main():
             st.write(f"Margem de erro: {mean_error}")
             st.write(f"Desvio padrão: {std_deviation}")
 
-        def display_munsell_colors(munsell_colors):
-        st.subheader("Cores Munsell:")
-        for color in munsell_colors:
-            st.write(color)
-            if color in soil_dict:
-                soil_info = soil_dict[color]
-                st.write(f"Solo Embrapa: {soil_info['solo_embrapa']}")
-                st.write(f"Descrição: {soil_info['descricao']}")
-                st.write(f"Características: {soil_info['caracteristicas']}")
-                st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
-                st.write(f"Cultivos e manejo recomendado:")
-                st.write(f"  - Recomendados: {', '.join(soil_info['cultivos_manejo_recomendado']['recomendados'])}")
-                st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
-                st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
-                st.write(f"pH: {soil_info['ph']}")
-                st.write(f"Condutividade elétrica: {soil_info['condutividade_eletrica']}")
-                st.write(f"Teor de nutrientes: {soil_info['teor_nutrientes']}")
-                st.write("Manejo inadequado:")
-                st.write(f"  - Consequências: {', '.join(soil_info['manejo_inadequado']['consequencias'])}")
-            st.write("\n")
-
+     
 
 
             # Exibir gráficos
