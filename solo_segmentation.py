@@ -367,7 +367,7 @@ def main():
 
             munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
 
-            def display_munsell_colors(munsell_colors)
+            display_munsell_colors(munsell_colors)
 
             segmented_image = create_segmented_image(image_array, labels, cluster_centers)
             #st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
