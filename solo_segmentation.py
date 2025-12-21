@@ -9,89 +9,99 @@ from sklearn.cluster import KMeans
 from fcmeans import FCM
 from skimage.color import rgb2lab, deltaE_ciede2000
 import skimage
-from skimage.feature import greycomatrix, greycoprops
+from skimage.feature import graycomatrix, graycoprops
 
-# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
-def rgb_to_embrapa_munsell(r, g, b):
-    # Converter de RGB para HLS
-    hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
-    hue = hue * 360
-    lightness = lightness * 100
-    saturation = saturation * 100
-    # Aproximar a notação Munsell com base na tabela da Embrapa
-    if lightness < 2:
-        munsell_value = "2.5"
-    elif lightness < 4:
-        munsell_value = "3.5"
-    elif lightness < 6:
-        munsell_value = "4.5"
-    elif lightness < 8:
-        munsell_value = "5.5"
-    elif lightness < 9.5:
-        munsell_value = "6.5"
-    else:
-        munsell_value = "7.5"
-        
-    if saturation < 1:
-        munsell_chroma = "1"
-    elif saturation < 2:
-        munsell_chroma = "2"
-    elif saturation < 3:
-        munsell_chroma = "3"
-    else:
-        munsell_chroma = "4"
-        
-    if hue < 2:
-        munsell_hue = "10R"
-    elif hue < 4:
-        munsell_hue = "2.5YR"
-    elif hue < 7:
-        munsell_hue = "5YR"
-    elif hue < 10:
-        munsell_hue = "7.5YR"
-    elif hue < 15:
-        munsell_hue = "10YR"
-    elif hue < 22:
-        munsell_hue = "2.5Y"
-    elif hue < 28:
-        munsell_hue = "5Y"
-    elif hue < 33:
-        munsell_hue = "7.5Y"
-    elif hue < 39:
-        munsell_hue = "10Y"
-    elif hue < 45:
-        munsell_hue = "2.5GY"
-    elif hue < 60:
-        munsell_hue = "5GY"
-    elif hue < 80:
-        munsell_hue = "7.5GY"
-    elif hue < 100:
-        munsell_hue = "10GY"
-    elif hue < 130:
-        munsell_hue = "2.5G"
-    elif hue < 170:
-        munsell_hue = "5G"
-    elif hue < 200:
-        munsell_hue = "7.5G"
-    elif hue < 220:
-        munsell_hue = "10G"
-    elif hue < 240:
-        munsell_hue = "2.5BG"
-    elif hue < 260:
-        munsell_hue = "5BG"
-    elif hue < 280:
-        munsell_hue = "7.5BG"
-    elif hue < 300:
-        munsell_hue = "10BG"
-    elif hue < 320:
-        munsell_hue = "2.5B"
-    elif hue < 340:
-        munsell_hue = "5B"
-    else:
-        munsell_hue = "7.5B"  
-        
-    embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
-    return embrapa_munsell
+# Import the improved Munsell conversion function based on reference data
+try:
+    from munsell_reference_data import rgb_to_embrapa_munsell, rgb_to_munsell_deltaE
+    USE_REFERENCE_DATA = True
+except ImportError:
+    USE_REFERENCE_DATA = False
+    # Fallback to original heuristic method if reference data module is not available
+    def rgb_to_embrapa_munsell(r, g, b):
+        """
+        Fallback function: Convert RGB to Munsell using heuristic approach.
+        This is used only if munsell_reference_data module is not available.
+        """
+        # Converter de RGB para HLS
+        hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
+        hue = hue * 360
+        lightness = lightness * 100
+        saturation = saturation * 100
+        # Aproximar a notação Munsell com base na tabela da Embrapa
+        if lightness < 2:
+            munsell_value = "2.5"
+        elif lightness < 4:
+            munsell_value = "3.5"
+        elif lightness < 6:
+            munsell_value = "4.5"
+        elif lightness < 8:
+            munsell_value = "5.5"
+        elif lightness < 9.5:
+            munsell_value = "6.5"
+        else:
+            munsell_value = "7.5"
+            
+        if saturation < 1:
+            munsell_chroma = "1"
+        elif saturation < 2:
+            munsell_chroma = "2"
+        elif saturation < 3:
+            munsell_chroma = "3"
+        else:
+            munsell_chroma = "4"
+            
+        if hue < 2:
+            munsell_hue = "10R"
+        elif hue < 4:
+            munsell_hue = "2.5YR"
+        elif hue < 7:
+            munsell_hue = "5YR"
+        elif hue < 10:
+            munsell_hue = "7.5YR"
+        elif hue < 15:
+            munsell_hue = "10YR"
+        elif hue < 22:
+            munsell_hue = "2.5Y"
+        elif hue < 28:
+            munsell_hue = "5Y"
+        elif hue < 33:
+            munsell_hue = "7.5Y"
+        elif hue < 39:
+            munsell_hue = "10Y"
+        elif hue < 45:
+            munsell_hue = "2.5GY"
+        elif hue < 60:
+            munsell_hue = "5GY"
+        elif hue < 80:
+            munsell_hue = "7.5GY"
+        elif hue < 100:
+            munsell_hue = "10GY"
+        elif hue < 130:
+            munsell_hue = "2.5G"
+        elif hue < 170:
+            munsell_hue = "5G"
+        elif hue < 200:
+            munsell_hue = "7.5G"
+        elif hue < 220:
+            munsell_hue = "10G"
+        elif hue < 240:
+            munsell_hue = "2.5BG"
+        elif hue < 260:
+            munsell_hue = "5BG"
+        elif hue < 280:
+            munsell_hue = "7.5BG"
+        elif hue < 300:
+            munsell_hue = "10BG"
+        elif hue < 320:
+            munsell_hue = "2.5B"
+        elif hue < 340:
+            munsell_hue = "5B"
+        else:
+            munsell_hue = "7.5B"  
+            
+        embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
+        return embrapa_munsell
 
 
 
@@ -338,6 +348,12 @@ def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std
 # Streamlit interface
 def main():
     st.title("Classificação de cores de solo com base na notação Munsell")
+    
+    # Display which method is being used
+    if USE_REFERENCE_DATA:
+        st.info("✅ Usando dados de referência Munsell com algoritmo Delta E (método preciso)")
+    else:
+        st.warning("⚠️ Usando método heurístico (dados de referência não disponíveis)")
 
     uploaded_file = st.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
