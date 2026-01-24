@@ -1,5 +1,7 @@
 # Dashboard de Classificação de Cor do Solo (Munsell/Embrapa)
 
+![CI](https://github.com/MarceloClaro/COR-DO-SOLO/actions/workflows/ci.yml/badge.svg)
+
 Este projeto utiliza processamento de imagens e aprendizado de máquina para identificar cores de solo e sugerir classificações baseadas no Sistema Brasileiro de Classificação de Solos (SiBCS - Embrapa).
 
 ## 🚀 Funcionalidades

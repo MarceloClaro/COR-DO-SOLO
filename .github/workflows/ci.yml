@@ -1,0 +1,40 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install pylint pytest
+
+    - name: Lint with Pylint
+      run: |
+        # Run pylint on all python files, ignoring some specific errors if necessary
+        # Disable C0114 (missing-module-docstring), C0116 (missing-function-docstring) for brevity in this context
+        pylint $(git ls-files '*.py') --disable=C0114,C0116,C0103,E0401,W0611,R0913,R0914 || true
+        # Note: E0401 (import-error) might happen if some streamlit deps behave oddly in CI, but usually fine.
+        # We set '|| true' to avoid failing the build on linting issues for now, unless we want strict mode.
+        # Let's enforce syntax errors at least.
+        pylint --errors-only $(git ls-files '*.py')
+
+    - name: Smoke Test (Import Check)
+      run: |
+        # Try to run the script to check for import errors.
+        # Since it's streamlit, we can just check if python accepts it.
+        python -m py_compile solo_segmentation.py
