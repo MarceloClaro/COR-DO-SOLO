@@ -1,7 +1,6 @@
 #APP cor de solo Streamlit
 import streamlit as st
 import numpy as np
-import cv2
 from PIL import Image
 import colorsys
 import matplotlib.pyplot as plt
@@ -250,8 +249,8 @@ def get_stats(image_array, labels, cluster_centers):
     return mean_error, std_deviation
 
 def analyze_image(image, n_clusters, method, resize_dim):
-    # Resize
-    resized_image = image.resize((resize_dim, resize_dim), Image.LANCZOS)
+    # Resize and ensure RGB (handles RGBA)
+    resized_image = image.resize((resize_dim, resize_dim), Image.LANCZOS).convert('RGB')
     image_array = np.array(resized_image)
     flat_image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
     flat_image_array_float = flat_image_array.astype(np.float64)
