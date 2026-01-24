@@ -7,13 +7,11 @@ import colorsys
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from fcmeans import FCM
-from skimage.color import rgb2lab, deltaE_ciede2000
-import skimage
-from skimage.feature import greycomatrix, greycoprops
 
 # Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
 def rgb_to_embrapa_munsell(r, g, b):
     # Converter de RGB para HLS
+    # colorsys.rgb_to_hls expects inputs in range 0-1
     hue, lightness, saturation = colorsys.rgb_to_hls(r/255, g/255, b/255)
     hue = hue * 360
     lightness = lightness * 100
@@ -92,15 +90,6 @@ def rgb_to_embrapa_munsell(r, g, b):
         
     embrapa_munsell = f"{munsell_hue} {munsell_value}/{munsell_chroma}"
     return embrapa_munsell
-
-
-
-# Função para calcular a margem de erro e o desvio padrão da clusterização
-def calculate_error_and_std_deviation(Z, center):
-    error = np.linalg.norm(Z - center, axis=1)
-    mean_error = np.mean(error)
-    std_deviation = np.std(error)
-    return mean_error, std_deviation
 
 
 # Dicionário e lógica de classificação do solo
@@ -268,18 +257,20 @@ def display_munsell_colors(munsell_colors):
 
 
 # Função para criar uma imagem segmentada com base na clusterização
-def create_segmented_image(image_array, labels, cluster_centers):
+def create_segmented_image(image_array, labels, cluster_centers, width, height):
     num_clusters = cluster_centers.shape[0]
     segmented_array = np.zeros_like(image_array)
     for i in range(num_clusters):
         segmented_array[labels == i] = cluster_centers[i]
-    segmented_image = segmented_array.reshape((50, 50, 3))
-    segmented_image = (segmented_image * 255).astype(np.uint8)
+    segmented_image = segmented_array.reshape((height, width, 3))
+    # Removed incorrect * 255 scaling. cluster_centers are already in 0-255 if input was.
+    segmented_image = segmented_image.astype(np.uint8)
     return segmented_image
 
 
 def plot_munsell_distribution(munsell_colors):
     unique_colors, counts = np.unique(munsell_colors, return_counts=True)
+    plt.figure(figsize=(10, 5))
     plt.bar(unique_colors, counts)
     plt.xlabel("Cores Munsell")
     plt.ylabel("Frequência")
@@ -288,29 +279,35 @@ def plot_munsell_distribution(munsell_colors):
     st.pyplot(plt.gcf())
     plt.clf()
 
-def plot_error_distribution(image_array, cluster_centers):
-    error = np.linalg.norm(image_array - cluster_centers, axis=1)
-    plt.hist(error, bins='auto')
-    plt.xlabel("Margem de erro")
+def plot_error_distribution(image_array, labels, cluster_centers):
+    # Calculate error for each point relative to its assigned cluster center
+    errors = np.linalg.norm(image_array - cluster_centers[labels], axis=1)
+
+    plt.figure(figsize=(10, 5))
+    plt.hist(errors, bins='auto')
+    plt.xlabel("Margem de erro (Distância Euclidiana)")
     plt.ylabel("Frequência")
     plt.title("Distribuição da margem de erro")
     st.pyplot(plt.gcf())
     plt.clf()
 
-def plot_std_deviation_distribution(image_array, cluster_centers):
-    error = np.linalg.norm(image_array - cluster_centers, axis=1)
-    std_deviation = np.std(error)
-    plt.hist(error, bins='auto', density=True)
-    plt.axvline(std_deviation, color='r', linestyle='dashed', linewidth=2)
-    plt.xlabel("Desvio padrão")
-    plt.ylabel("Frequência")
-    plt.title("Distribuição do desvio padrão")
+def plot_std_deviation_distribution(image_array, labels, cluster_centers):
+    errors = np.linalg.norm(image_array - cluster_centers[labels], axis=1)
+    std_deviation = np.std(errors)
+
+    plt.figure(figsize=(10, 5))
+    plt.hist(errors, bins='auto', density=True)
+    plt.axvline(std_deviation, color='r', linestyle='dashed', linewidth=2, label=f'Desvio Padrão: {std_deviation:.2f}')
+    plt.xlabel("Erro")
+    plt.ylabel("Densidade")
+    plt.title("Distribuição do erro com Desvio Padrão")
+    plt.legend()
     st.pyplot(plt.gcf())
     plt.clf()
 
 def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation):
     # Definindo os dados para o gráfico
-    labels = ['Margem de Erro', 'Desvio Padrão']
+    labels = ['Margem de Erro Média', 'Desvio Padrão']
     kmeans_values = [kmeans_error, kmeans_std_deviation]
     fcm_values = [fcm_error, fcm_std_deviation]
 
@@ -322,7 +319,7 @@ def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std
     fcm_positions = [i + bar_width/2 for i in range(len(labels))]
 
     # Configurando o gráfico
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(kmeans_positions, kmeans_values, width=bar_width, label='K-Means')
     ax.bar(fcm_positions, fcm_values, width=bar_width, label='Fuzzy C-Means')
 
@@ -335,142 +332,173 @@ def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std
 
     return fig
 
+# Helper to calculate stats
+def get_stats(image_array, labels, cluster_centers):
+    errors = np.linalg.norm(image_array - cluster_centers[labels], axis=1)
+    mean_error = np.mean(errors)
+    std_deviation = np.std(errors)
+    return mean_error, std_deviation
+
 # Streamlit interface
 def main():
+    st.set_page_config(page_title="Classificação de Solos Munsell", layout="wide")
+
     st.title("Classificação de cores de solo com base na notação Munsell")
 
-    uploaded_file = st.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
+    # Sidebar for controls
+    st.sidebar.header("Configurações")
+
+    uploaded_file = st.sidebar.file_uploader("Selecione uma imagem de solo", type=["jpg", "jpeg", "png"])
+
+    cluster_method = st.sidebar.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
+    n_clusters = st.sidebar.slider("Número de clusters (cores dominantes)", min_value=1, max_value=10, value=3)
+    resize_dim = st.sidebar.slider("Resolução da análise (px)", min_value=50, max_value=300, value=150, step=50)
+
+    original_rgb = st.sidebar.checkbox("Manter os tons originais da imagem (visualização)", value=False)
+
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Imagem de solo carregada", use_column_width=True)
-        resized_image = image.resize((50, 50), Image.LANCZOS)
-        image_array = np.array(resized_image)
-        image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
-
-        cluster_method = st.selectbox("Escolha o método de clusterização:", ("K-Means", "Fuzzy C-Means"))
-        n_clusters = 1
         
-        original_rgb = st.checkbox("Manter os tons originais da imagem", value=False)
+        col1, col2 = st.columns(2)
 
+        with col1:
+            st.image(image, caption="Imagem de solo carregada", use_column_width=True)
 
-        if st.button("Classificar cores"):
-            if cluster_method == "K-Means":
-                kmeans = KMeans(n_clusters=n_clusters)
-                kmeans.fit(image_array)
-                cluster_centers = kmeans.cluster_centers_
-                labels = kmeans.labels_
-            elif cluster_method == "Fuzzy C-Means":
-                fcm = FCM(n_clusters=n_clusters)
-                fcm.fit(image_array)
-                labels = fcm.predict(image_array)
-                cluster_centers = fcm.centers
+        resized_image = image.resize((resize_dim, resize_dim), Image.LANCZOS)
+        image_array = np.array(resized_image)
+        # Normalize to 0-1 for processing if needed, but RGB usually 0-255 for these libs?
+        # Scikit-learn KMeans expects 2D array.
+        # Image is (H, W, 3). Flatten to (H*W, 3).
+        flat_image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
+        # Ensure it's float for some operations if needed, but 0-255 int is fine for KMeans usually (it converts internally)
+        # But for centroids we want float.
+        flat_image_array_float = flat_image_array.astype(np.float64)
 
-            munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
+        if st.sidebar.button("Classificar cores"):
+            with st.spinner('Processando...'):
+                if cluster_method == "K-Means":
+                    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+                    kmeans.fit(flat_image_array_float)
+                    cluster_centers = kmeans.cluster_centers_
+                    labels = kmeans.labels_
+                elif cluster_method == "Fuzzy C-Means":
+                    fcm = FCM(n_clusters=n_clusters)
+                    fcm.fit(flat_image_array_float)
+                    labels = fcm.predict(flat_image_array_float)
+                    cluster_centers = fcm.centers
 
-            display_munsell_colors(munsell_colors)
+                munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
 
-            segmented_image = create_segmented_image(image_array, labels, cluster_centers)
-            #st.image(segmented_image, caption="Imagem de solo segmentada", use_column_width=True)
-                        # Exibir margem de erro e desvio padrão
-            mean_error, std_deviation = calculate_error_and_std_deviation(image_array, cluster_centers)
-            st.subheader("Margem de erro e desvio padrão:")
-            st.write(f"Margem de erro: {mean_error}")
-            st.write(f"Desvio padrão: {std_deviation}")
+                segmented_image = create_segmented_image(flat_image_array, labels, cluster_centers, resize_dim, resize_dim)
 
-            # Exibir informações de classificação do solo
-            st.subheader("Classificação do solo:")
-            for color in munsell_colors:
-                if color in soil_dict:
-                    soil_info = soil_dict[color]
-                    st.write(f"Cor Munsell: {soil_info['sistema_munsell']}")
-                    st.write(f"Solo Embrapa: {soil_info['solo_embrapa']}")
-                    st.write(f"Descrição: {soil_info['descricao']}")
-                    st.write(f"Características: {soil_info['caracteristicas']}")
-                    st.write(f"Vegetação típica: {soil_info['vegetacao_tipica']}")
-                    st.write("Cultivos e manejo recomendado:")
-                    st.write(f"  - Recomendados: {', '.join(soil_info['cultivos_manejo_recomendado']['recomendados'])}")
-                    st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
-                    st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
-                    st.write(f"pH: {soil_info['ph']}")
-                    st.write(f"Condutividade elétrica: {soil_info['condutividade_eletrica']}")
-                    st.write(f"Teor de nutrientes: {soil_info['teor_nutrientes']}")
-                    st.write("Manejo inadequado:")
-                    st.write(f"  - Consequências: {', '.join(soil_info['manejo_inadequado']['consequencias'])}")
-                    st.write("\n")
+                with col2:
+                    st.image(segmented_image, caption=f"Imagem segmentada ({cluster_method})", use_column_width=True)
 
-            # Exibir gráficos
-            st.subheader("Gráficos:")
-            plot_munsell_distribution(munsell_colors)
-            plot_error_distribution(image_array, cluster_centers)
-            plot_std_deviation_distribution(image_array, cluster_centers)
-            # Aplicando K-Means
-            kmeans = KMeans(n_clusters=n_clusters)
-            kmeans.fit(image_array)
-            kmeans_centers = kmeans.cluster_centers_
-            kmeans_labels = kmeans.labels_
-            kmeans_error, kmeans_std_deviation = calculate_error_and_std_deviation(image_array, kmeans_centers)
+                display_munsell_colors(munsell_colors)
 
-            # Aplicando Fuzzy C-Means
-            fcm = FCM(n_clusters=n_clusters)
-            fcm.fit(image_array)
-            fcm_labels = fcm.predict(image_array)
-            fcm_centers = fcm.centers
-            fcm_error, fcm_std_deviation = calculate_error_and_std_deviation(image_array, fcm_centers)
+                # Calculate stats
+                mean_error, std_deviation = get_stats(flat_image_array_float, labels, cluster_centers)
 
-            # Exibir margem de erro e desvio padrão
-            st.subheader("Margem de erro e desvio padrão:")
-            st.write(f"K-Means - Margem de erro: {kmeans_error}")
-            st.write(f"K-Means - Desvio padrão: {kmeans_std_deviation}")
-            st.write(f"Fuzzy C-Means - Margem de erro: {fcm_error}")
-            st.write(f"Fuzzy C-Means - Desvio padrão: {fcm_std_deviation}")
+                st.subheader("Estatísticas:")
+                st.write(f"Margem de erro média: {mean_error:.2f}")
+                st.write(f"Desvio padrão: {std_deviation:.2f}")
 
-          
-            # Exibir comparação em gráficos (opcional)
-            st.subheader("Gráficos de comparação:")
-            comparison_chart = plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation)
-            st.pyplot(comparison_chart)
+                # Exibir informações de classificação do solo
+                st.subheader("Classificação do solo (Embrapa):")
+                found_soil = False
+                for color in munsell_colors:
+                    if color in soil_dict:
+                        found_soil = True
+                        soil_info = soil_dict[color]
+                        with st.expander(f"Detalhes para {color}"):
+                            st.write(f"**Solo Embrapa:** {soil_info['solo_embrapa']}")
+                            st.write(f"**Descrição:** {soil_info['descricao']}")
+                            st.write(f"**Características:** {soil_info['caracteristicas']}")
+                            st.write(f"**Vegetação típica:** {soil_info['vegetacao_tipica']}")
+                            st.write("**Cultivos e manejo recomendado:**")
+                            st.write(f"  - Recomendados: {', '.join(soil_info['cultivos_manejo_recomendado']['recomendados'])}")
+                            st.write(f"  - Condicionantes: {soil_info['cultivos_manejo_recomendado']['condicionantes']}")
+                            st.write(f"  - Manejo: {soil_info['cultivos_manejo_recomendado']['manejo']}")
+                            st.write(f"**pH:** {soil_info['ph']}")
+                            st.write(f"**Condutividade elétrica:** {soil_info['condutividade_eletrica']}")
+                            st.write(f"**Teor de nutrientes:** {soil_info['teor_nutrientes']}")
+                            st.write("**Manejo inadequado:**")
+                            st.write(f"  - Consequências: {', '.join(soil_info['manejo_inadequado']['consequencias'])}")
 
+                if not found_soil:
+                    st.info("Nenhuma classificação exata encontrada na base de dados para as cores detectadas.")
+
+                # Exibir gráficos
+                st.subheader("Gráficos:")
+                col_g1, col_g2 = st.columns(2)
+                with col_g1:
+                    plot_munsell_distribution(munsell_colors)
+                with col_g2:
+                    plot_error_distribution(flat_image_array_float, labels, cluster_centers)
+
+                plot_std_deviation_distribution(flat_image_array_float, labels, cluster_centers)
+
+                # Comparison (Optional)
+                if st.button("Comparar K-Means e Fuzzy C-Means"):
+                    # We need to run both to compare
+                    with st.spinner('Executando comparação...'):
+                        # Run K-Means
+                        km = KMeans(n_clusters=n_clusters, random_state=42)
+                        km.fit(flat_image_array_float)
+                        km_centers = km.cluster_centers_
+                        km_labels = km.labels_
+                        km_error, km_std = get_stats(flat_image_array_float, km_labels, km_centers)
+
+                        # Run FCM
+                        fcm_comp = FCM(n_clusters=n_clusters)
+                        fcm_comp.fit(flat_image_array_float)
+                        fcm_labels_comp = fcm_comp.predict(flat_image_array_float)
+                        fcm_centers_comp = fcm_comp.centers
+                        fcm_error, fcm_std = get_stats(flat_image_array_float, fcm_labels_comp, fcm_centers_comp)
+
+                        st.subheader("Comparação de Métodos")
+                        st.write(f"K-Means - Erro: {km_error:.2f}, Desvio: {km_std:.2f}")
+                        st.write(f"Fuzzy C-Means - Erro: {fcm_error:.2f}, Desvio: {fcm_std:.2f}")
+
+                        chart = plot_comparison_chart(km_error, km_std, fcm_error, fcm_std)
+                        st.pyplot(chart)
+
+    # Documentation section
+    with st.expander("Sobre o aplicativo"):
+        st.write("""
+        Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.
+        O código apresentado consiste em um aplicativo para classificação de cores de solo baseado na notação Munsell e na clusterização de cores. O aplicativo tem como funcionalidades principais:
+        - Conversão de cores RGB para notação Munsell de acordo com a classificação de cores de solo da Embrapa;
+        - Implementação de algoritmos de clusterização, K-Means e Fuzzy C-Means;
+        - Cálculo da margem de erro e desvio padrão da clusterização;
+        - Exibição de informações sobre a classificação do solo, como descrição, características, vegetação típica e cultivos e manejo recomendado;
+        - Exibição de gráficos, como distribuição das cores Munsell, margem de erro e desvio padrão.
+        """)
+
+    with st.expander("Como usar"):
+        st.write("""
+        1. Faça o upload de uma imagem do solo que você deseja analisar na barra lateral.
+        2. Selecione o método de clusterização que você deseja usar (K-Means ou Fuzzy C-Means).
+        3. Selecione o número de clusters que você deseja usar na análise.
+        4. Clique no botão 'Classificar cores' para iniciar a análise.
+        5. O aplicativo exibirá a imagem segmentada, a classificação do solo, gráficos e informações adicionais sobre a margem de erro e desvio padrão.
+        6. Explore os resultados e ajuste as configurações conforme necessário para obter os melhores resultados.
+        """)
+
+    with st.expander("Créditos e Referências"):
+        st.write("""
+        **Créditos:**
+        Este aplicativo foi desenvolvido usando a biblioteca Streamlit para Python. Agradecimentos especiais à Embrapa pelo fornecimento das informações sobre a classificação de solos e notação Munsell.
+
+        Desenvolvedor: [professor Marcelo Claro]
+        Contato: [marceloclaro@gmail.com]
+        GitHub: [https://github.com/MarceloClaro/COR-DO-SOLO]
+
+        **Referências:**
+        1. Munsell Soil Color Charts. [https://www.munsell.com/color-services/color-standards/soil-color-charts/]
+        2. Embrapa. Sistema Brasileiro de Classificação de Solos. [https://www.embrapa.br/solos/sistema-brasileiro-de-classificacao-de-solos]
+        3. Streamlit. [https://www.streamlit.io/]
+        """)
 
 if __name__ == "__main__":
     main()
-
-
-# Exibir informações do App
-st.subheader("Sobre o aplicativo:")
-st.write("""
-Este aplicativo utiliza a notação Munsell para classificar as cores do solo. Ele utiliza algoritmos de clusterização, como K-Means e Fuzzy C-Means, para identificar e agrupar cores semelhantes presentes na imagem do solo. Em seguida, ele converte as cores médias dos clusters para a notação Munsell e exibe informações relevantes sobre a classificação do solo, como a descrição, características, vegetação típica e cultivos e manejo recomendado, de acordo com os padrões estabelecidos pela Embrapa.
-O código apresentado consiste em um aplicativo para classificação de cores de solo baseado na notação Munsell e na clusterização de cores. O aplicativo tem como funcionalidades principais: 
-- Conversão de cores RGB para notação Munsell de acordo com a classificação de cores de solo da Embrapa;
-- Implementação de algoritmos de clusterização, K-Means e Fuzzy C-Means;
-- Cálculo da margem de erro e desvio padrão da clusterização;
-- Exibição de informações sobre a classificação do solo, como descrição, características, vegetação típica e cultivos e manejo recomendado;
-- Exibição de gráficos, como distribuição das cores Munsell, margem de erro e desvio padrão.
-Em relação à otimização, o código utiliza técnicas como redimensionamento da imagem para reduzir o tempo de processamento e a utilização de bibliotecas otimizadas para processamento de imagens, clusterização e cálculo de estatísticas. Além disso, o código apresenta uma lógica eficiente para a conversão de cores RGB para notação Munsell baseada em tabelas estabelecidas pela Embrapa.
-Quanto à aplicabilidade em áreas técnicas, o aplicativo pode ser útil em diversas áreas, como geologia, estatística, geografia, educação ambiental, atividade agrícola e recuperação de áreas nativas. Por exemplo, pode ser utilizado para análise da qualidade do solo em áreas de cultivo, recuperação de áreas degradadas, avaliação de impactos ambientais, entre outros. Porém, é importante ressaltar que o aplicativo é limitado pela capacidade de reconhecimento de cores do sistema RGB, que pode ser influenciado por diversos fatores, como iluminação, sombras, entre outros.
-""")
-
-st.subheader("Como usar:")
-st.write("""
-1. Faça o upload de uma imagem do solo que você deseja analisar.
-2. Selecione o método de clusterização que você deseja usar (K-Means ou Fuzzy C-Means).
-3. Selecione o número de clusters que você deseja usar na análise.
-4. Clique no botão 'Classificar cores' para iniciar a análise.
-5. O aplicativo exibirá a imagem segmentada, a classificação do solo, gráficos e informações adicionais sobre a margem de erro e desvio padrão.
-6. Explore os resultados e ajuste as configurações conforme necessário para obter os melhores resultados.
-""")
-
-st.subheader("Créditos:")
-st.write("""
-Este aplicativo foi desenvolvido usando a biblioteca Streamlit para Python e a arquitetura GPT-4 da OpenAI. Agradecimentos especiais à Embrapa pelo fornecimento das informações sobre a classificação de solos e notação Munsell.
-""")
-st.write("Desenvolvedor: [professor Marcelo Claro]")
-st.write("Contato: [marceloclaro@gmail.com]")
-st.write("GitHub: [https://github.com/MarceloClaro/COR-DO-SOLO/edit/master/solo_segmentation.py]")
-
-st.subheader("Referências:")
-st.write("""
-1. Munsell Soil Color Charts. [https://www.munsell.com/color-services/color-standards/soil-color-charts/]
-2. Embrapa. Sistema Brasileiro de Classificação de Solos. [https://www.embrapa.br/solos/sistema-brasileiro-de-classificacao-de-solos]
-3. Streamlit. [https://www.streamlit.io/]
-4. OpenAI. GPT-4. [https://www.openai.com/]
-""")

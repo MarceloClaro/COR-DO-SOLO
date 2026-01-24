@@ -4,4 +4,3 @@ opencv-python-headless
 matplotlib
 scikit-image
 fuzzy-c-means
-scikit-image==0.18.3
