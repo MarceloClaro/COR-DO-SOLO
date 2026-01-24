@@ -37,4 +37,4 @@ jobs:
       run: |
         # Try to run the script to check for import errors.
         # Since it's streamlit, we can just check if python accepts it.
-        python -m py_compile solo_segmentation.py
+        python -m py_compile app.py

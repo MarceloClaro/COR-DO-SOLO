@@ -8,6 +8,122 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from fcmeans import FCM
 
+# --- CSS Styling (Cyberpunk) ---
+def apply_cyberpunk_style():
+    st.markdown("""
+    <style>
+        /* Base Colors */
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #00ff41;
+            --dark-bg: #050505;
+            --panel-bg: #111111;
+            --text-color: #e0e0e0;
+        }
+
+        /* Main Background */
+        .stApp {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace; /* Cyberpunk monospace feel */
+        }
+
+        /* Sidebar */
+        .stSidebar {
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--neon-purple);
+        }
+
+        /* Typography - Headers */
+        h1, h2, h3 {
+            color: var(--neon-cyan) !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        h1 {
+            border-bottom: 2px solid var(--neon-pink);
+            padding-bottom: 10px;
+        }
+
+        /* Metrics */
+        div[data-testid="stMetricValue"] {
+            color: var(--neon-green) !important;
+            text-shadow: 0 0 5px var(--neon-green);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        div[data-testid="stMetricLabel"] {
+            color: var(--neon-pink) !important;
+        }
+
+        /* Buttons */
+        .stButton > button {
+            background-color: transparent !important;
+            color: var(--neon-cyan) !important;
+            border: 1px solid var(--neon-cyan) !important;
+            border-radius: 0px !important; /* Sharp edges */
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        .stButton > button:hover {
+            background-color: var(--neon-cyan) !important;
+            color: black !important;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        /* Inputs / Selectboxes */
+        .stSelectbox > div > div {
+            background-color: var(--panel-bg) !important;
+            color: var(--neon-green) !important;
+            border: 1px solid var(--neon-purple) !important;
+        }
+
+        .stSlider > div > div > div > div {
+            background-color: var(--neon-pink) !important;
+        }
+
+        /* Expanders */
+        .streamlit-expanderHeader {
+            background-color: #1a1a1a !important;
+            color: var(--neon-purple) !important;
+            border: 1px solid #333;
+        }
+
+        /* Dividers */
+        hr {
+            border-color: var(--neon-pink);
+        }
+
+        /* Warning/Info boxes customization */
+        .stAlert {
+            background-color: #1a1a1a;
+            border: 1px solid var(--neon-cyan);
+            color: var(--text-color);
+        }
+
+        /* Code blocks */
+        code {
+            color: var(--neon-green);
+            background-color: #000;
+            border: 1px solid #333;
+        }
+
+        /* Images */
+        img {
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+    </style>
+    """, unsafe_allow_html=True)
+
 # --- Helper Functions ---
 
 def rgb_to_embrapa_munsell(r, g, b):
@@ -181,35 +297,38 @@ def analyze_image(image, n_clusters, method, resize_dim):
 def main():
     st.set_page_config(page_title="Dashboard Análise de Solo", layout="wide")
 
-    st.title("📊 Dashboard de Classificação de Solos (Embrapa/SiBCS)")
+    # Apply Cyberpunk Style
+    apply_cyberpunk_style()
+
+    st.title("📊 CLASSIFICAÇÃO DE SOLOS (CYBER_SOIL)")
     st.markdown("""
-    Este dashboard permite a análise da cor do solo em amostras **secas** e **úmidas**,
-    gerando a classificação provável segundo o Sistema Brasileiro de Classificação de Solos.
+    **SISTEMA DE ANÁLISE ESPECTRAL E CLASSIFICAÇÃO PEDOLÓGICA (SiBCS)**
     """)
 
     # --- Sidebar ---
-    st.sidebar.header("📁 Upload de Amostras")
-    file_dry = st.sidebar.file_uploader("Foto Solo Seco", type=["jpg", "png", "jpeg"], key="dry")
-    file_wet = st.sidebar.file_uploader("Foto Solo Úmido", type=["jpg", "png", "jpeg"], key="wet")
+    st.sidebar.header("📁 UPLOAD")
+    file_dry = st.sidebar.file_uploader("AMOSTRA SECA", type=["jpg", "png", "jpeg"], key="dry")
+    file_wet = st.sidebar.file_uploader("AMOSTRA ÚMIDA", type=["jpg", "png", "jpeg"], key="wet")
 
-    st.sidebar.header("⚙️ Parâmetros")
-    cluster_method = st.sidebar.selectbox("Algoritmo", ("K-Means", "Fuzzy C-Means"))
-    n_clusters = st.sidebar.slider("Cores Dominantes (K)", 1, 5, 3)
-    resize_dim = st.sidebar.slider("Resolução (px)", 50, 300, 150)
+    st.sidebar.markdown("---")
+    st.sidebar.header("⚙️ PARÂMETROS")
+    cluster_method = st.sidebar.selectbox("ALGORITMO", ("K-Means", "Fuzzy C-Means"))
+    n_clusters = st.sidebar.slider("CLUSTER (K)", 1, 5, 3)
+    resize_dim = st.sidebar.slider("RESOLUÇÃO (PX)", 50, 300, 150)
 
     # --- Processing ---
 
     if not file_dry and not file_wet:
-        st.info("👋 Por favor, faça o upload de pelo menos uma imagem (Seco ou Úmido) para iniciar o Dashboard.")
+        st.info("👋 INICIE O SISTEMA: FAÇA O UPLOAD DE UMA AMOSTRA.")
         return
 
     # Container for Analysis
-    if st.sidebar.button("Gerar Dashboard de Análise"):
+    if st.sidebar.button("INICIAR ANÁLISE"):
 
         results_dry = None
         results_wet = None
 
-        with st.spinner('Processando imagens...'):
+        with st.spinner('PROCESSANDO DADOS...'):
             if file_dry:
                 img_dry = Image.open(file_dry)
                 results_dry = analyze_image(img_dry, n_clusters, cluster_method, resize_dim)
@@ -221,28 +340,28 @@ def main():
         # --- Dashboard Layout ---
 
         # 1. Visual Comparison
-        st.header("1. Análise Visual")
+        st.header("1. ANÁLISE VISUAL")
         c1, c2 = st.columns(2)
 
         with c1:
             if results_dry:
-                st.subheader("Amostra Seca")
-                st.image(file_dry, caption="Original", use_column_width=True)
-                st.image(results_dry['segmented_image'], caption=f"Segmentada ({cluster_method})", use_column_width=True)
+                st.subheader("AMOSTRA SECA")
+                st.image(file_dry, caption="ORIGINAL", use_column_width=True)
+                st.image(results_dry['segmented_image'], caption=f"SEGMENTADA ({cluster_method})", use_column_width=True)
             else:
                 st.warning("Amostra Seca não fornecida")
 
         with c2:
             if results_wet:
-                st.subheader("Amostra Úmida")
-                st.image(file_wet, caption="Original", use_column_width=True)
-                st.image(results_wet['segmented_image'], caption=f"Segmentada ({cluster_method})", use_column_width=True)
+                st.subheader("AMOSTRA ÚMIDA")
+                st.image(file_wet, caption="ORIGINAL", use_column_width=True)
+                st.image(results_wet['segmented_image'], caption=f"SEGMENTADA ({cluster_method})", use_column_width=True)
             else:
                 st.warning("Amostra Úmida não fornecida")
 
         # 2. Classification Data
-        st.divider()
-        st.header("2. Dados de Classificação (Cor Dominante)")
+        st.markdown("---")
+        st.header("2. DADOS DE CLASSIFICAÇÃO")
 
         c_dry, c_wet = st.columns(2)
 
@@ -250,73 +369,85 @@ def main():
             if res:
                 cls = res['classification']
                 st.markdown(f"### {title}")
-                st.metric("Cor Munsell (Dominante)", res['dominant_munsell'])
-                st.markdown(f"**Classe:** {cls['solo_embrapa']}")
+                st.metric("COR MUNSELL (DOMINANTE)", res['dominant_munsell'])
+                st.markdown(f"**CLASSE:** {cls['solo_embrapa']}")
                 st.write(f"_{cls['descricao']}_")
 
-                with st.expander("Características e Riscos"):
-                    st.write(f"**Características:** {cls['caracteristicas']}")
-                    st.write("**Riscos/Limitações:**")
+                with st.expander("DETALHES TÉCNICOS"):
+                    st.write(f"**CARACTERÍSTICAS:** {cls['caracteristicas']}")
+                    st.write("**RISCOS:**")
                     for r in cls['riscos']:
                         st.write(f"- {r}")
 
-                st.write("**Todas as cores detectadas:**")
+                st.write("**PALETA DETECTADA:**")
                 st.code(", ".join(res['munsell_colors']))
             else:
                 st.markdown(f"### {title}")
-                st.write("Dados indisponíveis")
+                st.write("DADOS INDISPONÍVEIS")
 
         with c_dry:
-            display_card("Solo Seco", results_dry)
+            display_card("SOLO SECO", results_dry)
 
         with c_wet:
-            display_card("Solo Úmido", results_wet)
+            display_card("SOLO ÚMIDO", results_wet)
 
         # 3. Validation Stats
-        st.divider()
-        st.header("3. Estatísticas de Validação")
-        st.markdown("Métricas internas de qualidade do agrupamento de cores (menor erro = cores mais fiéis).")
+        st.markdown("---")
+        st.header("3. ESTATÍSTICAS (DEBUG)")
 
         m1, m2, m3, m4 = st.columns(4)
         if results_dry:
-            m1.metric("Erro Médio (Seco)", f"{results_dry['mean_error']:.2f}")
-            m2.metric("Desvio Padrão (Seco)", f"{results_dry['std_dev']:.2f}")
+            m1.metric("ERRO MÉDIO (SECO)", f"{results_dry['mean_error']:.2f}")
+            m2.metric("DESVIO PAD. (SECO)", f"{results_dry['std_dev']:.2f}")
         if results_wet:
-            m3.metric("Erro Médio (Úmido)", f"{results_wet['mean_error']:.2f}")
-            m4.metric("Desvio Padrão (Úmido)", f"{results_wet['std_dev']:.2f}")
+            m3.metric("ERRO MÉDIO (ÚMIDO)", f"{results_wet['mean_error']:.2f}")
+            m4.metric("DESVIO PAD. (ÚMIDO)", f"{results_wet['std_dev']:.2f}")
 
         # Charts
-        st.subheader("Distribuição de Erro")
+        st.subheader("DISTRIBUIÇÃO DE ERRO")
         cg1, cg2 = st.columns(2)
+
+        # Helper for plots with dark theme
+        def plot_dark_hist(data, color, label):
+            fig, ax = plt.subplots()
+            # Set plot background to transparent/dark
+            fig.patch.set_facecolor('#0e1117')
+            ax.set_facecolor('#0e1117')
+            ax.hist(data, bins=30, color=color, alpha=0.8, edgecolor=color)
+
+            # Color axis text
+            ax.tick_params(colors='#00f3ff')
+            ax.xaxis.label.set_color('#00f3ff')
+            ax.yaxis.label.set_color('#00f3ff')
+            ax.title.set_color('#ff00ff')
+
+            # Color spines
+            for spine in ax.spines.values():
+                spine.set_edgecolor('#bd00ff')
+
+            return fig
+
         if results_dry:
             with cg1:
-                st.caption("Histograma de Erro (Seco)")
-                fig, ax = plt.subplots()
-                ax.hist(np.linalg.norm(results_dry['flat_array'] - results_dry['centers'][results_dry['labels']], axis=1), bins=30, color='brown', alpha=0.7)
-                st.pyplot(fig)
+                st.caption("HISTOGRAMA (SECO)")
+                err_data = np.linalg.norm(results_dry['flat_array'] - results_dry['centers'][results_dry['labels']], axis=1)
+                st.pyplot(plot_dark_hist(err_data, '#ff00ff', 'Erro'))
         if results_wet:
             with cg2:
-                st.caption("Histograma de Erro (Úmido)")
-                fig, ax = plt.subplots()
-                ax.hist(np.linalg.norm(results_wet['flat_array'] - results_wet['centers'][results_wet['labels']], axis=1), bins=30, color='darkblue', alpha=0.7)
-                st.pyplot(fig)
+                st.caption("HISTOGRAMA (ÚMIDO)")
+                err_data = np.linalg.norm(results_wet['flat_array'] - results_wet['centers'][results_wet['labels']], axis=1)
+                st.pyplot(plot_dark_hist(err_data, '#00f3ff', 'Erro'))
 
     # 4. Limitations and Methodology (Static)
-    st.divider()
-    with st.expander("⚠️ Limitações, Validação e Metodologia", expanded=False):
+    st.markdown("---")
+    with st.expander("⚠️ PROTOCOLO E LIMITAÇÕES", expanded=False):
         st.markdown("""
-        ### Limitações Técnicas
-        1.  **Iluminação:** A precisão da cor depende drasticamente da iluminação da foto. Fotos tiradas sob luz solar direta vs sombra vs luz artificial produzirão resultados Munsell diferentes. Recomenda-se luz natural difusa.
-        2.  **Calibração da Câmera:** Sensores de celular aplicam pós-processamento que altera as cores reais. Sem um cartão de referência de cor na imagem para calibração, os resultados são aproximados.
-        3.  **Umidade:** A umidade escurece o solo (diminui o Valor). A classificação completa do SiBCS geralmente requer a cor do solo úmido e seco para determinações precisas (ex: variação de cor).
-        4.  **Representatividade:** A análise é feita sobre a imagem carregada. Se a imagem contiver raízes, pedras ou sombras, isso afetará os clusters de cor.
+        ### LIMITAÇÕES DO SISTEMA
+        1.  **ILUMINAÇÃO:** A precisão espectral depende da fonte de luz. Use luz natural difusa.
+        2.  **CALIBRAÇÃO:** Sem color checker, os resultados são aproximados devido ao pós-processamento do sensor.
 
-        ### Validação do Algoritmo
-        *   **Margem de Erro:** Calculada como a distância Euclidiana média entre a cor original do pixel e a cor do cluster atribuído (centroide).
-        *   **Desvio Padrão:** Indica a dispersão das cores dentro de um mesmo grupo. Desvios altos indicam que o solo é muito heterogêneo ou o número de clusters (K) é insuficiente.
-
-        ### Metodologia Embrapa
-        A classificação apresentada é uma **inferência** baseada nas cores Munsell identificadas e nas regras gerais do Sistema Brasileiro de Classificação de Solos (SiBCS). A determinação definitiva de um tipo de solo requer análise granulométrica, química e morfológica em perfil de solo.
+        ### METODOLOGIA
+        Classificação baseada em inferência de cor Munsell x SiBCS.
         """)
 
 if __name__ == "__main__":
