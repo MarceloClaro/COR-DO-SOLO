@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from fcmeans import FCM
 
-# Função para converter cores RGB em notação Munsell conforme a classificação de cores de solo da Embrapa
+# --- Helper Functions ---
+
 def rgb_to_embrapa_munsell(r, g, b):
     # Inputs r, g, b in 0-255
     r_norm, g_norm, b_norm = r/255.0, g/255.0, b/255.0
@@ -16,7 +17,6 @@ def rgb_to_embrapa_munsell(r, g, b):
     hue_deg = h * 360
 
     # Mapeamento de Matiz (Hue) aproximado para cartas de solo
-    # Centros aproximados: 10R(10), 2.5YR(18), 5YR(27), 7.5YR(36), 10YR(45), 2.5Y(54), 5Y(63)
     if hue_deg < 14: m_hue = "10R"
     elif hue_deg < 23: m_hue = "2.5YR"
     elif hue_deg < 32: m_hue = "5YR"
@@ -24,194 +24,91 @@ def rgb_to_embrapa_munsell(r, g, b):
     elif hue_deg < 50: m_hue = "10YR"
     elif hue_deg < 59: m_hue = "2.5Y"
     elif hue_deg < 80: m_hue = "5Y"
-    elif hue_deg < 120: m_hue = "5Y" # Amarelo esverdeado
-    elif hue_deg < 170: m_hue = "5G" # Verde (Glei)
-    elif hue_deg < 260: m_hue = "5B" # Azul (Glei)
-    else: m_hue = "N" # Neutro/Outros
+    elif hue_deg < 120: m_hue = "5Y"
+    elif hue_deg < 170: m_hue = "5G"
+    elif hue_deg < 260: m_hue = "5B"
+    else: m_hue = "N"
 
     # Mapeamento de Valor (Value)
-    # Value é aproximadamente L * 10. Valores comuns em cartas de solo: 2.5, 3, 4, 5, 6, 7, 8
     raw_value = l * 10
     valid_values = [2.5, 3, 4, 5, 6, 7, 8]
     m_value = min(valid_values, key=lambda x: abs(x - raw_value))
 
     # Mapeamento de Croma (Chroma)
-    # Chroma está relacionado à saturação. Solos vão até 8 geralmente.
-    # Fator de escala empírico: S=1.0 -> C=12 (vívido). S=0.6 -> C=7.2 (arredonda para 6 ou 8).
     raw_chroma = s * 12
     valid_chromas = [1, 2, 3, 4, 6, 8]
     m_chroma = min(valid_chromas, key=lambda x: abs(x - raw_chroma))
 
-    # Formatação Munsell padrão
     embrapa_munsell = f"{m_hue} {m_value}/{m_chroma}"
     return embrapa_munsell
 
 def classify_soil_embrapa(munsell_str):
-    """
-    Classifica o solo com base nos critérios da Embrapa/SiBCS usando a cor Munsell.
-    Retorna um dicionário com detalhes da classificação.
-    """
     try:
         parts = munsell_str.split()
-        if len(parts) != 2:
-            return None
-
+        if len(parts) != 2: return None
         hue = parts[0]
         value_chroma = parts[1].split('/')
-        if len(value_chroma) != 2:
-            return None
-
+        if len(value_chroma) != 2: return None
         value = float(value_chroma[0])
         chroma = float(value_chroma[1])
     except:
         return None
 
-    # Lógica baseada em princípios do SiBCS (Sistema Brasileiro de Classificação de Solos)
-
-    # 1. Solos Claros/Arenosos (Neossolo Quartzarênico / Espodossolo)
-    # Areias brancas ou muito claras, alto valor, baixo croma.
+    # Logic based on SiBCS
     if hue in ['10YR', '2.5Y', '5Y'] and value >= 6 and chroma <= 4:
          return {
             "solo_embrapa": "Neossolo Quartzarênico / Espodossolo",
-            "descricao": "Solos arenosos, pouco desenvolvidos ou podzolizados. Presença de areias quartzosas.",
-            "caracteristicas": "Cores claras (brancacentas ou acinzentadas), textura arenosa, baixa retenção de água e nutrientes.",
-            "vegetacao_tipica": "Restinga, Campinarana, Cerrado (áreas arenosas).",
-            "cultivos_manejo_recomendado": {
-                "recomendados": ["Caju", "Coco", "Abacaxi", "Eucalipto", "Melancia"],
-                "condicionantes": "Baixa fertilidade natural e baixa retenção de água.",
-                "manejo": "Adubação parcelada e frequente, irrigação suplementar."
-            },
-            "ph": "4.5 - 6.0",
-            "condutividade_eletrica": "Baixa",
-            "teor_nutrientes": "Muito Baixo",
-            "manejo_inadequado": {"consequencias": ["Lixiviação intensa de nutrientes", "Erosão eólica"]}
+            "descricao": "Solos arenosos, pouco desenvolvidos ou podzolizados.",
+            "caracteristicas": "Cores claras (brancacentas/acinzentadas), textura arenosa.",
+            "riscos": ["Lixiviação", "Erosão eólica"]
         }
 
-    # 2. Solos Glei (Gleissolo / Planossolo)
-    # Cores neutras, azuladas, esverdeadas ou matizes 2.5Y/5Y com croma baixo associado a encharcamento.
     if hue in ['N', '5B', '5G', '5BG', '5Y', '2.5GY', '5GY', '10G', '10B'] or (chroma <= 2 and value >= 4):
         return {
             "solo_embrapa": "Gleissolo / Planossolo",
-            "descricao": "Solos hidromórficos, formados em condições de saturação por água (anaerobiose periódica ou permanente).",
-            "caracteristicas": "Coloração cinzenta, azulada ou esverdeada (glei). Planossolos possuem horizonte B plânico impermeável.",
-            "vegetacao_tipica": "Várzeas, banhados, matas de galeria, campos úmidos.",
-            "cultivos_manejo_recomendado": {
-                "recomendados": ["Arroz irrigado", "Pastagens (com drenagem)", "Olericultura (com drenagem)"],
-                "condicionantes": "Excesso de água. Necessita de drenagem para a maioria das culturas de sequeiro.",
-                "manejo": "Drenagem adequada ou cultivo de espécies adaptadas."
-            },
-            "ph": "Variável (frequentemente ácido)",
-            "condutividade_eletrica": "Variável",
-            "teor_nutrientes": "Variável",
-            "manejo_inadequado": {"consequencias": ["Encharcamento", "Salinização (em áreas semiáridas)", "Compactação"]}
+            "descricao": "Solos hidromórficos, saturação por água.",
+            "caracteristicas": "Cores cinzentas/azuladas (glei).",
+            "riscos": ["Encharcamento", "Salinização"]
         }
 
-    # 3. Solos Escuros (Chernossolo / Organossolo / Horizonte A Húmico)
     if value <= 3 and chroma <= 3:
         return {
-            "solo_embrapa": "Chernossolo / Organossolo (ou Horizonte A Húmico)",
-            "descricao": "Solos com altos teores de matéria orgânica, geralmente férteis e com boa estrutura.",
-            "caracteristicas": "Cor escura (preta ou brunada muito escura). Chernossolos têm alta saturação por bases.",
-            "vegetacao_tipica": "Campos, matas de araucária, florestas estacionais deciduais.",
-            "cultivos_manejo_recomendado": {
-                "recomendados": ["Milho", "Trigo", "Soja", "Feijão", "Hortaliças"],
-                "condicionantes": "Geralmente férteis. Podem ser rasos ou pedregosos em algumas situações.",
-                "manejo": "Evitar revolvimento excessivo para não oxidar a matéria orgânica (Plantio Direto)."
-            },
-            "ph": "5.5 - 7.0 (Chernossolo)",
-            "condutividade_eletrica": "Baixa a Média",
-            "teor_nutrientes": "Alto",
-            "manejo_inadequado": {"consequencias": ["Perda rápida de matéria orgânica", "Erosão"]}
+            "solo_embrapa": "Chernossolo / Organossolo",
+            "descricao": "Solos ricos em matéria orgânica.",
+            "caracteristicas": "Cor escura (preta/brunada), alta fertilidade potencial.",
+            "riscos": ["Perda de MO"]
         }
 
-    # 4. Solos Vermelhos (Latossolo Vermelho / Nitossolo Vermelho / Argissolo Vermelho)
     if hue in ['10R', '2.5YR']:
         return {
-            "solo_embrapa": "Latossolo Vermelho / Nitossolo Vermelho / Argissolo Vermelho",
-            "descricao": "Solos muito intemperizados, ricos em óxidos de ferro (hematita).",
-            "caracteristicas": "Cor vermelha intensa, profundos, bem drenados. Latossolos são muito porosos; Nitossolos têm cerosidade e estrutura em blocos.",
-            "vegetacao_tipica": "Cerrado, Mata Atlântica.",
-            "cultivos_manejo_recomendado": {
-                "recomendados": ["Soja", "Milho", "Café", "Cana-de-açúcar", "Citros", "Algodão"],
-                "condicionantes": "Correção de acidez (calagem) e adubação fosfatada são geralmente necessárias.",
-                "manejo": "Plantio direto, práticas conservacionistas."
-            },
-            "ph": "4.0 - 5.5 (Natural)",
-            "condutividade_eletrica": "Baixa",
-            "teor_nutrientes": "Baixo (Latossolo) a Médio/Alto (Nitossolo Eutrófico)",
-            "manejo_inadequado": {"consequencias": ["Erosão laminar", "Compactação"]}
+            "solo_embrapa": "Latossolo Vermelho / Nitossolo Vermelho",
+            "descricao": "Solos muito intemperizados, ricos em hematita.",
+            "caracteristicas": "Cor vermelha intensa, profundos, bem drenados.",
+            "riscos": ["Erosão laminar", "Compactação"]
         }
 
-    # 5. Solos Vermelho-Amarelos (Latossolo/Argissolo Vermelho-Amarelo)
     if hue in ['5YR', '7.5YR']:
         return {
-            "solo_embrapa": "Latossolo Vermelho-Amarelo / Argissolo Vermelho-Amarelo",
-            "descricao": "Solos com mistura de hematita e goethita. Muito comuns no Brasil.",
-            "caracteristicas": "Cor bruna a vermelho-amarelada. Argissolos apresentam incremento de argila em profundidade (B textural).",
-            "vegetacao_tipica": "Cerrado, Floresta Amazônica, Mata Atlântica.",
-            "cultivos_manejo_recomendado": {
-                "recomendados": ["Soja", "Pastagens", "Mandioca", "Fruticultura", "Silvicultura"],
-                "condicionantes": "Baixa fertilidade natural e acidez elevada na maioria dos casos.",
-                "manejo": "Cuidado redobrado com erosão em Argissolos devido à mudança textural."
-            },
-            "ph": "4.5 - 5.5",
-            "condutividade_eletrica": "Baixa",
-            "teor_nutrientes": "Baixo a Médio",
-            "manejo_inadequado": {"consequencias": ["Erosão laminar acelerada (Argissolos)", "Degradação de pastagens"]}
+            "solo_embrapa": "Latossolo / Argissolo Vermelho-Amarelo",
+            "descricao": "Mistura de hematita e goethita.",
+            "caracteristicas": "Cor bruna a vermelho-amarelada.",
+            "riscos": ["Erosão laminar (Argissolos)"]
         }
 
-    # 6. Solos Amarelos (Latossolo Amarelo / Argissolo Amarelo)
     if hue in ['10YR', '2.5Y']:
         return {
             "solo_embrapa": "Latossolo Amarelo / Argissolo Amarelo",
-            "descricao": "Solos ricos em goethita, comuns em regiões úmidas e Tabuleiros Costeiros.",
-            "caracteristicas": "Cor amarela a brunada. Geralmente ácidos e com baixa fertilidade natural.",
-            "vegetacao_tipica": "Floresta Amazônica, Mata Atlântica (Tabuleiros).",
-            "cultivos_manejo_recomendado": {
-                "recomendados": ["Mandioca", "Fruticultura (Maracujá, Mamão)", "Dendezeiro", "Pimenta-do-reino", "Cana-de-açúcar"],
-                "condicionantes": "Correção de acidez e adubação. Alguns Latossolos Amarelos apresentam coesão.",
-                "manejo": "Subsolagem em camadas coesas, manutenção da cobertura do solo."
-            },
-            "ph": "4.0 - 5.0",
-            "condutividade_eletrica": "Baixa",
-            "teor_nutrientes": "Baixo",
-            "manejo_inadequado": {"consequencias": ["Adensamento/Coesão (Hardsetting)", "Erosão"]}
+            "descricao": "Solos ricos em goethita.",
+            "caracteristicas": "Cor amarela a brunada. Baixa fertilidade natural.",
+            "riscos": ["Coesão (Hardsetting)"]
         }
 
     return {
-        "solo_embrapa": "Não Classificado / Outros",
-        "descricao": "A cor identificada não se enquadra nos padrões genéricos principais ou requer análise laboratorial complementar (textura, mineralogia).",
-        "caracteristicas": f"Matiz: {hue}, Valor: {value}, Croma: {chroma}",
-        "vegetacao_tipica": "-",
-        "cultivos_manejo_recomendado": {
-            "recomendados": [],
-            "condicionantes": "",
-            "manejo": ""
-        },
-        "ph": "-",
-        "condutividade_eletrica": "-",
-        "teor_nutrientes": "-",
-        "manejo_inadequado": {"consequencias": []}
+        "solo_embrapa": "Não Classificado",
+        "descricao": "Cor fora dos padrões principais.",
+        "caracteristicas": f"Matiz: {hue}, V: {value}, C: {chroma}",
+        "riscos": []
     }
-
-
-# Dicionário de solos específicos (Amostras conhecidas para referência exata)
-# Mantido para compatibilidade, mas o sistema agora usa a classificação genérica como fallback
-soil_dict = {
-    "2.5YR 5/8": {
-        "sistema_munsell": "2.5YR 5/8",
-        "solo_embrapa": "Latossolo Vermelho (Amostra Típica)",
-        "descricao": "Solos profundos, com horizonte B latossólico.",
-        "caracteristicas": "Textura argilosa, alta permeabilidade.",
-        "vegetacao_tipica": "Cerrado.",
-        "cultivos_manejo_recomendado": {"recomendados": ["Soja", "Milho"], "condicionantes": "Correção de solo.", "manejo": "Plantio Direto."},
-        "ph": "5.0",
-        "condutividade_eletrica": "Baixa",
-        "teor_nutrientes": "Baixo",
-        "manejo_inadequado": {"consequencias": ["Erosão"]}
-    }
-}
-
 
 def convert_cluster_centers_to_munsell(cluster_centers):
     munsell_colors = []
@@ -221,14 +118,6 @@ def convert_cluster_centers_to_munsell(cluster_centers):
         munsell_colors.append(munsell_color)
     return munsell_colors
 
-
-def display_munsell_colors(munsell_colors):
-    st.subheader("Cores Munsell Identificadas:")
-    for color in munsell_colors:
-        st.write(f"- {color}")
-
-
-# Função para criar uma imagem segmentada com base na clusterização
 def create_segmented_image(image_array, labels, cluster_centers, width, height):
     num_clusters = cluster_centers.shape[0]
     segmented_array = np.zeros_like(image_array)
@@ -238,199 +127,196 @@ def create_segmented_image(image_array, labels, cluster_centers, width, height):
     segmented_image = segmented_image.astype(np.uint8)
     return segmented_image
 
-
-def plot_munsell_distribution(munsell_colors):
-    unique_colors, counts = np.unique(munsell_colors, return_counts=True)
-    plt.figure(figsize=(10, 5))
-    plt.bar(unique_colors, counts, color='skyblue')
-    plt.xlabel("Cores Munsell")
-    plt.ylabel("Contagem de Pixels (Aprox.)")
-    plt.title("Distribuição das Cores Munsell Dominantes")
-    plt.xticks(rotation=45)
-    st.pyplot(plt.gcf())
-    plt.clf()
-
-def plot_error_distribution(image_array, labels, cluster_centers):
-    errors = np.linalg.norm(image_array - cluster_centers[labels], axis=1)
-    plt.figure(figsize=(10, 5))
-    plt.hist(errors, bins=30, color='gray', alpha=0.7)
-    plt.xlabel("Erro de Quantização (Distância Euclidiana RGB)")
-    plt.ylabel("Frequência")
-    plt.title("Histograma de Erro da Clusterização")
-    st.pyplot(plt.gcf())
-    plt.clf()
-
-def plot_std_deviation_distribution(image_array, labels, cluster_centers):
-    errors = np.linalg.norm(image_array - cluster_centers[labels], axis=1)
-    std_deviation = np.std(errors)
-    mean_error = np.mean(errors)
-
-    plt.figure(figsize=(10, 5))
-    plt.hist(errors, bins=30, density=True, color='lightgreen', alpha=0.6)
-    plt.axvline(mean_error, color='b', linestyle='-', linewidth=2, label=f'Média: {mean_error:.2f}')
-    plt.axvline(mean_error + std_deviation, color='r', linestyle='--', linewidth=2, label=f'+1 DP: {(mean_error+std_deviation):.2f}')
-    plt.xlabel("Erro")
-    plt.ylabel("Densidade")
-    plt.title("Distribuição do Erro")
-    plt.legend()
-    st.pyplot(plt.gcf())
-    plt.clf()
-
-def plot_comparison_chart(kmeans_error, kmeans_std_deviation, fcm_error, fcm_std_deviation):
-    labels = ['Erro Médio', 'Desvio Padrão']
-    kmeans_values = [kmeans_error, kmeans_std_deviation]
-    fcm_values = [fcm_error, fcm_std_deviation]
-
-    bar_width = 0.35
-    kmeans_positions = [i - bar_width/2 for i in range(len(labels))]
-    fcm_positions = [i + bar_width/2 for i in range(len(labels))]
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.bar(kmeans_positions, kmeans_values, width=bar_width, label='K-Means', color='blue', alpha=0.7)
-    ax.bar(fcm_positions, fcm_values, width=bar_width, label='Fuzzy C-Means', color='orange', alpha=0.7)
-
-    ax.set_ylabel('Valor')
-    ax.set_title('Comparação de Desempenho: K-Means vs Fuzzy C-Means')
-    ax.set_xticks(range(len(labels)))
-    ax.set_xticklabels(labels)
-    ax.legend()
-
-    return fig
-
 def get_stats(image_array, labels, cluster_centers):
     errors = np.linalg.norm(image_array - cluster_centers[labels], axis=1)
     mean_error = np.mean(errors)
     std_deviation = np.std(errors)
     return mean_error, std_deviation
 
-# Streamlit interface
+def analyze_image(image, n_clusters, method, resize_dim):
+    # Resize
+    resized_image = image.resize((resize_dim, resize_dim), Image.LANCZOS)
+    image_array = np.array(resized_image)
+    flat_image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
+    flat_image_array_float = flat_image_array.astype(np.float64)
+
+    # Cluster
+    if method == "K-Means":
+        model = KMeans(n_clusters=n_clusters, random_state=42)
+        model.fit(flat_image_array_float)
+        cluster_centers = model.cluster_centers_
+        labels = model.labels_
+    else: # FCM
+        model = FCM(n_clusters=n_clusters)
+        model.fit(flat_image_array_float)
+        labels = model.predict(flat_image_array_float)
+        cluster_centers = model.centers
+
+    # Process results
+    munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
+    segmented_img = create_segmented_image(flat_image_array, labels, cluster_centers, resize_dim, resize_dim)
+    mean_err, std_dev = get_stats(flat_image_array_float, labels, cluster_centers)
+
+    # Classify main color (simplification: assume most frequent label or just list all)
+    # Let's verify classification for the most dominant color
+    unique_labels, counts = np.unique(labels, return_counts=True)
+    dominant_idx = unique_labels[np.argmax(counts)]
+    dominant_munsell = munsell_colors[dominant_idx]
+    classification = classify_soil_embrapa(dominant_munsell)
+
+    return {
+        "segmented_image": segmented_img,
+        "munsell_colors": munsell_colors,
+        "dominant_munsell": dominant_munsell,
+        "classification": classification,
+        "mean_error": mean_err,
+        "std_dev": std_dev,
+        "flat_array": flat_image_array_float,
+        "labels": labels,
+        "centers": cluster_centers
+    }
+
+# --- Main Dashboard ---
+
 def main():
-    st.set_page_config(page_title="Classificação de Solos Munsell (Embrapa)", layout="wide")
+    st.set_page_config(page_title="Dashboard Análise de Solo", layout="wide")
 
-    st.title("Classificação de Cores de Solo e Tipos (Embrapa/SiBCS)")
-    st.markdown("Identificação automática de cores Munsell e classificação de tipos de solo baseada no Sistema Brasileiro de Classificação de Solos (SiBCS).")
+    st.title("📊 Dashboard de Classificação de Solos (Embrapa/SiBCS)")
+    st.markdown("""
+    Este dashboard permite a análise da cor do solo em amostras **secas** e **úmidas**,
+    gerando a classificação provável segundo o Sistema Brasileiro de Classificação de Solos.
+    """)
 
-    # Sidebar
-    st.sidebar.header("Configurações da Análise")
-    uploaded_file = st.sidebar.file_uploader("Carregar imagem do solo (JPG, PNG)", type=["jpg", "jpeg", "png"])
-    cluster_method = st.sidebar.selectbox("Método de Clusterização", ("K-Means", "Fuzzy C-Means"))
-    n_clusters = st.sidebar.slider("Número de Cores Dominantes (Clusters)", 1, 10, 3)
-    resize_dim = st.sidebar.slider("Resolução de Processamento (px)", 50, 500, 150)
+    # --- Sidebar ---
+    st.sidebar.header("📁 Upload de Amostras")
+    file_dry = st.sidebar.file_uploader("Foto Solo Seco", type=["jpg", "png", "jpeg"], key="dry")
+    file_wet = st.sidebar.file_uploader("Foto Solo Úmido", type=["jpg", "png", "jpeg"], key="wet")
 
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
+    st.sidebar.header("⚙️ Parâmetros")
+    cluster_method = st.sidebar.selectbox("Algoritmo", ("K-Means", "Fuzzy C-Means"))
+    n_clusters = st.sidebar.slider("Cores Dominantes (K)", 1, 5, 3)
+    resize_dim = st.sidebar.slider("Resolução (px)", 50, 300, 150)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            st.image(image, caption="Imagem Original", use_column_width=True)
+    # --- Processing ---
 
-        # Resize for processing
-        resized_image = image.resize((resize_dim, resize_dim), Image.LANCZOS)
-        image_array = np.array(resized_image)
+    if not file_dry and not file_wet:
+        st.info("👋 Por favor, faça o upload de pelo menos uma imagem (Seco ou Úmido) para iniciar o Dashboard.")
+        return
 
-        # Flatten
-        flat_image_array = image_array.reshape((image_array.shape[0] * image_array.shape[1], 3))
-        flat_image_array_float = flat_image_array.astype(np.float64)
+    # Container for Analysis
+    if st.sidebar.button("Gerar Dashboard de Análise"):
 
-        if st.sidebar.button("Executar Classificação"):
-            with st.spinner('Processando imagem e classificando...'):
+        results_dry = None
+        results_wet = None
 
-                # Clustering
-                if cluster_method == "K-Means":
-                    model = KMeans(n_clusters=n_clusters, random_state=42)
-                    model.fit(flat_image_array_float)
-                    cluster_centers = model.cluster_centers_
-                    labels = model.labels_
-                elif cluster_method == "Fuzzy C-Means":
-                    model = FCM(n_clusters=n_clusters)
-                    model.fit(flat_image_array_float)
-                    labels = model.predict(flat_image_array_float)
-                    cluster_centers = model.centers
+        with st.spinner('Processando imagens...'):
+            if file_dry:
+                img_dry = Image.open(file_dry)
+                results_dry = analyze_image(img_dry, n_clusters, cluster_method, resize_dim)
 
-                # Munsell Conversion
-                munsell_colors = convert_cluster_centers_to_munsell(cluster_centers)
+            if file_wet:
+                img_wet = Image.open(file_wet)
+                results_wet = analyze_image(img_wet, n_clusters, cluster_method, resize_dim)
 
-                # Create Segmented Image
-                segmented_image = create_segmented_image(flat_image_array, labels, cluster_centers, resize_dim, resize_dim)
+        # --- Dashboard Layout ---
 
-                with col2:
-                    st.image(segmented_image, caption=f"Imagem Segmentada ({cluster_method})", use_column_width=True)
+        # 1. Visual Comparison
+        st.header("1. Análise Visual")
+        c1, c2 = st.columns(2)
 
-                # Results
-                st.divider()
-                display_munsell_colors(munsell_colors)
+        with c1:
+            if results_dry:
+                st.subheader("Amostra Seca")
+                st.image(file_dry, caption="Original", use_column_width=True)
+                st.image(results_dry['segmented_image'], caption=f"Segmentada ({cluster_method})", use_column_width=True)
+            else:
+                st.warning("Amostra Seca não fornecida")
 
-                mean_error, std_deviation = get_stats(flat_image_array_float, labels, cluster_centers)
-                st.info(f"Qualidade da segmentação: Erro Médio = {mean_error:.2f} | Desvio Padrão = {std_deviation:.2f}")
+        with c2:
+            if results_wet:
+                st.subheader("Amostra Úmida")
+                st.image(file_wet, caption="Original", use_column_width=True)
+                st.image(results_wet['segmented_image'], caption=f"Segmentada ({cluster_method})", use_column_width=True)
+            else:
+                st.warning("Amostra Úmida não fornecida")
 
-                # Classification Logic
-                st.subheader("Interpretação Pedológica (Embrapa/SiBCS)")
+        # 2. Classification Data
+        st.divider()
+        st.header("2. Dados de Classificação (Cor Dominante)")
 
-                for i, color in enumerate(munsell_colors):
-                    soil_info = None
-                    source = ""
+        c_dry, c_wet = st.columns(2)
 
-                    # 1. Try exact match
-                    if color in soil_dict:
-                        soil_info = soil_dict[color]
-                        source = "Base de Dados (Exata)"
-                    # 2. Try general rules
-                    else:
-                        soil_info = classify_soil_embrapa(color)
-                        if soil_info:
-                            source = "Classificação Geral (Regras SiBCS)"
+        def display_card(title, res):
+            if res:
+                cls = res['classification']
+                st.markdown(f"### {title}")
+                st.metric("Cor Munsell (Dominante)", res['dominant_munsell'])
+                st.markdown(f"**Classe:** {cls['solo_embrapa']}")
+                st.write(f"_{cls['descricao']}_")
 
-                    with st.expander(f"Cor #{i+1}: {color} - {source}", expanded=True):
-                        if soil_info:
-                            st.markdown(f"**Classe de Solo Provável:** {soil_info['solo_embrapa']}")
-                            st.write(f"**Descrição:** {soil_info['descricao']}")
-                            st.write(f"**Características:** {soil_info['caracteristicas']}")
-                            st.write(f"**Vegetação:** {soil_info['vegetacao_tipica']}")
+                with st.expander("Características e Riscos"):
+                    st.write(f"**Características:** {cls['caracteristicas']}")
+                    st.write("**Riscos/Limitações:**")
+                    for r in cls['riscos']:
+                        st.write(f"- {r}")
 
-                            col_m1, col_m2 = st.columns(2)
-                            with col_m1:
-                                st.write("**Cultivos Recomendados:**")
-                                for crop in soil_info['cultivos_manejo_recomendado']['recomendados']:
-                                    st.write(f"- {crop}")
-                            with col_m2:
-                                st.write("**Manejo:**")
-                                st.write(soil_info['cultivos_manejo_recomendado']['manejo'])
-                                if soil_info['cultivos_manejo_recomendado']['condicionantes']:
-                                    st.write(f"*Obs: {soil_info['cultivos_manejo_recomendado']['condicionantes']}*")
-                        else:
-                            st.warning("Não foi possível classificar automaticamente esta cor com as regras atuais.")
+                st.write("**Todas as cores detectadas:**")
+                st.code(", ".join(res['munsell_colors']))
+            else:
+                st.markdown(f"### {title}")
+                st.write("Dados indisponíveis")
 
-                st.divider()
-                st.subheader("Análise Estatística da Imagem")
-                col_g1, col_g2 = st.columns(2)
-                with col_g1:
-                    plot_munsell_distribution(munsell_colors)
-                with col_g2:
-                    plot_std_deviation_distribution(flat_image_array_float, labels, cluster_centers)
+        with c_dry:
+            display_card("Solo Seco", results_dry)
 
-                if st.button("Comparar Algoritmos (K-Means vs FCM)"):
-                     with st.spinner('Comparando...'):
-                        km = KMeans(n_clusters=n_clusters, random_state=42).fit(flat_image_array_float)
-                        km_stats = get_stats(flat_image_array_float, km.labels_, km.cluster_centers_)
+        with c_wet:
+            display_card("Solo Úmido", results_wet)
 
-                        fcm = FCM(n_clusters=n_clusters)
-                        fcm.fit(flat_image_array_float)
-                        fcm_stats = get_stats(flat_image_array_float, fcm.predict(flat_image_array_float), fcm.centers)
+        # 3. Validation Stats
+        st.divider()
+        st.header("3. Estatísticas de Validação")
+        st.markdown("Métricas internas de qualidade do agrupamento de cores (menor erro = cores mais fiéis).")
 
-                        st.pyplot(plot_comparison_chart(km_stats[0], km_stats[1], fcm_stats[0], fcm_stats[1]))
+        m1, m2, m3, m4 = st.columns(4)
+        if results_dry:
+            m1.metric("Erro Médio (Seco)", f"{results_dry['mean_error']:.2f}")
+            m2.metric("Desvio Padrão (Seco)", f"{results_dry['std_dev']:.2f}")
+        if results_wet:
+            m3.metric("Erro Médio (Úmido)", f"{results_wet['mean_error']:.2f}")
+            m4.metric("Desvio Padrão (Úmido)", f"{results_wet['std_dev']:.2f}")
 
-    # Footer/Docs
+        # Charts
+        st.subheader("Distribuição de Erro")
+        cg1, cg2 = st.columns(2)
+        if results_dry:
+            with cg1:
+                st.caption("Histograma de Erro (Seco)")
+                fig, ax = plt.subplots()
+                ax.hist(np.linalg.norm(results_dry['flat_array'] - results_dry['centers'][results_dry['labels']], axis=1), bins=30, color='brown', alpha=0.7)
+                st.pyplot(fig)
+        if results_wet:
+            with cg2:
+                st.caption("Histograma de Erro (Úmido)")
+                fig, ax = plt.subplots()
+                ax.hist(np.linalg.norm(results_wet['flat_array'] - results_wet['centers'][results_wet['labels']], axis=1), bins=30, color='darkblue', alpha=0.7)
+                st.pyplot(fig)
+
+    # 4. Limitations and Methodology (Static)
     st.divider()
-    with st.expander("Metodologia e Referências"):
-        st.write("""
-        **Metodologia:**
-        O sistema converte os pixels da imagem para o espaço de cor RGB e utiliza algoritmos de agrupamento (K-Means ou Fuzzy C-Means) para identificar as cores dominantes.
-        Estas cores são convertidas para o sistema Munsell (Matiz, Valor, Croma) utilizando uma aproximação matemática.
-        A classificação do solo segue as regras gerais do Sistema Brasileiro de Classificação de Solos (SiBCS - Embrapa), associando cores a classes de solos (ex: Latossolos Vermelhos, Gleissolos, etc.).
+    with st.expander("⚠️ Limitações, Validação e Metodologia", expanded=False):
+        st.markdown("""
+        ### Limitações Técnicas
+        1.  **Iluminação:** A precisão da cor depende drasticamente da iluminação da foto. Fotos tiradas sob luz solar direta vs sombra vs luz artificial produzirão resultados Munsell diferentes. Recomenda-se luz natural difusa.
+        2.  **Calibração da Câmera:** Sensores de celular aplicam pós-processamento que altera as cores reais. Sem um cartão de referência de cor na imagem para calibração, os resultados são aproximados.
+        3.  **Umidade:** A umidade escurece o solo (diminui o Valor). A classificação completa do SiBCS geralmente requer a cor do solo úmido e seco para determinações precisas (ex: variação de cor).
+        4.  **Representatividade:** A análise é feita sobre a imagem carregada. Se a imagem contiver raízes, pedras ou sombras, isso afetará os clusters de cor.
 
-        **Referências:**
-        1. Santos, H. G. et al. (2018). Sistema Brasileiro de Classificação de Solos. 5. ed. Brasília, DF: Embrapa.
-        2. Munsell Soil Color Charts.
+        ### Validação do Algoritmo
+        *   **Margem de Erro:** Calculada como a distância Euclidiana média entre a cor original do pixel e a cor do cluster atribuído (centroide).
+        *   **Desvio Padrão:** Indica a dispersão das cores dentro de um mesmo grupo. Desvios altos indicam que o solo é muito heterogêneo ou o número de clusters (K) é insuficiente.
+
+        ### Metodologia Embrapa
+        A classificação apresentada é uma **inferência** baseada nas cores Munsell identificadas e nas regras gerais do Sistema Brasileiro de Classificação de Solos (SiBCS). A determinação definitiva de um tipo de solo requer análise granulométrica, química e morfológica em perfil de solo.
         """)
 
 if __name__ == "__main__":
